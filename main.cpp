@@ -1,6 +1,6 @@
 // FILE: main.cpp
 // Authors: 
-    // Nathan Waggoner
+    // Nathaniel Waggoner
     // Kobe Norcross
     // Ashton Sawyer
     // Matt Loera
