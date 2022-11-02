@@ -1,8 +1,10 @@
-// main.cpp
-// This is the main driver code of our code
-// Kobe Norcross
-// Add your name below here for PR Test`
-// Ashton Sawyer
+// FILE: main.cpp
+// Authors: 
+    // Nathaniel Waggoner
+    // Kobe Norcross
+    // Ashton Sawyer
+    // Matt Loera
+    // Yuki Yamada
 
 #include "provider.h"
 
