@@ -27,15 +27,16 @@ struct Address {
 class Provider {
 	public:
 		Provider();
-		Provider(std::string _name, std::string _prov_num, const Address & _address);
+		Provider(std::string _name, std::string _pid, const Address & _address);
 		Provider(const Provider & to_copy);
 		~Provider();
-		void init_provider(std::string _name, std::string _prov_num, const Address & _address);
-		void print_provider();
+		void init_provider(std::string _name, std::string _pid, const Address & _address);
+		void print_provider();  // mostly for testing
+		bool operator==(const Provider & provider, int _pid);
 
 	protected:
 		std::string name;
-		std::string prov_num;     // 9 digits
+		std::string pid;     // provider ID; 9 digits
 		Address address; 
 		node * head;      // linked list of provided services
 		node * tail;      // linked list of provided services

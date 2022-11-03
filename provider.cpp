@@ -12,7 +12,7 @@ Provider::Provider() {
 	std::cin.ignore(100, '\n');
 
 	std::cout << "What is their provider number: ";
-	std::cin >> prov_num;
+	std::cin >> pid;
 	std::cin.ignore(100, '\n');
 
 	std::cout << "Please enter their address:\n";
@@ -58,13 +58,13 @@ void Provider::delete_list(node * head) {
 
 void Provider::init_provider(std::string _name, std::string num, const Address & to_copy) {
 	name = _name;
-	prov_num = num;
+	pid = num;
 	address.copy_address(to_copy);
 }
 
 void Provider::print_provider() {
 	std::cout << "Name: " << name << std::endl;
-	std::cout << "Provider Number: " << prov_num << std::endl;
+	std::cout << "Provider Number: " << pid << std::endl;
 	address.print_address();
 	print_list(head);
 	std::cout << std::endl;
