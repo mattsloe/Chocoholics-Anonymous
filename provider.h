@@ -7,14 +7,19 @@
 struct node {
 	//Service * service;
 	node * next;
+
+	// for first node in list
+	int total_services;
+	int total_cost;
 };
 
 struct Address {
 	std::string street;
 	std::string city;
 	std::string state;    // initials
-	int zip;
+	std::string zip;
 
+	void init_address();  // asks for input
 	void copy_address(const Address & source);
 	void print_address();
 };
@@ -22,17 +27,20 @@ struct Address {
 class Provider {
 	public:
 		Provider();
+		Provider(std::string _name, std::string _prov_num, const Address & _address);
+		Provider(const Provider & to_copy);
 		~Provider();
-		void init_provider(std::string _name, int _prov_num, Address _address);
+		void init_provider(std::string _name, std::string _prov_num, const Address & _address);
 		void print_provider();
 
 	protected:
 		std::string name;
-		int prov_num;     // 9 digits
+		std::string prov_num;     // 9 digits
 		Address address; 
 		node * head;      // linked list of provided services
+		node * tail;      // linked list of provided services
 
 		void delete_list(node *);  // delete linked list
-		void print_list(node*);
+		void print_list(node *);
 
 };
