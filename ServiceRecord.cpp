@@ -13,11 +13,17 @@ ServiceRecord::ServiceRecord() : date(), sDate(), comments(), pID(0), mID(0), sI
 ServiceRecord::ServiceRecord(string date, string sDate, int pID, int mID, int sID, string comments) : date(date), sDate(sDate), comments(comments), pID(pID), mID(mID), sID(sID) {}
 
 
-void display() {
+void ServiceRecord::display() {
+    cout << "Date: " << this->date << endl;
+    cout << "Service Date: " << this->sDate << endl;
+    cout << "Provider ID: " << this->pID << endl;
+    cout << "Member ID: " << this->mID << endl;
+    cout << "Service ID: " << this->sID << endl;
+    cout << "Additional Comments: " << this->comments << endl;
     return;
 }
 
-void toJSON() {
+void ServiceRecord::toJSON() {
     return;
 }
 
