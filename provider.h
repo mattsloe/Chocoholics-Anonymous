@@ -31,8 +31,10 @@ class Provider {
 		Provider(const Provider & to_copy);
 		~Provider();
 		void init_provider(std::string _name, std::string _pid, const Address & _address);
-		void print_provider();  // mostly for testing
-		bool operator==(const Provider & provider, int _pid);
+		void print_provider();         // mostly for testing
+		std::string & to_file();       // format data as a string with delimeters for file storage
+		bool operator==(int _pid);
+
 
 	protected:
 		std::string name;

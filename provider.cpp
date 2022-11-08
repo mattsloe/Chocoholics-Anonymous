@@ -107,7 +107,7 @@ void Address::init_address() {
 }
 
 //copy from source into current obj
-void Address::copy_address(const Address& source) {
+void Address::copy_address(const Address & source) {
 	street = source.street;
 	city = source.city;
 	state = source.state;
