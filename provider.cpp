@@ -35,7 +35,7 @@ Provider::Provider(std::string _name, std::string num, const Address & _address)
 }
 
 //copy constructor
-Provider::Provider(const Provider& to_copy) {
+Provider::Provider(std::string provider) {
 
 }
 

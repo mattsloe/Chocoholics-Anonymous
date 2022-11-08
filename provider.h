@@ -1,17 +1,12 @@
 // Ashton Sawyer 11/1
+
+#ifndef PROVIDER_H
+# define PROVIDER_H
+
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-
-
-struct node {
-	//Service * service;
-	node * next;
-
-	// for first node in list
-	int total_services;
-	int total_cost;
-};
+//#include "AvailableServices.h"
 
 struct Address {
 	std::string street;
@@ -28,7 +23,7 @@ class Provider {
 	public:
 		Provider();
 		Provider(std::string _name, std::string _pid, const Address & _address);
-		Provider(const Provider & to_copy);
+		Provider(std::string provider);
 		~Provider();
 		void init_provider(std::string _name, std::string _pid, const Address & _address);
 		void print_provider();         // mostly for testing
@@ -40,10 +35,8 @@ class Provider {
 		std::string name;
 		std::string pid;     // provider ID; 9 digits
 		Address address; 
-		node * head;      // linked list of provided services
-		node * tail;      // linked list of provided services
-
-		void delete_list(node *);  // delete linked list
-		void print_list(node *);
+		//AvailableService avail_services;
 
 };
+
+#endif // PROVIDER_H
