@@ -2,17 +2,16 @@
 #define SERVICE_LEDGER_H
 
 #include "ServiceRecord.h"
+#include <map>
 
 class ServiceLedger {
     public:
-        ServiceLedger();
-        ServiceRecord get_ServiceRecord(int mID);
-        void create_ServiceRecord();
-        void add_ServiceRecord();
+        void new_transaction();
+        void generate_APR();
+        void generate_EFT(); 
 
     private:
-    // data structure of Service Records
-    // probably hash table of service records ordered by their mID
+        std::map<int, ServiceRecord> ledger;
 };
 
 #endif // SERVICE_LEDGER_H
