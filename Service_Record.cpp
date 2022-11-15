@@ -9,19 +9,6 @@ Service_Record::Service_Record(string json) {
 }
 
 void Service_Record::display() {
-
-}
-
-void toJSON() {
-
-}
-
-Service_Record::Service_Record(string json) {
-
-}
-
-
-void Service_Record::display() {
     cout << "Date: " << this->date << endl;
     cout << "Service Date: " << this->sDate << endl;
     cout << "Provider ID: " << this->pID << endl;
