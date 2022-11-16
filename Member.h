@@ -9,6 +9,7 @@
 #define CHOCANDEV_MEMBER_H
 #include <string>
 #include <iostream>
+#include "json.hpp"
 
 class Member {
 public:
@@ -23,6 +24,7 @@ public:
     /*Constructors*/
     Member();
     Member(std::string  name,std::string  mid, bool accountActive,std::string address, std::string  city, std::string state, std::string zip);
+    Member(nlohmann::json); //initialization from json string
     ~Member();
 
     /*Interface*/
