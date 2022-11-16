@@ -4,6 +4,7 @@
 #include "Service_Record.hpp"
 #include <map>
 #include <utility>
+#include "json/json.h"
 
 class Service_Ledger {
     public:
