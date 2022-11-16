@@ -70,7 +70,21 @@ std::string Member::to_string()const {
 
 //decide on format for this
 std::string Member::to_string_exp()const {
-    return std::string ();
+    using json = nlohmann::json;
+    std::string  s;
+
+    //create json object
+    json  j = {
+            {"name",name},
+            {"mid",mid},
+            {"address",address},
+            {"city",city},
+            {"state",state},
+            {"zip",zip},
+            {"accountActive",accountActive}
+    };
+    s = j.dump(2); // the 2 is number of spaces for indent
+    return s;
 }
 
 //max length 25
@@ -168,5 +182,16 @@ int Member::set_MID(const std::string& s) {
     }
     mid = s;
     return 1;
+}
+
+//json constructor
+Member::Member(nlohmann::json j) {
+name = j.value("name","not found"); //second param is the default value
+mid = j.value("mid","not found");
+address = j.value("address","not found");
+city = j.value("city","not found");
+state = j.value("state","not found");
+zip = j.value("zip","not found");
+accountActive = j["accountActive"].get<bool>(); //extracts bool from accountActive
 }
 
