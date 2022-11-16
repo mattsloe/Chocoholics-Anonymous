@@ -5,14 +5,16 @@
 
 class Available_Services {
     public:
-        void add_service();
+        ~Available_Services();
+        void create_new_service();
         void display();
-        void read_to_file();
-        void write_to_file();
-        std::string validate_service_code();
+        void read_from_file(std::string);
+        void write_to_file(std::string);
+        std::string validate_service_code(unsigned long);
+        Service *&get_service(unsigned long sID);
 
     private:
-        std::map<int, Service> services;
+        std::map<int, Service*&> services;
 };
 
 #endif // AVAILABLE_SERVICES_HPP
