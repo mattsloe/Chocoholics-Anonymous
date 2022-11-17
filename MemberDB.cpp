@@ -18,7 +18,7 @@ MemberDB::MemberDB(std::string filename) {
     std::ifstream infile(filename);
     if (!infile.is_open())
     {
-       //error
+       std::cout<<"Cant open file!!"<<std::endl; //error
     }
     infile >> j;
     infile.close();
@@ -35,15 +35,23 @@ int MemberDB::get_member(std::string mid, Member &) {
     return 0;
 }
 
-int MemberDB::add_member(const Member &) {
-    return 0;
+int MemberDB::add_member(const Member & toAdd) {
+    //create a copy of passed in member
+    Member* m = new Member(toAdd);
+
+    //add member
+    add_member(m);
+
+    return 1;
 }
 
 int MemberDB::delete_member(std::string mid) {
     return 0;
 }
 
-int MemberDB::add_member(Member *) {
+int MemberDB::add_member(Member * toAdd) {
+    mid_map[toAdd->get_MID()] = toAdd;
+    name_map[toAdd->get_name()] = toAdd;
     return 0;
 }
 
@@ -58,8 +66,19 @@ void MemberDB::init(nlohmann::json j) {
     }
 }
 
+//display inorder of name
 int MemberDB::display_all() {
-    return 0;
+    print_map(" ",name_map);
+    return 1;
+}
+
+void MemberDB::print_map(std::string_view comment, const std::map<std::string,Member*>& m) {
+        std::cout << comment;
+        // iterate
+        for (const auto& [key, value] : m)
+            std::cout << std::endl << *value << std::endl;
+
+        std::cout << std::endl;
 }
 
 

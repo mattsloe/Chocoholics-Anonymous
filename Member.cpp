@@ -195,3 +195,8 @@ zip = j.value("zip","not found");
 accountActive = j["accountActive"].get<bool>(); //extracts bool from accountActive
 }
 
+//copy constructor
+Member::Member(const Member& toCopy)
+:name(toCopy.name), mid(toCopy.mid),address(toCopy.address),city(toCopy.city),state(toCopy.state),zip(toCopy.zip),accountActive(toCopy.accountActive)
+{}
+

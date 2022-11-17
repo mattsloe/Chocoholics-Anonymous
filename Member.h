@@ -23,6 +23,7 @@ public:
 
     /*Constructors*/
     Member();
+    Member(const Member&);
     Member(std::string  name,std::string  mid, bool accountActive,std::string address, std::string  city, std::string state, std::string zip);
     Member(nlohmann::json); //initialization from json string
     ~Member();

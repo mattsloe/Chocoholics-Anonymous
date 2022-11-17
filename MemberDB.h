@@ -2,7 +2,7 @@
 // Created by Matt Loera on 11/16/22.
 // Note: adding a member object to this structure involves hashing it to both hash tables
 // Note: no validation is done on json datafiles. Invalid data or datafiles will cause undefined behavior
-// ToDo: Create data structure
+// ToDo: implement addMember
 // ToDo: Implement file import/export for persistence
 // ToDo: Implement protocol for accessing/editing Members
 // ToDo: Implement Member report protocol
@@ -13,6 +13,8 @@
 #include <ios>
 #include <unordered_map>
 #include <fstream>
+#include <string>
+#include <string_view>
 
 #include "Member.h"
 #include "json.hpp"
@@ -31,6 +33,9 @@ public:
     /*Interface*/
 
     int get_member(std::string mid,Member&);
+
+    //no validation: make sure the member does not already exist in the DB first!
+    //@post member is added to db, returns true
     int add_member(const Member&);
     int delete_member(std::string mid);
     int display_all(); //returns number of members
@@ -39,6 +44,7 @@ public:
 private:
     int add_member(Member*);
     void init(nlohmann::json); //initialize with json object
+    void print_map(std::string_view comment,const std::map<std::string,Member*>& m);
 
 };
 

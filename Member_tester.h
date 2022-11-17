@@ -9,6 +9,7 @@ public:
     static bool test3(Member *); //add/edit data
     static bool test4(Member *); //test for proper json output
     static bool test5(Member *); //test for proper json initialization from file
+    static bool test6(Member *); //test copy constructor
 
     static void createMemberInstance(Member *&); //creates Member with test data
 
@@ -47,6 +48,7 @@ bool MemberTester::test3(Member* mPtr){
 bool MemberTester::test4(Member* mPtr){
     createMemberInstance(mPtr);
     cout <<endl<< mPtr->to_string_exp() << endl;
+    delete mPtr;
     return true;
 }
 
@@ -55,14 +57,23 @@ bool MemberTester::test5(Member* mPtr){
     //create a testfile
     Member* test;
     createMemberInstance(test);
-    ofstream out("member.json");
+    ofstream out("assets/member.json");
     out << test->to_string_exp() << endl;
 
     //initialize using json object
-    ifstream in("member.json");
+    ifstream in("assets/member.json");
     nlohmann::json  j = nlohmann::json ::parse(in); //instantiate object using parse with the infile stream
     mPtr = new Member(j);
     cout << endl << *mPtr << endl;
+    delete mPtr;
+    return true;
+}
+
+bool MemberTester::test6(Member * mPtr){
+    createMemberInstance(mPtr);
+    Member test(*mPtr);
+    cout <<endl<<test<<endl;
+    delete mPtr;
     return true;
 }
 

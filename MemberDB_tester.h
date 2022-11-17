@@ -20,8 +20,8 @@ using namespace std;
     static void testMemberDBClass() {
         MemberDB *db_ptr;
         cout << "Test 1: " << ((test1(db_ptr) == 0) ? "false" : "true") << endl;
-//      cout << "Test 2: " << ((test2(db_ptr)==0)?"false":"true") << endl;
-//      cout << "Test 3: " << ((test3(db_ptr)==0)?"false":"true") << endl;
+        cout << "Test 2: " << ((test2(db_ptr)==0)?"false":"true") << endl;
+        cout << "Test 3: " << ((test3(db_ptr)==0)?"false":"true") << endl;
 //      cout << "Test 4: " << ((test4(db_ptr)==0)?"false":"true") << endl;
 //      cout << "Test 5: " << ((test5(db_ptr)==0)?"false":"true") << endl;
         return;
@@ -46,7 +46,7 @@ bool MemberDBtester::test2(MemberDB* db_ptr){
     return true;
 }
 bool MemberDBtester::test3(MemberDB * db_ptr){
-    std::string  filename = "test-members.json";
+    std::string  filename = "assets/test-members.json";
     db_ptr = new MemberDB(filename);
     int n = db_ptr->display_all();
     cout <<endl<< "Number of members: " << n << endl;
@@ -54,7 +54,7 @@ bool MemberDBtester::test3(MemberDB * db_ptr){
 }
 
 bool MemberDBtester::test4(MemberDB* db_ptr){//retrieve a member by mid=352858252 Randolf Christoffe
-    string  filename = "test-members.json";
+    string  filename = "assets/test-members.json";
     db_ptr = new MemberDB(filename);
 
     Member m;
@@ -64,7 +64,7 @@ bool MemberDBtester::test4(MemberDB* db_ptr){//retrieve a member by mid=35285825
 }
 
 bool MemberDBtester::test5(MemberDB* db_ptr){ //retrieve a member by mid=000000000
-    string  filename = "test-members.json";
+    string  filename = "assets/test-members.json";
     db_ptr = new MemberDB(filename);
 
     Member m;
