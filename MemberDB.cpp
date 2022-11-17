@@ -58,4 +58,8 @@ void MemberDB::init(nlohmann::json j) {
     }
 }
 
+int MemberDB::display_all() {
+    return 0;
+}
+
 

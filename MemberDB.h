@@ -33,6 +33,7 @@ public:
     int get_member(std::string mid,Member&);
     int add_member(const Member&);
     int delete_member(std::string mid);
+    int display_all(); //returns number of members
 
     /*Overloaded Operators*/
 private:
