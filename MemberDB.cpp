@@ -31,8 +31,10 @@ MemberDB::~MemberDB() {
 
 }
 
-int MemberDB::get_member(std::string mid, Member &) {
-    return 0;
+int MemberDB::get_member(std::string mid, Member & m) {
+    if (mid_map.find(mid) == mid_map.end()) return false;
+    m.copy(*mid_map[mid]);
+    return true;
 }
 
 int MemberDB::add_member(const Member & toAdd) {
@@ -69,7 +71,7 @@ void MemberDB::init(nlohmann::json j) {
 //display inorder of name
 int MemberDB::display_all() {
     print_map(" ",name_map);
-    return 1;
+    return mid_map.size();
 }
 
 void MemberDB::print_map(std::string_view comment, const std::map<std::string,Member*>& m) {

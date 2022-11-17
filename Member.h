@@ -81,6 +81,9 @@ public:
     //@post toggles whether Member is active or suspended. returns value of accountActive
     bool toggle_active();
 
+    //safe copies Member
+    void copy(const Member&);
+
 
 
     /*Overloaded Operators*/

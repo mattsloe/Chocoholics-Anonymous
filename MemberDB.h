@@ -2,8 +2,7 @@
 // Created by Matt Loera on 11/16/22.
 // Note: adding a member object to this structure involves hashing it to both hash tables
 // Note: no validation is done on json datafiles. Invalid data or datafiles will cause undefined behavior
-// ToDo: implement addMember
-// ToDo: Implement file import/export for persistence
+// ToDo: Implement file export for persistence
 // ToDo: Implement protocol for accessing/editing Members
 // ToDo: Implement Member report protocol
 //

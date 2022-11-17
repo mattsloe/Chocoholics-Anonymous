@@ -12,15 +12,8 @@
 
 int main()
 {
-    //tester code for Member class
-    std::cout << "Testing member class" << std::endl;
-    MemberTester::testMemberClass();
-    std::cout << std::endl;
-
-    //tester code for MemberDB
-    std::cout << "Testing MemberDB: "<< std::endl;
-    MemberDBtester::testMemberDBClass();
-    std::cout << std::endl;
+    MemberTester::testMemberClass(); //Member class unit tests
+    MemberDBtester::testMemberDBClass(); //MemberDB unit tests
 
     return 0;
 }

@@ -18,12 +18,14 @@ using namespace std;
     static bool test5(MemberDB *); //retrieve a member by MID that does not exist
 
     static void testMemberDBClass() {
+        cout<< "==Testing MemberDB class: "<<endl;
         MemberDB *db_ptr;
         cout << "Test 1: " << ((test1(db_ptr) == 0) ? "false" : "true") << endl;
         cout << "Test 2: " << ((test2(db_ptr)==0)?"false":"true") << endl;
         cout << "Test 3: " << ((test3(db_ptr)==0)?"false":"true") << endl;
-//      cout << "Test 4: " << ((test4(db_ptr)==0)?"false":"true") << endl;
-//      cout << "Test 5: " << ((test5(db_ptr)==0)?"false":"true") << endl;
+        cout << "Test 4: " << ((test4(db_ptr)==0)?"false":"true") << endl;
+        cout << "Test 5: " << ((test5(db_ptr)==0)?"false":"true") << endl;
+        cout<<"--------------------"<<endl;
         return;
     }
 private:
@@ -59,7 +61,7 @@ bool MemberDBtester::test4(MemberDB* db_ptr){//retrieve a member by mid=35285825
 
     Member m;
     db_ptr->get_member("352858252",m);
-    cout << m;
+    cout << m<<endl;
     return true;
 }
 
