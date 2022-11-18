@@ -7,7 +7,7 @@
 
 class Service_Record {
     public:
-
+        Service_Record(const Service_Record &);
         Service_Record(std::string date, std::string sDate, int pID, int mID, int sID, std::string comments); //- initialized constructor
         Service_Record(nlohmann::json); // - takes in a string json object and initializes Provider instance
         void display(); //- displays to CLI
@@ -25,7 +25,7 @@ class Service_Record {
         int get_sID();
     
         std::string to_string_exp();  //- returns a string json object representing the instance of the Service Record 
-        //friend Service_Record & operator = (const Service_Record&);
+        Service_Record & operator = (const Service_Record &);
 
     private:
         std::string date, sDate, comments;
