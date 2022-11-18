@@ -1,4 +1,6 @@
 #include "Service.hpp"
+using namespace std;
+using nlohmann::json = json;
 
 Service::Service() : name(), sID(0), fee(0.0) {}
 

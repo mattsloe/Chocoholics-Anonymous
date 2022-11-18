@@ -2,10 +2,12 @@
 #define SERVICE_H
 
 #include "Service_Ledger.hpp"
-#include <iomanip/>
+#include <iomanip>
+#include "json.h"
 
 class Service {
     public:
+        Service();
         Service(std::string, unsigned long, double);
         void set_name(std::string);
         void set_id(unsigned long);
