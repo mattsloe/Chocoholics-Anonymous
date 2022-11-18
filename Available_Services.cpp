@@ -10,8 +10,26 @@ Available_Services::~Available_Services() {
 }
 
 void Available_Services::create_new_service() {
-    // input data
-    // add it to the data structure
+    string name;
+    unsigned long sid;
+    double fee;
+    Service * service = nullptr;
+    map<unsigned long, Service*&>::iterator new_service;
+
+    cout << "Please enter a new name for the service to be provided: ";
+    cin >> name; 
+    // add verifcation 
+
+    cout << "Please enter a new Service ID that has not been used in the past: ";
+    cin >> sid;
+    // add search to make sure it won't collide
+
+    cout << "Lastly, please enter the fee for this service to be provided: ";
+    cin >> fee;
+    // add verifcation 
+
+    service = new Service(name, sid, fee);
+    services.emplace(sid, service);
 }
 
 void Available_Services::display() {
