@@ -18,10 +18,6 @@ void Service_Record::display() {
     return;
 }
 
-void Service_Record::toJSON() {
-    return;
-}
-
 // setters/getters
 void Service_Record::set_date(std::string date) {
     this->date = date;
@@ -69,4 +65,22 @@ int Service_Record::get_mID() {
 
 int Service_Record::get_sID() {
     return this->sID;
+}
+
+
+string Service_Record::to_string_exp() {
+    using json = nlohmann::json;
+    std::string  s;
+
+    //create json object
+    json  j = {
+            {"date",date},
+            {"sDate",sDate},
+            {"comments",comments},
+            {"pID",pID},
+            {"mID",mID},
+            {"sID",sID}
+    };
+    s = j.dump(2); // the 2 is number of spaces for indent
+    return s;
 }

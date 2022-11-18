@@ -1,6 +1,7 @@
 #ifndef SERVICE_RECORD_HPP
 #define SERVICE_RECORD_HPP
 
+#include "json.hpp"
 #include <iostream>
 #include <string>
 
@@ -9,9 +10,7 @@ class Service_Record {
 
         Service_Record(std::string date, std::string sDate, int pID, int mID, int sID, std::string comments); //- initialized constructor
         Service_Record(std::string json); // - takes in a string json object and initializes Provider instance
-        // implement = operator overload
         void display(); //- displays to CLI
-        void toJSON();  //- returns a string json object representing the instance of Provider
         void set_date(std::string date);
         void set_sDate(std::string sDate);
         void set_comments(std::string comments);
@@ -25,6 +24,9 @@ class Service_Record {
         int get_mID();
         int get_sID();
     
+        std::string to_string_exp();  //- returns a string json object representing the instance of the Service Record 
+        //friend Service_Record & operator = (const Service_Record&);
+
     private:
         std::string date, sDate, comments;
         int pID, mID, sID;
