@@ -10,7 +10,7 @@ class Service_Ledger {
     public:
         ~Service_Ledger();
         void new_transaction(Service_Record *&);
-        void generate_APR();
+        void generate_APR(Provider_Directory &);
         void generate_EFT(); 
 
     private:
