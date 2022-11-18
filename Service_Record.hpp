@@ -9,7 +9,7 @@ class Service_Record {
     public:
 
         Service_Record(std::string date, std::string sDate, int pID, int mID, int sID, std::string comments); //- initialized constructor
-        Service_Record(std::string json); // - takes in a string json object and initializes Provider instance
+        Service_Record(nlohmann::json); // - takes in a string json object and initializes Provider instance
         void display(); //- displays to CLI
         void set_date(std::string date);
         void set_sDate(std::string sDate);

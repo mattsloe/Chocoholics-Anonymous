@@ -4,8 +4,13 @@ using namespace std;
 Service_Record::Service_Record(string date, string sDate, int pID, int mID, int sID, string comments) : 
 date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
 
-Service_Record::Service_Record(string json) {
-
+Service_Record::Service_Record(nlohmann::json j) {
+    date = j.value("date", "not found");
+    sDate = j.value("sDate", "not found");
+    comments = j.value("comments", "not found");
+    pID = j.value("pID", 0);
+    mID = j.value("mID", 0);
+    sID = j.value("sID", 0);
 }
 
 void Service_Record::display() {
