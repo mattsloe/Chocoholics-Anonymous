@@ -5,7 +5,7 @@
 #include "Member.h"
 
 Member::Member() {
-    init();
+   // init();
 }
 
 Member::Member(std::string name,std::string mid, bool accountActive,std::string address, std::string city, std::string state, std::string zip):
@@ -193,5 +193,21 @@ city = j.value("city","not found");
 state = j.value("state","not found");
 zip = j.value("zip","not found");
 accountActive = j["accountActive"].get<bool>(); //extracts bool from accountActive
+}
+
+//copy constructor
+Member::Member(const Member& toCopy)
+:name(toCopy.name), mid(toCopy.mid),address(toCopy.address),city(toCopy.city),state(toCopy.state),zip(toCopy.zip),accountActive(toCopy.accountActive)
+{}
+
+//copy
+void Member::copy(const Member& toCopy){
+    name = toCopy.name;
+    mid = toCopy.mid;
+    address = toCopy.address;
+    city = toCopy.city;
+    state = toCopy.state;
+    zip = toCopy.zip;
+    accountActive = toCopy.accountActive;
 }
 
