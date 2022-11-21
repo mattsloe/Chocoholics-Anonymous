@@ -5,16 +5,28 @@
     // Ashton Sawyer
     // Matt Loera
     // Yuki Yamada
-#include <ios>
 
-#include "Member_tester.cpp"
+#include <iostream>
+
+#include "Driver.hpp"
+//#include "Member_tester.cpp"
 
 int main()
 {
-    //tester code for Member class
-    std::cout << "Testing member class" << endl;
-    testMemberClass();
-    std::cout << std::endl;
+   	using namespace std;
 
-    return 0;
+   	//Add testing to the menu.cpp class structure. 
+	//Main will now be for the menu class to operate as a driver. 
+	cout << "Testing Member Class" << endl;
+	//testMemberClass();
+	cout << "Ending Member Class Testing" << endl;
+
+
+	//Creating space between driver and any tests we decide to run above.
+	cout << "\n\n\n";
+
+
+
+
+	return 0;
 }
