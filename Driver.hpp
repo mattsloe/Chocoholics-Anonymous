@@ -18,12 +18,13 @@
 using namespace std;
 
 
+const int MAX_CHARS = 256;
+
 
 //Some helper functions for user input.
-bool 	get_string(string user_str, const string prompt); 	//Always returns true.
-int	get_int(void); 					 	//Returns the integer retrieved from the user. 
-long	get_long(void);						//Returns the long retrieved from the user.:
-bool 	get_char(void);						//Always returns true.
+void 	get_string(string user_str, const string prompt); 	//Retrieves a string from the user.
+long	get_long(const string prompt);				//Returns the long retrieved from the user.
+char 	get_char(const string prompt);				//Always returns true.
 
 
 
@@ -39,21 +40,25 @@ int validate_service(/*Provider &, Service *&*/);				//Returns 0 if service ID i
 //Forward declarations for class Driver.
 class Provider_Terminal;
 class Interactive_Terminal;
+class Financial_Terminal;
 
 //This is the main hub of menus that are output for the program.
 class Driver {
 	public:
-		int start_driver();	//Main driver (this class)
-		int start_pterm();	//Provider terminal
-		int start_fterm();	//Financial Terminal
-		int start_iterm();	//Interactive Mode Terminal
+		Driver();
+		~Driver();
+
+		void start_driver();	//Main driver (this class)
+		void start_pterm();	//Provider terminal
+		void start_fterm();	//Financial Terminal
+		void start_iterm();	//Interactive Mode Terminal
 
 
 	private:
 	Provider_Terminal 	*pterm;
 	Interactive_Terminal 	*iterm;
+	Financial_Terminal	*fterm;
 	//Will need to add ProviderDB, MemberDB, and a Service Ledger (based on design document).
-	
 
 
 	//Potential private member functions include functions that delegate the output of menus. TBD...
@@ -77,10 +82,14 @@ class Provider_Terminal {
 //This is the interactive terminal for managers within a ChocAn facility.
 class Interactive_Terminal {
 	public:
+		int display_member_db();
+
 		int add_member(/*MemberDB &*/);							//Generates a member object with user input and adds it to the MemberDB.
 		int remove_member(/*MemberDB &*/);						//Finds and removes a member from the MemberDB using a member number from the user.
 		int edit_member(/*MemberDB &*/);						//Finds a member and edits member data members with user input.
 	
+
+		int display_provider_db();
 
 		int add_provider(/*ProviderDB &*/);						//Generates a provider object with user input and adds it to the MemberDB.
 		int remove_provider(/*ProviderDB &*/);						//Finds and removes a provider from the ProviderDB using a provider number from the user.

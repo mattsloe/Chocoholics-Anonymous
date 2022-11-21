@@ -17,15 +17,20 @@ int main()
 
    	//Add testing to the menu.cpp class structure. 
 	//Main will now be for the menu class to operate as a driver. 
+	
+	/*
 	cout << "Testing Member Class" << endl;
-	//testMemberClass();
+	testMemberClass();
 	cout << "Ending Member Class Testing" << endl;
+	*/
 
 
 	//Creating space between driver and any tests we decide to run above.
 	cout << "\n\n\n";
 
+	Driver term;
 
+	term.start_driver();
 
 
 	return 0;
