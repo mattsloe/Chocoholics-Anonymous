@@ -1,6 +1,10 @@
+//Ashton Sawyer 11/1
+
 #ifndef PROVIDER_DB_H
 # define PROVIDER_DB_H
 
+#include <unordered_map>
+#include <functional>
 #include "provider.h"
 
 class Provider_Database {
@@ -11,9 +15,11 @@ class Provider_Database {
 		int add_provider();
 		int delete_provider(std::string pid);
 		int edit_provider(std::string pid);
+		void to_file();
+		void load_file();
 
 	protected:
-
+		unordered_map<int, Provider>
 };
 
-#endif // PROVIDER_DB_H
+#endif // PROVIDER_DB_H 

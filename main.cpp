@@ -11,5 +11,10 @@
 
 int main()
 {
+    //tester code for Member class
+    std::cout << "Testing member class" << endl;
+    testMemberClass();
+    std::cout << std::endl;
+
     return 0;
 }

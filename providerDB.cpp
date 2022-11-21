@@ -25,3 +25,11 @@ int Provider_Database::delete_provider(std::string pid) {
 int Provider_Database::edit_provider(std::string pid) {
 	return 0;
 }
+
+void Provider_Database::to_file() {
+
+}
+
+void Provider_Database::load_file() {
+
+}

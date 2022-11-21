@@ -6,36 +6,58 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-//#include "AvailableServices.h"
+#include "Available_Services.hpp"
 
 struct Address {
-	std::string street;
-	std::string city;
+	std::string street;   // 25 char
+	std::string city;     // 14 char
 	std::string state;    // initials
 	std::string zip;
 
-	void init_address();  // asks for input
+	Address();			  // asks for input
+	Address(std::string street, std::string city, std::string state, std::string zip);
+	// Return Values:
+	//     0: Success
+	//    -1: invalid state len
+	//    -2: invalid zip len
+	//    -3: invalid zip chars
+	int init_address(std::string street, std::string city, std::string state, std::string zip);  // return 0 success
 	void copy_address(const Address & source);
 	void print_address();
 };
 
 class Provider {
+	/* for unit tests */
+	friend bool Provider_init_happy();
+	friend bool Provider_init_maxPid();
+
 	public:
+		/* Constructors */
 		Provider();
-		Provider(std::string _name, std::string _pid, const Address & _address);
-		Provider(std::string provider);
+		Provider(std::string _name, unsigned int _pid, const Address & _address);
 		~Provider();
-		void init_provider(std::string _name, std::string _pid, const Address & _address);
-		void print_provider();         // mostly for testing
-		std::string & to_file();       // format data as a string with delimeters for file storage
-		bool operator==(int _pid);
+
+		/* Interface */
+		void init_provider(std::string _name, unsigned int _pid, const Address & _address);
+		void print_provider();              // mostly for testing
+		unsigned int get_pid();		        // return pid
+		std::string to_file();              // format data for json file
+
+		/* Overloaded Operators */
+		bool operator==(Provider & toComp);
+
+		/* avail_service Wrappers */
+		int add_service();
+		int remove_service();
+		std::string validate_sid();
+		void display_services();
 
 
 	protected:
 		std::string name;
-		std::string pid;     // provider ID; 9 digits
+		unsigned int pid;     // provider ID; 9 digits
 		Address address; 
-		//AvailableService avail_services;
+		Available_Services avail_services;
 
 };
 
