@@ -10,6 +10,7 @@
 
 #include "Service.hpp"
 #include "Service_Record.hpp"
+#include "Service_Ledger.hpp"
 
 #include "Member.h"
 
