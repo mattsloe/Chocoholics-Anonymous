@@ -48,7 +48,19 @@ int MemberDB::add_member(const Member & toAdd) {
 }
 
 int MemberDB::delete_member(std::string mid) {
-    return 0;
+    //if member not in db return false
+    if (mid_map.find(mid) == mid_map.end()) return false; //no matching member to delete
+    //delete member from both maps
+    Member* toDelete = mid_map[mid];
+    if (mid_map.erase(mid) == 0){
+        std::cout<< "Error: erasing from mid_map" << std::endl;
+        return false;
+    }
+    if (name_map.erase(toDelete->name) == 0){
+        std::cout<<"Error: erasing from name_map"<<std::endl;
+        return false;
+    }
+    return true;
 }
 
 int MemberDB::add_member(Member * toAdd) {

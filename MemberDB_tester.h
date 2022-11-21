@@ -16,6 +16,8 @@ using namespace std;
     static bool test3(MemberDB *); //instantiate with filename "test-members.json", display all
     static bool test4(MemberDB *); //retrieve a member by MID
     static bool test5(MemberDB *); //retrieve a member by MID that does not exist
+    static bool test6(MemberDB *); //test delete_member()
+
 
     static void testMemberDBClass() {
         cout<< "==Testing MemberDB class: "<<endl;
@@ -25,6 +27,7 @@ using namespace std;
         cout << "Test 3: " << ((test3(db_ptr)==0)?"false":"true") << endl;
         cout << "Test 4: " << ((test4(db_ptr)==0)?"false":"true") << endl;
         cout << "Test 5: " << ((test5(db_ptr)==0)?"false":"true") << endl;
+        cout << "Test 6: " << ((test6(db_ptr)==0)?"false":"true") << endl;
         cout<<"--------------------"<<endl;
         return;
     }
@@ -70,10 +73,32 @@ bool MemberDBtester::test5(MemberDB* db_ptr){ //retrieve a member by mid=0000000
     db_ptr = new MemberDB(filename);
 
     Member m;
-    if (db_ptr->get_member("000000000",m))
-        return false;
+    if (db_ptr->get_member("000000000",m)){
+        delete db_ptr;
+        return false;}
     else
+    {delete db_ptr;
         return true;
+    }
+
+}
+
+bool MemberDBtester::test6(MemberDB* db_ptr){ //retrieve a member by mid=000000000
+    string  filename = "assets/test-members.json";
+    db_ptr = new MemberDB(filename);
+
+    Member m;
+    db_ptr->delete_member("352858252");
+    if (db_ptr->get_member("352858252",m)){
+        cout << "Member still in db" << endl;
+        delete db_ptr;
+        return false;
+    }
+    else{
+        cout << "Member deleted" << endl;
+        delete db_ptr;
+        return true;
+    }
 }
 
 #endif
