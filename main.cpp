@@ -5,15 +5,33 @@
     // Ashton Sawyer
     // Matt Loera
     // Yuki Yamada
-#include <ios>
 
-#include "Member_tester.h"
-#include "MemberDB_tester.h"
+#include <iostream>
+
+#include "Driver.hpp"
+//#include "Member_tester.cpp"
 
 int main()
 {
-    MemberTester::testMemberClass(); //Member class unit tests
-    MemberDBtester::testMemberDBClass(); //MemberDB unit tests
+   	using namespace std;
 
-    return 0;
+   	//Add testing to the menu.cpp class structure. 
+	//Main will now be for the menu class to operate as a driver. 
+	
+	/*
+	cout << "Testing Member Class" << endl;
+	testMemberClass();
+	cout << "Ending Member Class Testing" << endl;
+	*/
+
+
+	//Creating space between driver and any tests we decide to run above.
+	cout << "\n\n\n";
+
+	Driver term;
+
+	term.start_driver();
+
+
+	return 0;
 }
