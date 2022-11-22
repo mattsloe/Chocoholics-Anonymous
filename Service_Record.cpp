@@ -3,7 +3,7 @@ using namespace std;
 
 Service_Record::Service_Record(const Service_Record & source) : date(source.date), sDate(source.sDate), comments(source.comments), pID(source.pID), mID(source.mID), sID(source.sID) {}
 
-Service_Record::Service_Record(string date, string sDate, int pID, int mID, int sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
+Service_Record::Service_Record(string date, string sDate, unsigned int pID, unsigned int mID, unsigned int sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
 
 Service_Record::Service_Record(nlohmann::json j) {
     date = j.value("date", "not found");
@@ -37,15 +37,15 @@ void Service_Record::set_comments(std::string comments) {
     this->comments = comments;
 }
 
-void Service_Record::set_pID(int pID) {
+void Service_Record::set_pID(unsigned int pID) {
     this->pID = pID;
 }
 
-void Service_Record::set_mID(int mID) {
+void Service_Record::set_mID(unsigned int mID) {
     this->mID = mID;
 }
 
-void Service_Record::set_sID(int sID) {
+void Service_Record::set_sID(unsigned int sID) {
     this->sID = sID;
 }
 
@@ -61,15 +61,15 @@ std::string Service_Record::get_comments() {
     return this->comments;
 }
 
-int Service_Record::get_pID() {
+unsigned int Service_Record::get_pID() {
     return this->pID;
 }
 
-int Service_Record::get_mID() {
+unsigned int Service_Record::get_mID() {
     return this->mID;
 }
 
-int Service_Record::get_sID() {
+unsigned int Service_Record::get_sID() {
     return this->sID;
 }
 
