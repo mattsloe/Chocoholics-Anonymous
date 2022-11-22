@@ -1,8 +1,13 @@
+#ifndef MEMBER_TEST_H
+#define MEMBER_TEST_H
+
+
 #include <iostream>
 #include <fstream>
 #include "Member.h"
-using namespace::std;
+using namespace std;
 
+void testMemberClass();
 bool test1(Member*); //Default constructor. Results in valid object
 bool test2(Member*); // Initialized constructor (hardcoded). Results in valid object with hardcoded fields
 bool test3(Member*); //add/edit data
@@ -65,3 +70,8 @@ void createMemberInstance(Member*&  mPtr){
     mPtr = new Member("Matt","123456789", true,"123 xolo ln","Portland","OR","12345");
     return;
 }
+
+
+
+
+#endif
