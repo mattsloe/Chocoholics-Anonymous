@@ -1,6 +1,7 @@
 #include "Available_Services.hpp"
+
 using namespace std;
-using nlohmann::json = json;
+using json = nlohmann::json;
 
 // ----------------------- Available Services Implementation ---------------------------
 Available_Services::~Available_Services() {
@@ -42,6 +43,7 @@ void Available_Services::display() {
 
 void Available_Services::read_from_file() {
     // open file and load it into the map
+    string file_name = "";
 }
 
 void Available_Services::write_to_file() {
