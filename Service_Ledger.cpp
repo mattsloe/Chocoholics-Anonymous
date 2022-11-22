@@ -12,7 +12,7 @@ void Service_Ledger::new_transaction(Service_Record *&record) {
     ledger.emplace(record->get_pID(), record);
 }
 
-void Service_Ledger::generate_APR(Provider_Directory &dir) {
+void Service_Ledger::generate_APR(const Available_Services &dir) {
     map<int, int> providers;
     int total_providers = 0;
     int total_services = 0;
@@ -29,7 +29,7 @@ void Service_Ledger::generate_APR(Provider_Directory &dir) {
     }
 }
 
-void Service_Ledger::generate_EFT(Provider_Directory &dir) {
+void Service_Ledger::generate_EFT(const Available_Services &dir) {
     map<int, int> providers;
     string file_name = "EFTdata";
     string date = "";

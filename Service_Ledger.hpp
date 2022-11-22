@@ -10,8 +10,9 @@ class Service_Ledger {
     public:
         ~Service_Ledger();
         void new_transaction(Service_Record *&);
-        void generate_APR(Provider_Directory &);
-        void generate_EFT(); 
+        // update with 
+        void generate_APR(const Available_Services &);
+        void generate_EFT(const Available_Services &); 
 
     private:
         std::multimap<int, Service_Record*&> ledger;
