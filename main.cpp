@@ -20,7 +20,8 @@ int main()
 	
 	/*
 	cout << "Testing Member Class" << endl;
-	testMemberClass();
+    MemberTester::testMemberClass();
+	MemberDBtester::testMemberDBClass();
 	cout << "Ending Member Class Testing" << endl;
 	*/
 
