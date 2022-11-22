@@ -6,7 +6,18 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-#include "Available_Services.hpp"
+#include "Service_Record.hpp"
+
+struct node {
+	Service_Record * service;
+	node * next;
+};
+
+struct node_head {
+	int numServicesProvided;
+	int totalCost;
+	node * next;
+};
 
 struct Address {
 	std::string street;   // 25 char
@@ -46,19 +57,19 @@ class Provider {
 		/* Overloaded Operators */
 		bool operator==(Provider & toComp);
 
-		/* avail_service Wrappers */
-		int add_service();
-		int remove_service();
-		std::string validate_sid();
-		void display_services();
+		/* linked list functionality */
+		int add_service(Service);
+		int remove_service(Service);
+		void to_file();
 
 
 	protected:
 		std::string name;
 		unsigned int pid;     // provider ID; 9 digits
 		Address address; 
-		Available_Services avail_services;
-
+		node_head * head;     // head of provided services list
+		node * tail;          // tail of provided services list
+		 
 };
 
 #endif // PROVIDER_H
