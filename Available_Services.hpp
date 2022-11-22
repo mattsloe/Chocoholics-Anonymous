@@ -14,9 +14,9 @@ class Available_Services {
             // displays all available services to the terminal
         void read_from_file(std::string);
         void write_to_file(std::string);
-        std::string validate_service_code(unsigned long);
+        std::string validate_service_code(unsigned int);
             // pass in a service ID and the correct string will be returned
-        bool get_service(unsigned long, Service *&);
+        bool get_service(unsigned int, Service *&);
             // pass in the service ID to retrieve the Service, alongside a service object
             // returns fail if the service ID can not be found
 
@@ -27,9 +27,9 @@ class Available_Services {
 class Service {
     public:
         Service();
-        Service(std::string, unsigned long, double);
+        Service(std::string, unsigned int, double);
         void set_name(std::string);
-        void set_id(unsigned long);
+        void set_id(unsigned int);
         void set_fee(double);
         std::string get_name();
         void display();
@@ -41,7 +41,7 @@ class Service {
 
     private:
         std::string name;
-        unsigned long sID;
+        unsigned int sID;
         double fee;
 };
 

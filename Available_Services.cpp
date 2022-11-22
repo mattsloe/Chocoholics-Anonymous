@@ -13,10 +13,10 @@ Available_Services::~Available_Services() {
 
 void Available_Services::create_new_service() {
     string name;
-    unsigned long sid;
+    unsigned int sid;
     double fee;
     Service * service = nullptr;
-    map<unsigned long, Service*&>::iterator new_service;
+    map<unsigned int, Service*&>::iterator new_service;
 
     cout << "Please enter a new name for the service to be provided: ";
     cin >> name; 
@@ -49,7 +49,7 @@ void Available_Services::write_to_file(string provider_name) {
 
 }
 
-string Available_Services::validate_service_code(unsigned long sID) {
+string Available_Services::validate_service_code(unsigned int sID) {
     string out;
     auto val = services.find(sID);
     if (val == services.end()) {
@@ -59,7 +59,7 @@ string Available_Services::validate_service_code(unsigned long sID) {
     return out;
 }
 
-bool Available_Services::get_service(unsigned long sID, Service *& service) {
+bool Available_Services::get_service(unsigned int sID, Service *& service) {
     auto val = services.find(sID);
     if (val == services.end()) {
         // fail
@@ -72,13 +72,13 @@ bool Available_Services::get_service(unsigned long sID, Service *& service) {
 // ----------------------- Service Implementation ---------------------------
 Service::Service() : name(), sID(0), fee(0.0) {}
 
-Service::Service(string name, unsigned long sID, double fee) : name(name), sID(sID), fee(fee) {}
+Service::Service(string name, unsigned int sID, double fee) : name(name), sID(sID), fee(fee) {}
 
 void Service::set_name(string name) {
     this->name = name;
 }
 
-void Service::set_id(unsigned long sID) {
+void Service::set_id(unsigned int sID) {
     this->sID = sID;
 }
 
