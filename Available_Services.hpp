@@ -13,8 +13,8 @@ class Available_Services {
             // allows the provider to create a new service that they wish to offer
         void display();
             // displays all available services to the terminal
-        void read_from_file(std::string);
-        void write_to_file(std::string);
+        void read_from_file();
+        void write_to_file();
         std::string validate_service_code(unsigned int);
             // pass in a service ID and the correct string will be returned
         bool get_service(unsigned int, Service *&);

@@ -40,12 +40,11 @@ void Available_Services::display() {
     }
 }
 
-void Available_Services::read_from_file(string provider_name) {
+void Available_Services::read_from_file() {
     // open file and load it into the map
-    // implement after Create PR
 }
 
-void Available_Services::write_to_file(string provider_name) {
+void Available_Services::write_to_file() {
 
 }
 
