@@ -1,5 +1,5 @@
 #ifndef SERVICE_HPP
-#define SERVICE_H
+#define SERVICE_HPP
 
 #include "Service_Ledger.hpp"
 
@@ -16,4 +16,4 @@ class Service {
         double fee;
 };
 
-#endif // SERVICE_HPP
+#endif SERVICE_HPP
