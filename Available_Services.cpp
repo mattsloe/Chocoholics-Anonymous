@@ -89,6 +89,8 @@ bool Available_Services::get_service(unsigned int sID, Service *& service) {
     return true;
 }
 
+// --------------------------------------------------
+
 // ----------------------- Service Implementation ---------------------------
 Service::Service(json j) {
     /*
