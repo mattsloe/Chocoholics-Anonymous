@@ -52,7 +52,16 @@ void Available_Services::display() {
 
 void Available_Services::read_from_file() {
     // open file and load it into the map
-    string file_name = "Services.txt";
+    string file_name = "Services.json";
+    json j;
+    ifstream infile(file_name);
+    if (!infile.is_open()) { 
+        cerr << "Can't open Services file!!" << endl;
+        exit(-24);
+    }
+    infile >> j;
+    infile.close();
+    init(j);
 }
 
 void Available_Services::write_to_file() {
