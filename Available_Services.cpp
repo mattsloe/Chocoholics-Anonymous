@@ -107,7 +107,8 @@ Service::Service(string name, unsigned int sID, double fee) : name(name), sID(sI
 
 Service::Service(const Service & s) : name(s.name), sID(s.sID), fee(s.fee) {} 
 
-Service & Service::operator = (const Service &s) {
+//Service & Service::operator = (const Service &s) {
+void Service::operator = (const Service &s) {
     set_name(s.name);
     set_id(s.sID);
     set_fee(s.fee);
@@ -125,8 +126,18 @@ void Service::set_fee(double fee) {
     this->fee = fee;
 }
 
-std::string Service::get_name() {
+string Service::get_name() {
     return this->name;
+}
+string Service::to_string_exp() {
+    string out;
+    json j = {
+        {"name", name},
+        {"sID", sID},
+        {"fee", fee}
+    };
+    out = j.dump(2);
+    return out;
 }
 
 void Service::display() {

@@ -46,7 +46,8 @@ class Service {
         // write to json or string to return
 
         // = operator overload
-        Service & operator = (const Service &);
+        //Service & operator = (const Service &);
+        void operator = (const Service &);
 
     private:
         std::string name;
