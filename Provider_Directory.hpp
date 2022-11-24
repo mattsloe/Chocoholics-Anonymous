@@ -1,5 +1,5 @@
-#ifndef AVAILABLE_SERVICES_HPP
-#define AVAILABLE_SERVICES_HPP
+#ifndef Provider_Directory_HPP
+#define Provider_Directory_HPP
 
 //#include "Service_Ledger.hpp"
 #include "json.hpp"
@@ -8,10 +8,10 @@
 #include <iomanip>
 #include <unordered_map>
 
-class Available_Services {
+class Provider_Directory {
     public:
-        //~Available_Services();
-        Available_Services(std::string);
+        //~Provider_Directory();
+        Provider_Directory(std::string);
         void init(nlohmann::json);
         void create_new_service();
             // allows the provider to create a new service that they wish to offer
@@ -57,4 +57,4 @@ class Service {
 
 std::string fee_output(double);
 
-#endif // AVAILABLE_SERVICES_HPP
+#endif // Provider_Directory_HPP

@@ -1,11 +1,11 @@
-#include "Available_Services.hpp"
+#include "Provider_Directory.hpp"
 
 using namespace std;
 using json = nlohmann::json;
 
 // ----------------------- Available Services Implementation ---------------------------
 /*
-Available_Services::~Available_Services() {
+Provider_Directory::~Provider_Directory() {
     for (auto it = services.begin(); it != services.end(); it++) {
         delete it->second;
         it->second = nullptr;
@@ -14,14 +14,14 @@ Available_Services::~Available_Services() {
 }
 */
 
-void Available_Services::init(nlohmann::json j) {
+void Provider_Directory::init(nlohmann::json j) {
     for (auto& elm: j.items()) {
         json object = elm.value();
         services.emplace(Service(object));
     }
 }
 
-void Available_Services::create_new_service() {
+void Provider_Directory::create_new_service() {
     string name;
     unsigned int sid;
     double fee;
@@ -44,13 +44,13 @@ void Available_Services::create_new_service() {
     services.emplace(sid, service);
 }
 
-void Available_Services::display() {
+void Provider_Directory::display() {
     for (auto it = services.begin(); it != services.begin(); it++) {
         it->second.display();
     }
 }
 
-void Available_Services::read_from_file() {
+void Provider_Directory::read_from_file() {
     // open file and load it into the map
     string file_name = "Services.json";
     json j;
@@ -64,12 +64,12 @@ void Available_Services::read_from_file() {
     init(j);
 }
 
-void Available_Services::write_to_file() {
+void Provider_Directory::write_to_file() {
     string file_name = "Services.txt";
 
 }
 
-string Available_Services::validate_service_code(unsigned int sID) {
+string Provider_Directory::validate_service_code(unsigned int sID) {
     string out;
     auto val = services.find(sID);
     if (val == services.end()) {
@@ -79,7 +79,7 @@ string Available_Services::validate_service_code(unsigned int sID) {
     return out;
 }
 
-bool Available_Services::get_service(unsigned int sID, Service *& service) {
+bool Provider_Directory::get_service(unsigned int sID, Service *& service) {
     auto val = services.find(sID);
     if (val == services.end()) {
         // fail
