@@ -14,6 +14,13 @@ Available_Services::~Available_Services() {
 }
 */
 
+void Available_Services::init(nlohmann::json j) {
+    for (auto& elm: j.items()) {
+        json object = elm.value();
+        services.emplace(Service(object));
+    }
+}
+
 void Available_Services::create_new_service() {
     string name;
     unsigned int sid;
@@ -45,10 +52,11 @@ void Available_Services::display() {
 
 void Available_Services::read_from_file() {
     // open file and load it into the map
-    string file_name = "";
+    string file_name = "Services.txt";
 }
 
 void Available_Services::write_to_file() {
+    string file_name = "Services.txt";
 
 }
 
@@ -68,11 +76,22 @@ bool Available_Services::get_service(unsigned int sID, Service *& service) {
         // fail
         return false;
     }
-    service = val->second;
+    service = new Service(val->second);
     return true;
 }
 
 // ----------------------- Service Implementation ---------------------------
+Service::Service(json j) {
+    /*
+    set_name(j.value("name", "not found"));
+    set_id(j.value("sID", "not found"));
+    set_fee(j.value("fee", "not found"));
+    */
+    this->name = j.value("name", "not found");
+    this->sID = j.value("sID", 0);
+    this->fee = j.value("fee", 0.00);
+}
+
 Service::Service() : name(), sID(0), fee(0.0) {}
 
 Service::Service(string name, unsigned int sID, double fee) : name(name), sID(sID), fee(fee) {}
