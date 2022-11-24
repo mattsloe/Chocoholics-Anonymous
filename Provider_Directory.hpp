@@ -1,5 +1,5 @@
-#ifndef Provider_Directory_HPP
-#define Provider_Directory_HPP
+#ifndef PROVIDER_DIRECTORY_HPP
+#define PROVIDER_DIRECTORY_HPP
 
 //#include "Service_Ledger.hpp"
 #include "json.hpp"
@@ -57,4 +57,4 @@ class Service {
 
 std::string fee_output(double);
 
-#endif // Provider_Directory_HPP
+#endif // PROVIDER_DIRECTORY_HPP
