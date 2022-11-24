@@ -4,6 +4,7 @@ using namespace std;
 using json = nlohmann::json;
 
 // ----------------------- Available Services Implementation ---------------------------
+/*
 Available_Services::~Available_Services() {
     for (auto it = services.begin(); it != services.end(); it++) {
         delete it->second;
@@ -11,6 +12,7 @@ Available_Services::~Available_Services() {
     }
     // destruct map?
 }
+*/
 
 void Available_Services::create_new_service() {
     string name;
@@ -37,7 +39,7 @@ void Available_Services::create_new_service() {
 
 void Available_Services::display() {
     for (auto it = services.begin(); it != services.begin(); it++) {
-        it->second->display();
+        it->second.display();
     }
 }
 
@@ -56,7 +58,7 @@ string Available_Services::validate_service_code(unsigned int sID) {
     if (val == services.end()) {
         out = "INVALID SERVICE CODE";
     }
-    out = val->second->get_name();
+    out = val->second.get_name();
     return out;
 }
 
@@ -74,6 +76,14 @@ bool Available_Services::get_service(unsigned int sID, Service *& service) {
 Service::Service() : name(), sID(0), fee(0.0) {}
 
 Service::Service(string name, unsigned int sID, double fee) : name(name), sID(sID), fee(fee) {}
+
+Service::Service(const Service & s) : name(s.name), sID(s.sID), fee(s.fee) {} 
+
+Service & Service::operator = (const Service &s) {
+    set_name(s.name);
+    set_id(s.sID);
+    set_fee(s.fee);
+}
 
 void Service::set_name(string name) {
     this->name = name;
@@ -97,11 +107,13 @@ void Service::display() {
     cout << "Service Fee: " << fee_output(this->fee) << endl;
 }
 
+// --------------------------------------------------
+
 string fee_output(double x) {
     string out;
     out += "$";
+    setprecision(3);
     out += x;
-    set_precision(3);
     //return ("%" + x);
     return out;
 }

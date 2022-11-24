@@ -10,8 +10,7 @@
 
 class Available_Services {
     public:
-        ~Available_Services();
-            // destructs the dynamically allocated memory
+        //~Available_Services();
         void create_new_service();
             // allows the provider to create a new service that they wish to offer
         void display();
@@ -25,13 +24,14 @@ class Available_Services {
             // returns fail if the service ID can not be found
 
     private:
-        std::map<int, Service*&> services;
+        std::map<int, Service> services;
 };
 
 class Service {
     public:
         Service();
         Service(std::string, unsigned int, double);
+        Service(const Service &);
         void set_name(std::string);
         void set_id(unsigned int);
         void set_fee(double);
@@ -42,6 +42,7 @@ class Service {
         // write to json or string to return
 
         // = operator overload
+        Service & operator = (const Service &);
 
     private:
         std::string name;
