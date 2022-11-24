@@ -39,6 +39,7 @@ class Service {
         void set_id(unsigned int);
         void set_fee(double);
         std::string get_name();
+        std::string to_string_exp();
         void display();
 
         // writing to file
