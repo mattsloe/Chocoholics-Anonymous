@@ -3,7 +3,7 @@ using namespace std;
 
 Service_Record::Service_Record(const Service_Record & source) : date(source.date), sDate(source.sDate), comments(source.comments), pID(source.pID), mID(source.mID), sID(source.sID) {}
 
-Service_Record::Service_Record(string date, string sDate, unsigned int pID, unsigned int mID, unsigned int sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
+Service_Record::Service_Record(string date, string sDate, string pID, string mID, unsigned int sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
 
 Service_Record::Service_Record(nlohmann::json j) {
     date = j.value("date", "not found");
@@ -37,11 +37,11 @@ void Service_Record::set_comments(std::string comments) {
     this->comments = comments;
 }
 
-void Service_Record::set_pID(unsigned int pID) {
+void Service_Record::set_pID(string pID) {
     this->pID = pID;
 }
 
-void Service_Record::set_mID(unsigned int mID) {
+void Service_Record::set_mID(string mID) {
     this->mID = mID;
 }
 
