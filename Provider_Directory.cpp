@@ -3,7 +3,7 @@
 using namespace std;
 using json = nlohmann::json;
 
-// ----------------------- Available Services Implementation ---------------------------
+// ----------------------- Provider Directory Implementation ---------------------------
 /*
 Provider_Directory::~Provider_Directory() {
     for (auto it = services.begin(); it != services.end(); it++) {
@@ -66,7 +66,14 @@ void Provider_Directory::read_from_file() {
 
 void Provider_Directory::write_to_file() {
     string file_name = "Services.txt";
+    fstream out.open(file_name);
 
+    json j_umap(this->services);
+/*
+    for (auto it = services.begin(); it != services.end(); it++) {
+        out << it->second.to_string_exp();
+    }
+    */
 }
 
 string Provider_Directory::validate_service_code(unsigned int sID) {
@@ -131,6 +138,15 @@ void Service::set_fee(double fee) {
 string Service::get_name() {
     return this->name;
 }
+
+string Service::get_sID() {
+    return this->sID;
+}
+
+double Service::get_fee() {
+    return this->fee;
+}
+
 string Service::to_string_exp() {
     string out;
     json j = {

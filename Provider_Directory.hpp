@@ -10,23 +10,25 @@
 
 class Provider_Directory {
     public:
-        //~Provider_Directory();
         Provider_Directory(std::string);
+            // file name reading in constructor
         void init(nlohmann::json);
+            // create DS with json object
         void create_new_service();
             // allows the provider to create a new service that they wish to offer
         void display();
             // displays all available services to the terminal
         void read_from_file();
+            // read Services from Services.json
         void write_to_file();
         std::string validate_service_code(unsigned int);
             // pass in a service ID and the correct string will be returned
-        bool get_service(unsigned int, Service *&);
-            // pass in the service ID to retrieve the Service, alongside a service object
-            // returns fail if the service ID can not be found
+        bool get_service(std::string, Service *&);
+            // pass in the service ID to retrieve the Service, alongside a service object, returns fail if the service ID can not be found
 
     private:
-        std::unordered_map<int, Service> services;
+        std::unordered_map<std::string, Service> services;
+            // string Service ID mapped to Service
 };
 
 class Service {
@@ -39,19 +41,16 @@ class Service {
         void set_id(unsigned int);
         void set_fee(double);
         std::string get_name();
-        std::string to_string_exp();
+        std::string get_sID();
+        double get_fee();
+
         void display();
-
-        // writing to file
-        // write to json or string to return
-
-        // = operator overload
-        //Service & operator = (const Service &);
         void operator = (const Service &);
+        std::string to_string_exp();
 
     private:
         std::string name;
-        unsigned int sID;
+        std::string sID;
         double fee;
 };
 
