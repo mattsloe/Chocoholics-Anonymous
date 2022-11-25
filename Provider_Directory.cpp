@@ -110,29 +110,39 @@ Service::Service(json j) {
     this->fee = j.value("fee", 0.00);
 }
 
-Service::Service() : name(), sID(0), fee(0.0) {}
+Service::Service() : name(""), sID(""), fee(0.0) {}
 
-Service::Service(string name, unsigned int sID, double fee) : name(name), sID(sID), fee(fee) {}
+Service::Service(string name, string sID, double fee) : name(name), sID(sID), fee(fee) {}
 
 Service::Service(const Service & s) : name(s.name), sID(s.sID), fee(s.fee) {} 
 
 //Service & Service::operator = (const Service &s) {
 void Service::operator = (const Service &s) {
     set_name(s.name);
-    set_id(s.sID);
+    set_sID(s.sID);
     set_fee(s.fee);
 }
 
-void Service::set_name(string name) {
-    this->name = name;
+bool Service::set_name(string name) {
+    if (name.length() > 25) {
+        cout << "Invalid Service name!" << endl;
+        return false;
+    }
+    this->name = name.substr(0, 25);
+    return true;
 }
 
-void Service::set_id(unsigned int sID) {
-    this->sID = sID;
-}
-
-void Service::set_fee(double fee) {
+bool Service::set_fee(double fee) {
     this->fee = fee;
+}
+
+bool Service::set_sID(const string& s) {
+    if (s.length() != 6 || !all_of(s.begin(),s.end(),::isdigit)) { //make sure s represents a number
+       cout<< "Invalid service code!" << endl;
+       return false;
+    }
+    sID = s;
+    return true;
 }
 
 string Service::get_name() {

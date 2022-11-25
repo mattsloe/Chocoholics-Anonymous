@@ -21,7 +21,8 @@ class Provider_Directory {
         void read_from_file();
             // read Services from Services.json
         void write_to_file();
-        std::string validate_service_code(unsigned int);
+            // write Services to Services.json
+        std::string validate_service_code(std::string);
             // pass in a service ID and the correct string will be returned
         bool get_service(std::string, Service *&);
             // pass in the service ID to retrieve the Service, alongside a service object, returns fail if the service ID can not be found
@@ -35,11 +36,11 @@ class Service {
     public:
         Service();
         Service(nlohmann::json);
-        Service(std::string, unsigned int, double);
+        Service(std::string, std::string, double);
         Service(const Service &);
-        void set_name(std::string);
-        void set_id(unsigned int);
-        void set_fee(double);
+        bool set_name(std::string);
+        bool set_fee(double);
+        bool set_sID(const std::string &);
         std::string get_name();
         std::string get_sID();
         double get_fee();
