@@ -71,10 +71,17 @@ void Provider_Directory::read_from_file() {
 }
 
 void Provider_Directory::write_to_file() {
-    string file_name = "Services.txt";
-    fstream out.open(file_name);
-
-    json j_umap(this->services);
+    string file_name = "Services.json";
+    fstream out;
+    
+    out.open(file_name);
+    if (!out.is_open()) {
+        cout << "Can't open Services file!!" << endl;
+        return;
+        exit(-25);
+    }
+    json j_umap(services);
+    
 /*
     for (auto it = services.begin(); it != services.end(); it++) {
         out << it->second.to_string_exp();
@@ -82,7 +89,7 @@ void Provider_Directory::write_to_file() {
     */
 }
 
-string Provider_Directory::validate_service_code(unsigned int sID) {
+string Provider_Directory::validate_service_code(string sID) {
     string out;
     auto val = services.find(sID);
     if (val == services.end()) {
@@ -92,10 +99,11 @@ string Provider_Directory::validate_service_code(unsigned int sID) {
     return out;
 }
 
-bool Provider_Directory::get_service(unsigned int sID, Service *& service) {
+bool Provider_Directory::get_service(string sID, Service *& service) {
     auto val = services.find(sID);
     if (val == services.end()) {
         // fail
+        service = nullptr;
         return false;
     }
     service = new Service(val->second);
