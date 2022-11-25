@@ -3,7 +3,7 @@ using namespace std;
 
 Service_Record::Service_Record(const Service_Record & source) : date(source.date), sDate(source.sDate), comments(source.comments), pID(source.pID), mID(source.mID), sID(source.sID) {}
 
-Service_Record::Service_Record(string date, string sDate, string pID, string mID, unsigned int sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
+Service_Record::Service_Record(string date, string sDate, string pID, string mID, string sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
 
 Service_Record::Service_Record(nlohmann::json j) {
     date = j.value("date", "not found");
@@ -33,20 +33,29 @@ void Service_Record::set_sDate(std::string sDate) {
     this->sDate = sDate;
 }
 
-void Service_Record::set_comments(std::string comments) {
+bool Service_Record::set_comments(std::string comments) {
     this->comments = comments;
 }
 
-void Service_Record::set_pID(string pID) {
-    this->pID = pID;
+bool Service_Record::set_pID(string pID) {
+    if (valid_id(9, sID)) {
+        this->pID = pID;
+        return true;
+    }
 }
 
-void Service_Record::set_mID(string mID) {
-    this->mID = mID;
+bool Service_Record::set_mID(string mID) {
+    if (valid_id(9, sID)) {
+        this->mID = mID;
+        return true;
+    }
 }
 
-void Service_Record::set_sID(unsigned int sID) {
-    this->sID = sID;
+bool Service_Record::set_sID(string sID) {
+    if (valid_id(6, sID)) {
+        this->sID = sID;
+        return true;
+    }
 }
 
 std::string Service_Record::get_date() {
@@ -61,15 +70,15 @@ std::string Service_Record::get_comments() {
     return this->comments;
 }
 
-unsigned int Service_Record::get_pID() {
+string Service_Record::get_pID() {
     return this->pID;
 }
 
-unsigned int Service_Record::get_mID() {
+string Service_Record::get_mID() {
     return this->mID;
 }
 
-unsigned int Service_Record::get_sID() {
+string Service_Record::get_sID() {
     return this->sID;
 }
 
@@ -99,4 +108,12 @@ Service_Record & Service_Record::operator = (const Service_Record &source) {
     this->mID = source.mID;
     this->sID = source.sID;
     return *this;
+}
+
+bool valid_id(int size, string s) {
+    if (s.length() != size || !std::all_of(s.begin(),s.end(),::isdigit)) { //make sure s represents a number
+        std::cout<< "Invalid ID!" << std::endl;
+        return false;
+    }
+    return true;
 }

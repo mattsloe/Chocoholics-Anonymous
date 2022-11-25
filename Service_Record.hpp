@@ -23,7 +23,6 @@ class Service_Record {
         std::string get_pID();
         std::string get_mID();
         std::string get_sID();
-    
         std::string to_string_exp();  //- returns a string json object representing the instance of the Service Record 
         Service_Record & operator = (const Service_Record &);
 
@@ -35,5 +34,7 @@ class Service_Record {
         std::string sID;
         std::string comments;
 };
+
+bool valid_id(int, std::string); // checks if the string passed in is valid to use
 
 #endif // SERVICE_RECORD_HPP
