@@ -82,12 +82,14 @@ void Provider_Directory::write_to_file() {
     }
     //json j_umap(services);
     
+    out << "{";
     for (auto it = services.begin(); it != services.end(); it++) {
         out << it->second.to_string_exp();
         if (it != services.end()) {
             out << "," << endl;
         }
     }
+    out << "}";
 }
 
 string Provider_Directory::validate_service_code(string sID) {
