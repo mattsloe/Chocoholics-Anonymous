@@ -22,26 +22,32 @@ void Provider_Directory::init(nlohmann::json j) {
 }
 
 void Provider_Directory::create_new_service() {
-    string name;
-    unsigned int sid;
+    bool valid = false;
+    string name, sID;
     double fee;
-    Service * service = nullptr;
-    map<unsigned int, Service*&>::iterator new_service;
+    Service * service = new Service();
 
-    cout << "Please enter a new name for the service to be provided: ";
-    cin >> name; 
-    // add verifcation 
+    while (!valid) {
+        cout << "Please enter a new name for the service to be provided: ";
+        cin >> name; 
+        service->set_name(name);    
+    }
+    valid = false;
 
-    cout << "Please enter a new Service ID that has not been used in the past: ";
-    cin >> sid;
-    // add search to make sure it won't collide
+    while (!valid) {
+        cout << "Please enter a new Service ID that has not been used in the past: ";
+        cin >> sID;
+        service->set_sID(sID);
+    }
+    valid = false;
 
-    cout << "Lastly, please enter the fee for this service to be provided: ";
-    cin >> fee;
-    // add verifcation 
+    while (!valid) {
+        cout << "Lastly, please enter the fee for this service to be provided: ";
+        cin >> fee;
+    }
+    valid = false;
 
-    service = new Service(name, sid, fee);
-    services.emplace(sid, service);
+    services.emplace(sID, service);
 }
 
 void Provider_Directory::display() {
