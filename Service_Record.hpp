@@ -4,6 +4,7 @@
 #include "json.hpp"
 #include <iostream>
 #include <string>
+#include <ctime>
 
 class Service_Record {
     public:
@@ -41,6 +42,7 @@ class Service_Record {
         std::string comments;
 };
 
+static std::string current_date_time();
 static std::string get_part_date(); // gets two letters two represent month and day
 static std::string get_year(); // gets 4 letters for the year
 static std::string input_ID(int); // gets a valid ID with the correct size

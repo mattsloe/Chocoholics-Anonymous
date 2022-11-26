@@ -140,6 +140,15 @@ void Service_Record::input_comments() {
 }
 
 
+static string current_date_time() {
+    time_t t = time(nullptr);
+    tm* now = localtime(&t);
+ 
+    char buffer[128];
+    strftime(buffer, sizeof(buffer), "%m-%d-%Y %X", now);
+    return buffer;
+}
+
 static string get_part_date(int size) {
     bool valid = false;
     string s;
