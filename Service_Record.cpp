@@ -3,15 +3,15 @@ using namespace std;
 
 Service_Record::Service_Record(const Service_Record & source) : date(source.date), sDate(source.sDate), comments(source.comments), pID(source.pID), mID(source.mID), sID(source.sID) {}
 
-Service_Record::Service_Record(string date, string sDate, unsigned int pID, unsigned int mID, unsigned int sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
+Service_Record::Service_Record(string date, string sDate, string pID, string mID, string sID, string comments) : date(date), sDate(sDate), pID(pID), mID(mID), sID(sID), comments(comments) {}
 
 Service_Record::Service_Record(nlohmann::json j) {
     date = j.value("date", "not found");
     sDate = j.value("sDate", "not found");
     comments = j.value("comments", "not found");
-    pID = j.value("pID", 0);
-    mID = j.value("mID", 0);
-    sID = j.value("sID", 0);
+    pID = j.value("pID", "not found");
+    mID = j.value("mID", "not found");
+    sID = j.value("sID", "not found");
 }
 
 void Service_Record::display() {
@@ -33,20 +33,30 @@ void Service_Record::set_sDate(std::string sDate) {
     this->sDate = sDate;
 }
 
-void Service_Record::set_comments(std::string comments) {
-    this->comments = comments;
+bool Service_Record::set_comments(std::string comments) {
+    this->comments = comments.substr(100);
+    return true;
 }
 
-void Service_Record::set_pID(unsigned int pID) {
-    this->pID = pID;
+bool Service_Record::set_pID(string pID) {
+    if (valid_id(9, sID)) {
+        this->pID = pID;
+        return true;
+    }
 }
 
-void Service_Record::set_mID(unsigned int mID) {
-    this->mID = mID;
+bool Service_Record::set_mID(string mID) {
+    if (valid_id(9, sID)) {
+        this->mID = mID;
+        return true;
+    }
 }
 
-void Service_Record::set_sID(unsigned int sID) {
-    this->sID = sID;
+bool Service_Record::set_sID(string sID) {
+    if (valid_id(6, sID)) {
+        this->sID = sID;
+        return true;
+    }
 }
 
 std::string Service_Record::get_date() {
@@ -61,15 +71,15 @@ std::string Service_Record::get_comments() {
     return this->comments;
 }
 
-unsigned int Service_Record::get_pID() {
+string Service_Record::get_pID() {
     return this->pID;
 }
 
-unsigned int Service_Record::get_mID() {
+string Service_Record::get_mID() {
     return this->mID;
 }
 
-unsigned int Service_Record::get_sID() {
+string Service_Record::get_sID() {
     return this->sID;
 }
 
@@ -88,6 +98,7 @@ string Service_Record::to_string_exp() {
             {"sID",sID}
     };
     s = j.dump(2); // the 2 is number of spaces for indent
+
     return s;
 }
 
@@ -99,4 +110,72 @@ Service_Record & Service_Record::operator = (const Service_Record &source) {
     this->mID = source.mID;
     this->sID = source.sID;
     return *this;
+}
+
+void Service_Record::create_Service_Record() {
+    bool created = false;
+    set_date(current_date_time());
+    set_sDate(input_sDate());
+    set_pID(input_ID(9));       
+    set_mID(input_ID(9));       
+    set_sID(input_ID(6));       
+    input_comments();
+}
+
+
+string Service_Record::input_sDate() {
+    string sDate;
+    sDate += get_part_date();
+    sDate += "-";
+    sDate += get_part_date();
+    sDate += "-";
+    sDate += get_year();
+    return sDate;
+}
+
+void Service_Record::input_comments() {
+    string s;
+    cout << "Enter any additional comments!" << endl;
+    getline(cin, s);
+    set_comments(s);
+}
+
+
+static string current_date_time() {
+    time_t t = time(nullptr);
+    tm* now = localtime(&t);
+ 
+    char buffer[128];
+    strftime(buffer, sizeof(buffer), "%m-%d-%Y %X", now);
+    return buffer;
+}
+
+static string get_part_date(int size) {
+    bool valid = false;
+    string s;
+    while (!valid) {
+        getline(cin, s);
+        if (s.length() != size) {
+            cout << "Invalid size, please re-enter!" << endl;
+            s = "";
+        } 
+        else 
+            valid = true;
+    } 
+}
+
+static string input_ID(int size) {
+    string ID;
+    while (valid_id(size, ID)) {
+        getline(cin, ID);
+    }
+    return ID;
+}
+
+static bool valid_id(int size, string s) {
+    if (s.length() != size || !all_of(s.begin(), s.end(), isdigit)) { //make sure s represents a number
+        cout<< "Invalid ID!" << endl;
+        return false;
+    }
+    return true;
 }
