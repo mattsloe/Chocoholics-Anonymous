@@ -113,7 +113,7 @@ Service_Record & Service_Record::operator = (const Service_Record &source) {
 
 void Service_Record::create_Service_Record() {
     bool created = false;
-    // get current date and time
+    set_date(current_date_time());
     set_sDate(input_sDate());
     set_pID(input_ID(9));       
     set_mID(input_ID(9));       
