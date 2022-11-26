@@ -9,9 +9,9 @@ Service_Record::Service_Record(nlohmann::json j) {
     date = j.value("date", "not found");
     sDate = j.value("sDate", "not found");
     comments = j.value("comments", "not found");
-    pID = j.value("pID", 0);
-    mID = j.value("mID", 0);
-    sID = j.value("sID", 0);
+    pID = j.value("pID", "not found");
+    mID = j.value("mID", "not found");
+    sID = j.value("sID", "not found");
 }
 
 void Service_Record::display() {
@@ -34,7 +34,7 @@ void Service_Record::set_sDate(std::string sDate) {
 }
 
 bool Service_Record::set_comments(std::string comments) {
-    this->comments = comments;
+    this->comments = comments.substr(100);
 }
 
 bool Service_Record::set_pID(string pID) {
@@ -97,6 +97,7 @@ string Service_Record::to_string_exp() {
             {"sID",sID}
     };
     s = j.dump(2); // the 2 is number of spaces for indent
+
     return s;
 }
 
