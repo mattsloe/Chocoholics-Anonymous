@@ -35,6 +35,7 @@ void Service_Record::set_sDate(std::string sDate) {
 
 bool Service_Record::set_comments(std::string comments) {
     this->comments = comments.substr(100);
+    return true;
 }
 
 bool Service_Record::set_pID(string pID) {
