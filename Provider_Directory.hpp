@@ -10,22 +10,14 @@
 
 class Provider_Directory {
     public:
-        Provider_Directory(std::string);
-            // file name reading in constructor
-        void init(nlohmann::json);
-            // create DS with json object
-        void create_new_service();
-            // allows the provider to create a new service that they wish to offer
-        void display();
-            // displays all available services to the terminal
-        void read_from_file();
-            // read Services from Services.json
-        void write_to_file();
-            // write Services to Services.json
-        std::string validate_service_code(std::string);
-            // pass in a service ID and the correct string will be returned
-        bool get_service(std::string, Service *&);
-            // pass in the service ID to retrieve the Service, alongside a service object, returns fail if the service ID can not be found
+        Provider_Directory(std::string); // file name reading in constructor
+        void init(nlohmann::json); // create DS with json object
+        void create_new_service(); // allows the provider to create a new service that they wish to offer
+        void display(); // displays all available services to the terminal
+        void read_from_file(); // read Services from Services.json
+        void write_to_file(); // write Services to Services.json
+        std::string validate_service_code(std::string); // pass in a service ID and the correct string will be returned
+        bool get_service(std::string, Service *&); // pass in the service ID to retrieve the Service, alongside a service object, returns fail if the service ID can not be found
 
     private:
         std::unordered_map<std::string, Service> services;
@@ -55,6 +47,6 @@ class Service {
         double fee;
 };
 
-std::string fee_output(double);
+static std::string fee_output(double);
 
 #endif // PROVIDER_DIRECTORY_HPP

@@ -117,17 +117,12 @@ bool Provider_Directory::get_service(string sID, Service *& service) {
 
 // ----------------------- Service Implementation ---------------------------
 Service::Service(json j) {
-    /*
     set_name(j.value("name", "not found"));
-    set_id(j.value("sID", "not found"));
-    set_fee(j.value("fee", "not found"));
-    */
-    this->name = j.value("name", "not found");
-    this->sID = j.value("sID", 0);
-    this->fee = j.value("fee", 0.00);
+    set_sID(j.value("sID", "not found"));
+    set_fee(j.value("fee", 0.0));
 }
 
-Service::Service() : name(""), sID(""), fee(0.0) {}
+Service::Service() : name(), sID(), fee(0.0) {}
 
 Service::Service(string name, string sID, double fee) : name(name), sID(sID), fee(fee) {}
 
@@ -141,10 +136,6 @@ void Service::operator = (const Service &s) {
 }
 
 bool Service::set_name(string name) {
-    if (name.length() > 25) {
-        cout << "Invalid Service name!" << endl;
-        return false;
-    }
     this->name = name.substr(0, 25);
     return true;
 }
@@ -193,7 +184,7 @@ void Service::display() {
 
 // --------------------------------------------------
 
-string fee_output(double x) {
+static string fee_output(double x) {
     string out;
     out += "$";
     setprecision(3);
