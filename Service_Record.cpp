@@ -111,9 +111,60 @@ Service_Record & Service_Record::operator = (const Service_Record &source) {
     return *this;
 }
 
-bool valid_id(int size, string s) {
-    if (s.length() != size || !std::all_of(s.begin(),s.end(),::isdigit)) { //make sure s represents a number
-        std::cout<< "Invalid ID!" << std::endl;
+void Service_Record::create_Service_Record() {
+    bool created = false;
+    // get current date and time
+    set_sDate(input_sDate());
+    set_pID(input_ID(9));       
+    set_mID(input_ID(9));       
+    set_sID(input_ID(6));       
+    input_comments();
+}
+
+
+string Service_Record::input_sDate() {
+    string sDate;
+    sDate += get_part_date();
+    sDate += "-";
+    sDate += get_part_date();
+    sDate += "-";
+    sDate += get_year();
+    return sDate;
+}
+
+void Service_Record::input_comments() {
+    string s;
+    cout << "Enter any additional comments!" << endl;
+    getline(cin, s);
+    set_comments(s);
+}
+
+
+static string get_part_date(int size) {
+    bool valid = false;
+    string s;
+    while (!valid) {
+        getline(cin, s);
+        if (s.length() != size) {
+            cout << "Invalid size, please re-enter!" << endl;
+            s = "";
+        } 
+        else 
+            valid = true;
+    } 
+}
+
+static string input_ID(int size) {
+    string ID;
+    while (valid_id(size, ID)) {
+        getline(cin, ID);
+    }
+    return ID;
+}
+
+static bool valid_id(int size, string s) {
+    if (s.length() != size || !all_of(s.begin(), s.end(), isdigit)) { //make sure s represents a number
+        cout<< "Invalid ID!" << endl;
         return false;
     }
     return true;

@@ -26,6 +26,12 @@ class Service_Record {
         std::string to_string_exp();  //- returns a string json object representing the instance of the Service Record 
         Service_Record & operator = (const Service_Record &);
 
+        // functionality to create a Service Record
+        void create_Service_Record();
+        bool input_date();
+        std::string input_sDate();
+        void input_comments();
+
     private:
         std::string date;
         std::string sDate;
@@ -35,6 +41,9 @@ class Service_Record {
         std::string comments;
 };
 
-bool valid_id(int, std::string); // checks if the string passed in is valid to use
+static std::string get_part_date(); // gets two letters two represent month and day
+static std::string get_year(); // gets 4 letters for the year
+static std::string input_ID(int); // gets a valid ID with the correct size
+static bool valid_id(int, std::string); // checks if the string passed in is valid to use
 
 #endif // SERVICE_RECORD_HPP
