@@ -22,39 +22,74 @@ void Service_Ledger::new_transaction(Service_Record &record) {
 
 void Service_Ledger::generate_APR() {
     map<string, int> providers;
-    int total_providers = 0;
-    int total_services = 0;
+    string sid = "", file_name = "AccountsPayableReport";
+    int total_providers = 0, total_services = 0, num_consultations = 0;
     double total_fee = 0.0;
+    ofstream out;
+
+    file_name += current_date_time();
+    file_name += ".txt";
+    out.open(file_name);
+    if (!out.is_open()) {
+        cerr << "Unable to open file!!" << endl;
+        exit(-17);
+    }
 
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
-        if (providers.find(it->first) == providers.end()) continue;
-        providers.emplace(it->first, 0);
+        sid = it->first;
+
+        if (providers.find(sid) == providers.end()) continue;
+        providers.emplace(sid, 0);
+
         total_providers++;
-        for (auto pit = ledger[it->first].begin(); pit != ledger[it->first].end(); pit++) {
-            total_fee += provider_directory.get_fee_d(it->first);
+        num_consultations = 0;
+
+        for (auto pit = ledger[sid].begin(); pit != ledger[sid].end(); pit++) {
+            total_fee += provider_directory.get_fee_d(sid);
             total_services++;
+            num_consultations++;
         }
+
+        // output to file
+        out << provider_directory.get_name(sid) << " (" << sid << ")\t" << "total consultations: " << to_string(num_consultations) << "," << "total fee: " << fee_output(total_fee) << endl;
+
     }
+
+    out << "Total number of Providers who provided services: " << to_string(total_providers) << endl;
+    out << "Total number of Services provided: " << to_string(total_services);
+
+    out.close();
 }
 
 void Service_Ledger::generate_EFT() {
-    Service * service = nullptr;
     map<string, int> providers;
-    string file_name = "EFTdata";
-    string date = "";
-    string sid;
+    string file_name = "EFTdata", sid;
     double pay_check = 0;
-    fstream f(file_name+date);
+    ofstream out;
+
+    file_name += current_date_time();
+    file_name += ".txt";
+    out.open(file_name);
+    if (!out.is_open()) {
+        cerr << "Unable to open file!!" << endl;
+        exit(-17);
+    }
+
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
+
         sid = it->first;
+
         if (providers.find(sid) == providers.end()) continue;
         providers.emplace(sid, 0);
         pay_check = 0;
+
         for (auto provider_transactions = ledger[sid].begin(); provider_transactions != ledger[sid].end(); provider_transactions++) {
             pay_check += provider_directory.get_fee_d(sid);
-            delete service;
-            service = nullptr;
         }
+
         // output the data to the file
+        out << provider_directory.get_name(sid) << " (" << sid << ")\t" << "Paycheck: " << to_string(pay_check) << endl;
     }
+
+    out.close();
 }

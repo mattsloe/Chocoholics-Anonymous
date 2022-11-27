@@ -43,7 +43,7 @@ class Service_Record {
         std::string comments;
 };
 
-static std::string current_date_time();
+std::string current_date_time();
 static std::string get_part_date(int); // gets letters to represent month, day, and year
 static std::string input_ID(int); // gets a valid ID with the correct size
 static bool valid_id(int, std::string); // checks if the string passed in is valid to use

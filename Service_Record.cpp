@@ -146,7 +146,7 @@ void Service_Record::input_comments() {
 }
 
 
-static string current_date_time() {
+string current_date_time() {
     time_t t = time(nullptr);
     tm* now = localtime(&t);
  
