@@ -1,7 +1,6 @@
 #ifndef PROVIDER_DIRECTORY_HPP
 #define PROVIDER_DIRECTORY_HPP
 
-//#include "Service_Ledger.hpp"
 #include "json.hpp"
 #include <iostream>
 #include <fstream>
@@ -22,7 +21,7 @@ class Provider_Directory {
     private:
         std::unordered_map<std::string, Service> services;
             // string Service ID mapped to Service
-};
+} provider_directory;
 
 class Service {
     public:
