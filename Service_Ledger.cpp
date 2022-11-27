@@ -13,7 +13,8 @@ void Service_Ledger::new_transaction(Service_Record *&record) {
 }
 
 void Service_Ledger::generate_APR() {
-    map<int, int> providers;
+    Service * service = nullptr;
+    map<string, int> providers;
     int total_providers = 0;
     int total_services = 0;
     double total_fee = 0.0;
@@ -23,14 +24,15 @@ void Service_Ledger::generate_APR() {
         providers.emplace(it->first, 0);
         total_providers++;
         for (auto pit = ledger.equal_range(it->first); pit != ledger.equal_range(it->first); ++pit) {
+            provider_directory.get_service(it->first, service);
             total_services++;
-            total_fee += dir.search(it->first);
+            total_fee += service->get_fee();
         }
     }
 }
 
 void Service_Ledger::generate_EFT() {
-    map<int, int> providers;
+    map<string, int> providers;
     string file_name = "EFTdata";
     string date = "";
     double pay_check = 0;
@@ -40,7 +42,7 @@ void Service_Ledger::generate_EFT() {
         providers.emplace(it->first, 0);
         pay_check = 0;
         for (auto provider_transactions = ledger.equal_range(it->first); provider_transactions != ledger.equal_range(it->first); provider_transactions++) {
-            pay_check += dir.get_service_fee(provider_transactions->first);
+            pay_check += provider_directory.get_service_fee(provider_transactions->first);
         }
         // output the data to the file
     }
