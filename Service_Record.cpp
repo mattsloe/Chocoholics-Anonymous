@@ -45,6 +45,7 @@ bool Service_Record::set_pID(string pID) {
         this->pID = pID;
         return true;
     }
+    return false;
 }
 
 bool Service_Record::set_mID(string mID) {
@@ -52,6 +53,7 @@ bool Service_Record::set_mID(string mID) {
         this->mID = mID;
         return true;
     }
+    return false;
 }
 
 bool Service_Record::set_sID(string sID) {
@@ -59,6 +61,7 @@ bool Service_Record::set_sID(string sID) {
         this->sID = sID;
         return true;
     }
+    return false;
 }
 
 std::string Service_Record::get_date() {

@@ -94,25 +94,26 @@ void Provider_Directory::create_new_service() {
     bool valid = false;
     string name, sID;
     double fee;
-    Service * service = new Service();
+    Service service = Service();
 
     while (!valid) {
         cout << "Please enter a new name for the service to be provided: ";
         cin >> name; 
-        service->set_name(name);    
+        service.set_name(name);    
     }
     valid = false;
 
     while (!valid) {
         cout << "Please enter a new Service ID that has not been used in the past: ";
         cin >> sID;
-        service->set_sID(sID);
+        service.set_sID(sID);
     }
     valid = false;
 
     while (!valid) {
         cout << "Lastly, please enter the fee for this service to be provided: ";
         cin >> fee;
+        service.set_fee(fee);
     }
     valid = false;
 

@@ -2,17 +2,6 @@
 using namespace std;
 using json = nlohmann::json;
 
-Service_Ledger::Service_Ledger() : ledger() {}
-
-/*
-Service_Ledger::~Service_Ledger() {
-    for (auto it = ledger.begin(); it != ledger.end(); it++) {
-        delete it->second;
-        //it->second = nullptr;
-    }
-}
-*/
-
 void Service_Ledger::new_transaction(Service_Record &record) {
     string id = record.get_pID();
     auto check = this->ledger.find(id);
