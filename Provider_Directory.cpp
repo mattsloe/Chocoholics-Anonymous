@@ -189,7 +189,9 @@ string Provider_Directory::get_name(string sid) {
 
 string Provider_Directory::get_fee(string sid) {
     auto service = services.find(sid);
-    return fee_output(service->second.get_fee());
+    double fee = service->second.get_fee();
+    string out = fee_output(fee);
+    return out;
 }
 
 // --------------------------------------------------
@@ -197,8 +199,7 @@ string Provider_Directory::get_fee(string sid) {
 string fee_output(double x) {
     string out;
     out += "$";
-    setprecision(3);
-    out += x;
+    out += to_string(x);
     //return ("%" + x);
     return out;
 }
