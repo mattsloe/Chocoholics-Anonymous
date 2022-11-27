@@ -9,17 +9,21 @@
 
 class Provider_Database {
 	public:
+		/* Constructors */
 		Provider_Database();
 		~Provider_Database();
-		bool validate_pid(std::string pid);  // check to see that there is a provider in db with given pid
-		int add_provider();
+
+		/* Interface */
+		int get_provider(std::string pid, const Provider &); 
+		int add_provider(const Provider &);
 		int delete_provider(std::string pid);
 		int edit_provider(std::string pid);
+		int add_service(std::string pid, Service_Record * service);
 		void to_file();
 		void load_file();
 
 	protected:
-		unordered_map<int, Provider>
+		std::unordered_map<int, Provider> table; // maps Providers by PID
 };
 
 #endif // PROVIDER_DB_H 
