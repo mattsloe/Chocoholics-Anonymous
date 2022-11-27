@@ -184,8 +184,6 @@ bool Provider_Directory::get_service(string sID, Service *& service) {
 
 // --------------------------------------------------
 
-
-
 static string fee_output(double x) {
     string out;
     out += "$";

@@ -46,7 +46,7 @@ void Service_Ledger::generate_EFT() {
         pay_check = 0;
         for (auto provider_transactions = ledger.equal_range(it->first); provider_transactions != ledger.equal_range(it->first); provider_transactions++) {
             provider_directory.get_service(it->first, service);
-            pay_check += service->get_service_fee();
+            pay_check += service->get_fee();
             delete service;
             service = nullptr;
         }
