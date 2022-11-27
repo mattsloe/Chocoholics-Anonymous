@@ -41,12 +41,16 @@ class Provider_Directory {
         std::string validate_service_code(std::string); // pass in a service ID and the correct string will be returned
         bool get_service(std::string, Service *&); // pass in the service ID to retrieve the Service, alongside a service object, returns fail if the service ID can not be found
 
+        // the following functions allow for easy access to the needed data as you just need to pass in the service code and catch it with a new string
+        std::string get_name(std::string);
+        std::string get_fee(std::string);
+
     private:
         std::unordered_map<std::string, Service> services;
             // string Service ID mapped to Service
 } provider_directory;
 
 
-static std::string fee_output(double);
+std::string fee_output(double);
 
 #endif // PROVIDER_DIRECTORY_HPP

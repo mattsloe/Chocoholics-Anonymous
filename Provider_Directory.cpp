@@ -182,9 +182,19 @@ bool Provider_Directory::get_service(string sID, Service *& service) {
     return true;
 }
 
+string Provider_Directory::get_name(string sid) {
+    auto service = services.find(sid);
+    return service->second.get_name();
+}
+
+string Provider_Directory::get_fee(string sid) {
+    auto service = services.find(sid);
+    return fee_output(service->second.get_fee());
+}
+
 // --------------------------------------------------
 
-static string fee_output(double x) {
+string fee_output(double x) {
     string out;
     out += "$";
     setprecision(3);
