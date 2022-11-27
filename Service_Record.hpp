@@ -1,33 +1,51 @@
 #ifndef SERVICE_RECORD_HPP
 #define SERVICE_RECORD_HPP
 
+#include "json.hpp"
 #include <iostream>
 #include <string>
+#include <ctime>
 
 class Service_Record {
     public:
-
-        Service_Record(std::string date, std::string sDate, int pID, int mID, int sID, std::string comments); //- initialized constructor
-        Service_Record(std::string json); // - takes in a string json object and initializes Provider instance
-        // implement = operator overload
+        Service_Record(const Service_Record &);
+        Service_Record(std::string date, std::string sDate, std::string pID, std::string mID, std::string sID, std::string comments); //- initialized constructor
+        Service_Record(nlohmann::json); // - takes in a string json object and initializes Provider instance
         void display(); //- displays to CLI
-        void toJSON();  //- returns a string json object representing the instance of Provider
         void set_date(std::string date);
         void set_sDate(std::string sDate);
-        void set_comments(std::string comments);
-        void set_pID(int pID);
-        void set_mID(int mID);
-        void set_sID(int sID);
+        bool set_comments(std::string comments);
+        bool set_pID(std::string pID);
+        bool set_mID(std::string mID);
+        bool set_sID(std::string sID);
         std::string get_date();
         std::string get_sDate();
         std::string get_comments();
-        int get_pID();
-        int get_mID();
-        int get_sID();
-    
+        std::string get_pID();
+        std::string get_mID();
+        std::string get_sID();
+        std::string to_string_exp();  //- returns a string json object representing the instance of the Service Record 
+        Service_Record & operator = (const Service_Record &);
+
+        // functionality to create a Service Record
+        void create_Service_Record();
+        bool input_date();
+        std::string input_sDate();
+        void input_comments();
+
     private:
-        std::string date, sDate, comments;
-        int pID, mID, sID;
+        std::string date;
+        std::string sDate;
+        std::string pID; 
+        std::string mID; 
+        std::string sID;
+        std::string comments;
 };
+
+static std::string current_date_time();
+static std::string get_part_date(); // gets two letters two represent month and day
+static std::string get_year(); // gets 4 letters for the year
+static std::string input_ID(int); // gets a valid ID with the correct size
+static bool valid_id(int, std::string); // checks if the string passed in is valid to use
 
 #endif // SERVICE_RECORD_HPP
