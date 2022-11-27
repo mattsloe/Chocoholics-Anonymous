@@ -184,7 +184,8 @@ bool Provider_Directory::get_service(string sID, Service *& service) {
 
 string Provider_Directory::get_name(string sid) {
     auto service = services.find(sid);
-    return service->second.get_name();
+    string name = service->second.get_name();
+    return name;
 }
 
 string Provider_Directory::get_fee(string sid) {
@@ -193,7 +194,6 @@ string Provider_Directory::get_fee(string sid) {
     string out = fee_output(fee);
     return out;
 }
-
 // --------------------------------------------------
 
 string fee_output(double x) {
