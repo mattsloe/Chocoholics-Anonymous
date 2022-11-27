@@ -189,10 +189,12 @@ string Provider_Directory::get_name(string sid) {
 }
 
 string Provider_Directory::get_fee(string sid) {
+    return fee_output(this->get_fee_d(sid));
+}
+
+double Provider_Directory::get_fee_d(string sid) {
     auto service = services.find(sid);
-    double fee = service->second.get_fee();
-    string out = fee_output(fee);
-    return out;
+    return service->second.get_fee();
 }
 // --------------------------------------------------
 
