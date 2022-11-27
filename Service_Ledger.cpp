@@ -2,6 +2,8 @@
 using namespace std;
 using json = nlohmann::json;
 
+Service_Ledger::Service_Ledger() : ledger() {}
+
 /*
 Service_Ledger::~Service_Ledger() {
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
@@ -13,17 +15,18 @@ Service_Ledger::~Service_Ledger() {
 
 void Service_Ledger::new_transaction(Service_Record &record) {
     string id = record.get_pID();
-    auto check = ledger.find(id);
+    auto check = this->ledger.find(id);
+    auto r = Service_Record(record); // copy passed in record
 
     // append record to list when collision happens
     if (check->first == id) {
-        ledger[id].push_back(record); 
+        ledger[id].push_back(r); 
         return;
     }
     
     // create a new vector and append record 
-    vector<Service_Record &> provider;
-    provider.push_back(record);
+    vector<Service_Record> provider;
+    provider.push_back(r);
     // add it to the ledger
     ledger.emplace(record.get_pID(), provider);
 }
@@ -39,7 +42,7 @@ void Service_Ledger::generate_APR() {
         providers.emplace(it->first, 0);
         total_providers++;
         for (auto pit = ledger[it->first].begin(); pit != ledger[it->first].end(); pit++) {
-            total_fee += provider_directory.get_fee(it->first);
+            total_fee += provider_directory.get_fee_d(it->first);
             total_services++;
         }
     }
@@ -59,7 +62,7 @@ void Service_Ledger::generate_EFT() {
         providers.emplace(sid, 0);
         pay_check = 0;
         for (auto provider_transactions = ledger[sid].begin(); provider_transactions != ledger[sid].end(); provider_transactions++) {
-            pay_check += provider_directory.get_fee(sid);
+            pay_check += provider_directory.get_fee_d(sid);
             delete service;
             service = nullptr;
         }
