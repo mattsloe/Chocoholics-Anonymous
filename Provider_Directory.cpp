@@ -3,6 +3,75 @@
 using namespace std;
 using json = nlohmann::json;
 
+// ----------------------- Service Implementation ---------------------------
+Service::Service(json j) {
+    set_name(j.value("name", "not found"));
+    set_sID(j.value("sID", "not found"));
+    set_fee(j.value("fee", 0.0));
+}
+
+Service::Service() : name(), sID(), fee(0.0) {}
+
+Service::Service(string name, string sID, double fee) : name(name), sID(sID), fee(fee) {}
+
+Service::Service(const Service & s) : name(s.name), sID(s.sID), fee(s.fee) {} 
+
+//Service & Service::operator = (const Service &s) {
+void Service::operator = (const Service &s) {
+    set_name(s.name);
+    set_sID(s.sID);
+    set_fee(s.fee);
+}
+
+bool Service::set_name(string name) {
+    this->name = name.substr(0, 25);
+    return true;
+}
+
+bool Service::set_fee(double fee) {
+    this->fee = fee;
+}
+
+bool Service::set_sID(const string& s) {
+    if (s.length() != 6 || !all_of(s.begin(),s.end(),::isdigit)) { //make sure s represents a number
+       cout<< "Invalid service code!" << endl;
+       return false;
+    }
+    sID = s;
+    return true;
+}
+
+string Service::get_name() {
+    return this->name;
+}
+
+string Service::get_sID() {
+    return this->sID;
+}
+
+double Service::get_fee() {
+    return this->fee;
+}
+
+string Service::to_string_exp() {
+    string out;
+    json j = {
+        {"name", name},
+        {"sID", sID},
+        {"fee", fee}
+    };
+    out = j.dump(2);
+    return out;
+}
+
+void Service::display() {
+    cout << "Service Name: " << name << endl;
+    cout << "Service ID Number: " << sID << endl;
+    cout << "Service Fee: " << fee_output(this->fee) << endl;
+}
+
+// --------------------------------------------------
+
 // ----------------------- Provider Directory Implementation ---------------------------
 /*
 Provider_Directory::~Provider_Directory() {
@@ -115,74 +184,7 @@ bool Provider_Directory::get_service(string sID, Service *& service) {
 
 // --------------------------------------------------
 
-// ----------------------- Service Implementation ---------------------------
-Service::Service(json j) {
-    set_name(j.value("name", "not found"));
-    set_sID(j.value("sID", "not found"));
-    set_fee(j.value("fee", 0.0));
-}
 
-Service::Service() : name(), sID(), fee(0.0) {}
-
-Service::Service(string name, string sID, double fee) : name(name), sID(sID), fee(fee) {}
-
-Service::Service(const Service & s) : name(s.name), sID(s.sID), fee(s.fee) {} 
-
-//Service & Service::operator = (const Service &s) {
-void Service::operator = (const Service &s) {
-    set_name(s.name);
-    set_sID(s.sID);
-    set_fee(s.fee);
-}
-
-bool Service::set_name(string name) {
-    this->name = name.substr(0, 25);
-    return true;
-}
-
-bool Service::set_fee(double fee) {
-    this->fee = fee;
-}
-
-bool Service::set_sID(const string& s) {
-    if (s.length() != 6 || !all_of(s.begin(),s.end(),::isdigit)) { //make sure s represents a number
-       cout<< "Invalid service code!" << endl;
-       return false;
-    }
-    sID = s;
-    return true;
-}
-
-string Service::get_name() {
-    return this->name;
-}
-
-string Service::get_sID() {
-    return this->sID;
-}
-
-double Service::get_fee() {
-    return this->fee;
-}
-
-string Service::to_string_exp() {
-    string out;
-    json j = {
-        {"name", name},
-        {"sID", sID},
-        {"fee", fee}
-    };
-    out = j.dump(2);
-    return out;
-}
-
-void Service::display() {
-    cout << "Service Name: " << name << endl;
-    cout << "Service ID Number: " << sID << endl;
-    cout << "Service Fee: " << fee_output(this->fee) << endl;
-}
-
-// --------------------------------------------------
 
 static string fee_output(double x) {
     string out;

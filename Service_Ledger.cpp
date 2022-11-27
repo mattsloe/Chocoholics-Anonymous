@@ -27,11 +27,14 @@ void Service_Ledger::generate_APR() {
             provider_directory.get_service(it->first, service);
             total_services++;
             total_fee += service->get_fee();
+            delete service;
+            service = nullptr;
         }
     }
 }
 
 void Service_Ledger::generate_EFT() {
+    Service * service = nullptr;
     map<string, int> providers;
     string file_name = "EFTdata";
     string date = "";
@@ -42,7 +45,10 @@ void Service_Ledger::generate_EFT() {
         providers.emplace(it->first, 0);
         pay_check = 0;
         for (auto provider_transactions = ledger.equal_range(it->first); provider_transactions != ledger.equal_range(it->first); provider_transactions++) {
-            pay_check += provider_directory.get_service_fee(provider_transactions->first);
+            provider_directory.get_service(it->first, service);
+            pay_check += service->get_service_fee();
+            delete service;
+            service = nullptr;
         }
         // output the data to the file
     }
