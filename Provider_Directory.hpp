@@ -44,9 +44,9 @@ class Provider_Directory {
     private:
         std::unordered_map<std::string, Service> services;
             // string Service ID mapped to Service
-} provider_directory;
+};
 
 
-static std::string fee_output(double);
+std::string fee_output(double);
 
 #endif // PROVIDER_DIRECTORY_HPP
