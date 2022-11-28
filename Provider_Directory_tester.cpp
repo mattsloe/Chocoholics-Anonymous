@@ -28,6 +28,7 @@ void PD_tester::create_PD(Provider_Directory *&p) {
 bool PD_tester::file_constructor(Provider_Directory *p) {
     string id = "903295";
     Service * service = nullptr;
+
     create_PD(p);
     p->get_service(id, service);
 
@@ -41,7 +42,7 @@ bool PD_tester::file_constructor(Provider_Directory *p) {
 }
 
 bool PD_tester::validateID_success(Provider_Directory *p) {
-    
+    create_PD(p);
 }
 
 bool PD_tester::validateID_fail(Provider_Directory *p) {

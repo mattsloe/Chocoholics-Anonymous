@@ -30,6 +30,7 @@ bool Service::set_name(string name) {
 
 bool Service::set_fee(double fee) {
     this->fee = fee;
+    return true;
 }
 
 bool Service::set_sID(const string& s) {
@@ -82,7 +83,9 @@ Provider_Directory::~Provider_Directory() {
     // destruct map?
 }
 */
+
 Provider_Directory::Provider_Directory(string file_name) {
+    /*
     json j;
     ifstream f;
 
@@ -95,6 +98,8 @@ Provider_Directory::Provider_Directory(string file_name) {
     f.close();
 
     init(j);
+    */
+   read_from_file();
 }
 
 void Provider_Directory::init(nlohmann::json j) {
@@ -142,7 +147,7 @@ void Provider_Directory::display() {
 
 void Provider_Directory::read_from_file() {
     // open file and load it into the map
-    string file_name = "Services.json";
+    string file_name = "assets/services.json";
     json j;
     ifstream infile(file_name);
     if (!infile.is_open()) { 
