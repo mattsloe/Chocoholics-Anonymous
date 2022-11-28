@@ -42,11 +42,23 @@ bool PD_tester::file_constructor(Provider_Directory *p) {
 }
 
 bool PD_tester::validateID_success(Provider_Directory *p) {
+    string id = "903295";
+    string out;
     create_PD(p);
+    out = p->validate_service_code(id);
+    if (out == "Okuma")
+        return true;
+    return false;
 }
 
 bool PD_tester::validateID_fail(Provider_Directory *p) {
-
+    string id = "000000";
+    string out;
+    create_PD(p);
+    out = p->validate_service_code(id);
+    if (out == "INVALID SERVICE CODE")
+        return true;
+    return false;
 }
 
 
