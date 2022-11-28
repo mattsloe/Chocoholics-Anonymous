@@ -7,15 +7,13 @@ void PD_tester::test_Provider_Directory_class() {
     cout << endl;
     cout << "------------------------------------------";
     cout << "PROVIDER DIRECTORY TESTS STARTING..." << endl;
-
-    cout << "File Constructor test";
+    cout << "File Constructor test                  ";
     (assert_test(file_constructor(p)));
-    cout << "Validate Service Code (Success) test ";
+    cout << "Validate Service Code (Success) test   ";
     (assert_test(validateID_success(p)));
-    cout << "Validate Service Code (Failure) test ";
+    cout << "Validate Service Code (Failure) test   ";
     (assert_test(validateID_fail(p)));
-
-    cout << "PROVIDER DIRECTORY TESTS COMPLETE" << endl;
+    cout << "PROVIDER DIRECTORY TESTS COMPLETE";
     cout << "------------------------------------------";
     cout << endl;
 }
