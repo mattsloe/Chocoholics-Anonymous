@@ -6,7 +6,6 @@ void Service_Record_tester::test_Service_Record_class() {
     cout << endl;
     cout << "------------------------------------------";
     cout << "SERVICE RECORD TESTS STARTING..." << endl;
-
     cout << "Default Constuctor test ";
     (assert_test(default_constructor(sr)));
     cout << "Copy Constuctor test    ";
@@ -23,8 +22,6 @@ void Service_Record_tester::test_Service_Record_class() {
     (assert_test(setting_pID(sr)));
     cout << "Setting comments test   "; 
     (assert_test(setting_comments(sr)));
-
-    cout << endl;
     cout << "SERVICE RECORD TESTS COMPLETE";
     cout << "------------------------------------------";
     cout << endl;
