@@ -82,6 +82,20 @@ Provider_Directory::~Provider_Directory() {
     // destruct map?
 }
 */
+Provider_Directory::Provider_Directory(string file_name) {
+    json j;
+    ifstream f;
+
+    f.open(file_name);
+    if (!f.is_open()) {
+        cerr << "Can't open file!" << endl;
+    }
+
+    f >> j;
+    f.close();
+
+    init(j);
+}
 
 void Provider_Directory::init(nlohmann::json j) {
     for (auto& elm: j.items()) {
