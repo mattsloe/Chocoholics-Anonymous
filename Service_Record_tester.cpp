@@ -87,6 +87,10 @@ bool Service_Record_tester::copy_constructor(Service_Record *s) {
     return compare; 
 }
 
+bool Service_Record_tester::json_constructor(Service_Record *s) {
+    create_SR(s);
+}
+
 bool Service_Record_tester::setting_date(Service_Record *s) {
     string date = "08/17/2019 07:17:57";
     create_SR(s);
