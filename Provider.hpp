@@ -5,7 +5,8 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <cstring>
+#include <string>
+#include "json.hpp"
 #include "Service_Record.hpp"
 
 struct node {
@@ -14,8 +15,8 @@ struct node {
 };
 
 struct node_head {
-	int numServicesProvided;
-	int totalCost;
+	int num_services_provided;
+	int total_cost;
 	node * next;
 };
 
@@ -26,16 +27,15 @@ struct Address {
 	std::string zip;
 
 	/* Interface */
-	Address();			  // asks for input
 	Address(std::string street, std::string city, std::string state, std::string zip);
-	// Return Values:
-	//     0: Success
-	//    -1: invalid state len
-	//    -2: invalid zip len
-	//    -3: invalid zip chars
-	int init_address(std::string _street, std::string _city, std::string _state, std::string _zip);
+	void init_address();          // asks user for input
+	void init_address(std::string street, std::string city, std::string state, std::string zip)
 	void copy_address(const Address & source);
 	void print_address();
+	int set_street(std::string);
+	int set_city(std::string);
+	int set_state(std::string);
+	int set_zip(std::string);
 };
 
 class Provider {
@@ -47,10 +47,11 @@ class Provider {
 		/* Constructors */
 		Provider();
 		Provider(std::string _name, std::string _pid, const Address & _address);
+		Provider(nlohmann::json j);
 		~Provider();
 
 		/* Interface */
-		void init_provider(std::string _name, std::string _pid, const Address & _address);
+		void init_provider();               // asks user for input
 		void print_provider();              // mostly for testing
 		std::string get_pid();		        // return pid
 		std::string to_file();              // format data for json file
@@ -68,7 +69,9 @@ class Provider {
 		int edit_provider(std::string _pid, const Address & _address);
 
 		/* Overloaded Operators */
-		bool operator==(Provider & toComp);
+		bool operator==(const Provider & toComp);
+		bool operator<(const Provider & toComp);
+		friend std::ostream & operator<<(std::ostream & out, const Provider & p);
 
 		/* Linked List Functionality */
 		int add_service(Service * to_add);
@@ -86,6 +89,7 @@ class Provider {
 		void service_to_file();             // formats service data for provider json file
 		void service_report();              // formats service data for provider report
 		void delete_list();                 // destructor helper
+		void init_list();                   // initializer helper
 
 		/* Init + Edit Helper Fxns */
 		int set_name(std::string _name);

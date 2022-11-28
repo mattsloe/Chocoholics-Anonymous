@@ -1,5 +1,5 @@
 // Ashton Sawyer 11/1
-#include "provider.h"
+#include "Provider.hpp"
 
 // *********
 // PROVIDER
@@ -7,30 +7,30 @@
 
 /* **Provider Interface** */
 
-//default constructor: ask for input
+//default constructor
 Provider::Provider() {
-	std::string _name;
-	std::string _pid;
-	Address _address;
-
-	std::cout << "What is the provider's name: ";
-	std::cin >> _name;
-	std::cin.ignore(100, '\n');
-
-	std::cout << "What is their provider number: ";
-	std::cin >> _pid;
-	std::cin.ignore(100, '\n');
-
-	std::cout << "Please enter their address:\n";
-	_address.init_address();
-
-	init_provider(_name, _pid, _address);
-
+	init_list();
 }
 
-//constructor: provide input
 Provider::Provider(std::string _name, std::string num, const Address & _address) {
-	init_provider(_name, num, _address);
+	name = _name;
+	pid = num;
+	address.copy_address(_address);
+	init_list();
+}
+
+//json constructor
+Provider::Provider(nlohmann::json j) {
+	std::string street, city, state, zip;
+
+	name = j.value("name", "not found");
+	pid = j.value("pid", "not found");
+
+	street = j.value("street", "not found");
+	city = j.value("city", "not found");
+	state = j.value("state", "not found");
+	zip = j.value("zip", "not found");
+	address.init_address(street, city, state, zip);
 }
 
 //default destructor: deletes list of services
@@ -38,10 +38,26 @@ Provider::~Provider() {
 	delete_list();
 }
 
-void Provider::init_provider(std::string _name, std::string num, const Address & to_copy) {
-	name = _name;
-	pid = num;
-	address.copy_address(to_copy);
+void Provider::init_provider() {
+	std::string tmp;
+	int flag = 1;
+
+	while (flag) {
+		std::cout << "Name: ";
+		std::getline(std::cin, tmp);
+		flag = set_name(tmp);
+	}
+	flag = 1;
+
+	while (flag) {
+		std::cout << "PID: ";
+		std::cin >> tmp;
+		std::cin.ignore(100, '\n');
+		flag = set_pid(tmp);
+	}
+	flag = 1;
+	
+	address.init_address();
 }
 
 void Provider::print_provider() {
@@ -54,8 +70,16 @@ std::string Provider::get_pid() {
 	return pid;
 }
 
-bool Provider::operator==(Provider& comp) {
+bool Provider::operator==(const Provider& comp) {
 	return (pid == comp.pid);
+}
+
+bool Provider::operator<(const Provider& comp) {
+	return (pid < comp.pid);
+}
+
+std::ostream& operator<<(std::ostream& out, const Provider& p) {
+	// unfinished
 }
 
 int Provider::edit_provider(std::string _name) {
@@ -91,6 +115,26 @@ int Provider::edit_provider(std::string _pid, const Address & _address) {
 	ret = set_address(_address);
 }
 
+// max len = 25
+int Provider::set_name(std::string _name) {
+	name = _name.subsrt(0,25);
+	return 0;
+}
+
+// len = 9 & only digits
+int Provider::set_pid(std::string _pid) {
+	if (_pid.length() != 9 || !std::all_of(_pid.begin(), _pid.end(), ::isdigit)) {
+		std::cout << "Invalid PID!" << std::endl;
+		return 1;
+	}
+	pid = _pid;
+	return 0;
+}
+
+int Provider::set_address(const Address & _address) {
+	return address.copy_address(_address);
+}
+
 /* **File Functions** */
 
 std::string Provider::to_file() {
@@ -106,6 +150,10 @@ void Provider::run_report() {
 
 }
 
+std::string Provider::run_manager_report() {
+	
+}
+
 // returns string for database generated report
 std::string run_manager_report() {
 	return std::string();
@@ -113,11 +161,11 @@ std::string run_manager_report() {
 
 /* **Service List Functions** */
 
-int Provider::add_service() {
+int Provider::add_service(Service * to_add) {
 	return 0;
 }
 
-int Provider::remove_service() {
+int Provider::remove_service(Service * to_remove) {
 	return 0;
 }
 
@@ -133,33 +181,56 @@ void Provider::delete_list() {
 
 }
 
+void Provider::init_list() {
+	head = new node_head;
+	head->num_services_provided = 0;
+	head->total_cost = 0;
+	head->next = NULL;
+	tail = NULL;
+}
+
 // **********
 // ADDRESS
 // **********
 
-void Address::init_address() {
-	std::string _state, _city, _state, _zip;
-	std::cout << "Street: ";
-	std::getline(std::cin, _state);
-	
-
-	std::cout << "City: ";
-	std::cin >> _city;
-	std::cin.ignore(100, '\n');
-
-	std::cout << "State Initials: ";
-	std::cin >> _state;
-	std::cin.ignore(100, '\n');
-
-	std::cout << "Zip: ";
-	std::cin >> _zip;
-	std::cin.ignore(100, '\n');
-
-	init_address(_state, _city, _state, _zip);
-}
-
 Address::Address(std::string street, std::string city, std::string state, std::string zip) {
 	init_address(street, city, state, zip);
+}
+
+void Address::init_address() {
+	std::string tmp;
+	int flag = 1;
+
+	while (flag) {
+		std::cout << "Street: ";
+		std::getline(std::cin, tmp);
+		flag = set_street(tmp);
+	}
+	flag = 1;
+
+	while (flag) {
+		std::cout << "City: ";
+		std::cin >> tmp;
+		std::cin.ignore(100, '\n');
+		flag = set_city(tmp);
+	}
+	flag = 1;
+
+	while (flag) {
+		std::cout << "State Initials: ";
+		std::cin >> tmp;
+		std::cin.ignore(100, '\n');
+		flag = set_state(tmp);
+	}
+	flag = 1;
+
+	while (flag) {
+		std::cout << "Zip: ";
+		std::cin >> tmp;
+		std::cin.ignore(100, '\n');
+		flag = set_zip(tmp)
+	}
+
 }
 
 int Address::init_address(std::string _street, std::string _city, std::string _state, std::string _zip) {
@@ -180,4 +251,33 @@ void Address::copy_address(const Address & source) {
 void Address::print_address() {
 	std::cout << street << std::endl;
 	std::cout << city << "," << state << " " << zip << std::endl;
+}
+
+int Address::set_street(std::string _street) {
+	street = _street.substr(0, 25);
+	return 0;
+}
+
+// max len = 14
+int Address::set_city(std::string _city) {
+	city = _city.subsrt(0, 14);
+	return 0;
+}
+
+int Address::set_state(std::string _state) {
+	if (_state.length() != 2) {
+		std::cout << "Invalid state!" << std::endl;
+		return 1;
+	}
+	state = _state;
+	return 0;
+}
+
+int Address::set_zip(std::string _zip) {
+	if (_zip.length != 5 || !std::all_of(_zip.begin(), _zip.end(), ::isdigit)) {
+		std::cout << "Invalid zipcode!" << std::endl;
+		return 1;
+	}
+	zip = _zip;
+	return 0;
 }
