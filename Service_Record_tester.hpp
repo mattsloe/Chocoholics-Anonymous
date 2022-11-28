@@ -25,7 +25,6 @@ class Service_Record_tester {
 
 static void assert_test(bool);
 
-// test data 
 static std::string test_date = "07/17/2022 12:23:57";
 static std::string test_sDate = "07/17/2022";
 static std::string test_pID = "123456789";
