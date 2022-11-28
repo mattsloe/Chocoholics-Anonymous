@@ -24,7 +24,8 @@ void Service_Record_tester::test_Service_Record_class() {
     cout << "Setting comments test   "; 
     (assert_test(setting_comments(sr)));
 
-    cout << "SERVICE RECORD TESTS COMPLETE" << endl;
+    cout << endl;
+    cout << "SERVICE RECORD TESTS COMPLETE";
     cout << "------------------------------------------";
     cout << endl;
 }
