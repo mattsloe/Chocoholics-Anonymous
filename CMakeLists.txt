@@ -11,6 +11,7 @@ add_executable(ChocAn
                 MemberDB.cpp MemberDB.h MemberDB_tester.h 
                 Service_Ledger.hpp Service_Ledger.cpp 
                 Service_Record.hpp Service_Record.cpp
+                Service_Record_tester.hpp Service_Record_tester.cpp
                 )
 
 file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
