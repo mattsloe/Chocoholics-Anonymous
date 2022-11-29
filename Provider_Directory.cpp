@@ -85,27 +85,14 @@ Provider_Directory::~Provider_Directory() {
 */
 
 Provider_Directory::Provider_Directory(string file_name) {
-    /*
-    json j;
-    ifstream f;
-
-    f.open(file_name);
-    if (!f.is_open()) {
-        cerr << "Can't open file!" << endl;
-    }
-
-    f >> j;
-    f.close();
-
-    init(j);
-    */
-   read_from_file();
+   read_from_file(file_name);
 }
 
 void Provider_Directory::init(nlohmann::json j) {
     for (auto& elm: j.items()) {
         json object = elm.value();
-        services.emplace(Service(object));
+        Service service = (Service(object));
+        services.emplace(service.get_sID(), service);
     }
 }
 
@@ -145,22 +132,22 @@ void Provider_Directory::display() {
     }
 }
 
-void Provider_Directory::read_from_file() {
-    // open file and load it into the map
-    string file_name = "assets/services.json";
+void Provider_Directory::read_from_file(string file_name) {
     json j;
     ifstream infile(file_name);
+
     if (!infile.is_open()) { 
         cerr << "Can't open Services file!!" << endl;
         exit(-24);
     }
+
     infile >> j;
     infile.close();
     init(j);
 }
 
 void Provider_Directory::write_to_file() {
-    string file_name = "Services.json";
+    string file_name = "assets/services.json";
     fstream out;
     
     out.open(file_name);
@@ -169,7 +156,6 @@ void Provider_Directory::write_to_file() {
         return;
         exit(-25);
     }
-    //json j_umap(services);
     
     out << "{";
     for (auto it = services.begin(); it != services.end(); it++) {
