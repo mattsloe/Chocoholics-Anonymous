@@ -3,11 +3,15 @@
 //Author: Nathan W.
 
 
+/////////////////////////////// HELPER FUNCTIONS ///////////////////////////////////
+
 //Retrieves a string from the user and outputs a prompt.
-void get_string(string user_str, const string prompt) {
+void get_string(string &user_str, const string prompt) {
 	cout << prompt;
 	
 	getline(cin, user_str, '\n');
+	
+	/*
 	while(!cin) {
 		cin.clear();
 		cin.ignore(MAX_CHARS, '\n');
@@ -15,6 +19,7 @@ void get_string(string user_str, const string prompt) {
 		getline(cin, user_str, '\n');
 	}
 	cin.ignore(MAX_CHARS, '\n');
+	*/
 
 	return;
 }
@@ -106,7 +111,11 @@ void Driver::start_driver() {
 	int option = 0;
 
 	while(option <= 3) {
-		option = (int) get_long("Please enter a number for the terminal you would like to use:\n\t1) Provider Terminal\n\t2) Interactive Terminal\n\t3) Financial Terminal\n\t4) Quit Program\n> ");
+		option = (int) get_long("Please enter a number for the terminal you would like to use:\n\t \
+		1) Provider Terminal\n\t \
+		2) Interactive Terminal\n\t \
+		3) Financial Terminal\n\t \
+		4) Quit Program\n> ");
 		
 		cout << '\n' << endl;
 		
@@ -136,7 +145,10 @@ void Driver::start_pterm() {
 	cout << "Welcome to the provider terminal! This is the terminal where you, the valued ChocAn provider, can manage your business and services provided to members.\n" << endl;
 
 	while(option <= 3) {
-		option = (int) get_long("Please enter a number for the action you would like to take:\n\t1) Add a provided service to a member\n\t2) Add a service to your list of available services to members\n\t3) Generate your provider report\n\t4) Exit terminal\n> ");
+		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
+		1) Add a provided service to a member\n\t \
+		3) Generate your provider report\n\t \
+		4) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
@@ -164,12 +176,24 @@ void Driver::start_iterm() {
 	cout << "Welcome to the interactive terminal! This is the terminal where you, the valued ChocAn manager, can manage your members, providers, and generate reports individually or in bulk for a given database/directory.\n" << endl;
 
 	while(option <= 10) {
-		option = (int) get_long("Please enter a number for the action you would like to take:\n\t1) Display the member directory\n\t2) Add a member\n\t3) Remove a member\n\t4) Edit a member\n\t5) Display the provider directory\n\t6) Add a provider\n\t7) Remove a provider\n\t8) Edit a provider\n\t9) Generate member reports\n\t10) Generate provider reports\n\t11) Exit terminal\n> ");
+		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
+		1) Display the member directory\n\t \
+		2) Add a member\n\t \
+		3) Remove a member\n\t \
+		4) Edit a member\n\t \
+		5) Display the provider directory\n\t \
+		6) Add a provider\n\t \
+		7) Remove a provider\n\t \
+		8) Edit a provider\n\t \
+		9) Generate member reports\n\t \
+		10) Generate provider reports\n\t \
+		11) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
 				break;
 			case 2:
+				iterm->add_member();
 				break;
 			case 3:
 				break;
@@ -186,6 +210,8 @@ void Driver::start_iterm() {
 			case 9:
 				break;
 			case 10:
+				break;
+			case 11:
 				break;
 		}
 	}	
@@ -205,7 +231,10 @@ void Driver::start_fterm() {
 	cout << "Welcome to the Financial (ACME) terminal! This is the terminal where you, the valued ChocAn financial accountant, can manage a member's status and generate financial reports.\n" << endl;
 
 	while(option <= 2) {
-		option = (int) get_long("Please enter a number for the action you would like to take:\n\t1) Suspend or reinstate a member\n\t2) Generate a EFT Data Report\n\t3) Exit terminal\n> ");
+		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
+		1) Suspend or reinstate a member\n\t \
+		2) Generate a EFT Data Report\n\t \
+		3) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
@@ -218,4 +247,47 @@ void Driver::start_fterm() {
 	cout << '\n' << endl;
 
 	return;
+}
+
+
+
+
+/////////////////////////////// INTERACTIVE_TERMINAL CLASS ///////////////////////////////////
+
+
+int Interactive_Terminal::add_member() {
+
+	//Create Member object to be added to MemberDB
+	Member member_to_add;
+	string	name, \
+			m_id, \
+			address, \
+			city, \
+			state, \
+			zip;
+
+	char option = 'n';
+	while (option != tolower('Y')) {
+		get_string(name, "Please enter the name of the member: ");
+		get_string(m_id, "Please enter the member ID of the member: ");
+		get_string(address, "Please enter the street address of the member: ");
+		get_string(city, "Please enter the city in which the member resides: ");
+		get_string(state, "Please enter the state in which the member resides: ");
+		get_string(zip, "Please enter the zipcode of the member: ");
+
+		member_to_add.set_name(name);
+		member_to_add.set_MID(m_id);
+		member_to_add.set_address(address);
+		member_to_add.set_city(city);
+		member_to_add.set_state(state);
+		member_to_add.set_zip(zip);
+
+		cout << "\n\n" << member_to_add << "\n\n";
+		option = get_char("Is this the information for the member correct? (y/n): ");
+	}
+
+	//ADD MEMBER TO DB HERE
+
+
+	return 0;
 }

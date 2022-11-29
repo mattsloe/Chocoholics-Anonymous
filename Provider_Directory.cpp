@@ -30,6 +30,7 @@ bool Service::set_name(string name) {
 
 bool Service::set_fee(double fee) {
     this->fee = fee;
+    return true;
 }
 
 bool Service::set_sID(const string& s) {
@@ -83,36 +84,56 @@ Provider_Directory::~Provider_Directory() {
 }
 */
 
+Provider_Directory::Provider_Directory(string file_name) {
+    /*
+    json j;
+    ifstream f;
+
+    f.open(file_name);
+    if (!f.is_open()) {
+        cerr << "Can't open file!" << endl;
+    }
+
+    f >> j;
+    f.close();
+
+    init(j);
+    */
+   read_from_file();
+}
+
 void Provider_Directory::init(nlohmann::json j) {
     for (auto& elm: j.items()) {
         json object = elm.value();
-        services.emplace(Service(object));
+        Service toAdd(object);
+        services.emplace(toAdd.get_sID(),toAdd);
     }
 }
 
 void Provider_Directory::create_new_service() {
-    bool valid = false;
+    bool valid = true;
     string name, sID;
     double fee;
-    Service * service = new Service();
+    Service service = Service();
 
     while (!valid) {
         cout << "Please enter a new name for the service to be provided: ";
         cin >> name; 
-        service->set_name(name);    
+        service.set_name(name);    
     }
     valid = false;
 
     while (!valid) {
         cout << "Please enter a new Service ID that has not been used in the past: ";
         cin >> sID;
-        service->set_sID(sID);
+        service.set_sID(sID);
     }
     valid = false;
 
     while (!valid) {
         cout << "Lastly, please enter the fee for this service to be provided: ";
         cin >> fee;
+        service.set_fee(fee);
     }
     valid = false;
 
@@ -127,7 +148,7 @@ void Provider_Directory::display() {
 
 void Provider_Directory::read_from_file() {
     // open file and load it into the map
-    string file_name = "Services.json";
+    string file_name = "assets/services.json";
     json j;
     ifstream infile(file_name);
     if (!infile.is_open()) { 
@@ -182,13 +203,26 @@ bool Provider_Directory::get_service(string sID, Service *& service) {
     return true;
 }
 
+string Provider_Directory::get_name(string sid) {
+    auto service = services.find(sid);
+    string name = service->second.get_name();
+    return name;
+}
+
+string Provider_Directory::get_fee(string sid) {
+    return fee_output(this->get_fee_d(sid));
+}
+
+double Provider_Directory::get_fee_d(string sid) {
+    auto service = services.find(sid);
+    return service->second.get_fee();
+}
 // --------------------------------------------------
 
-static string fee_output(double x) {
+string fee_output(double x) {
     string out;
     out += "$";
-    setprecision(3);
-    out += x;
+    out += to_string(x);
     //return ("%" + x);
     return out;
 }

@@ -1,20 +1,23 @@
 #ifndef SERVICE_LEDGER_HPP
 #define SERVICE_LEDGER_HPP
 
-#include "driver.hpp"
+#include "Provider_Directory.hpp"
+#include "Service_Record.hpp"
 #include "json.hpp"
 #include <map>
+#include <vector>
 #include <utility>
 
 class Service_Ledger {
     public:
+        Service_Ledger();
         ~Service_Ledger();
-        void new_transaction(Service_Record *&);
+        void new_transaction(Service_Record &);
         void generate_APR();
         void generate_EFT(); 
 
     private:
-        std::multimap<std::string, Service_Record*&> ledger;
+        std::unordered_map<std::string, std::vector<Service_Record>> ledger;
 };
 
 #endif // SERVICE_LEDGER_HPP

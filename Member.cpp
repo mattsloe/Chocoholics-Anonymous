@@ -2,7 +2,7 @@
 // Created by Matt Loera on 11/14/22.
 //
 
-#include "Member.h"
+#include "Member.hpp"
 
 Member::Member() {
    // init();
