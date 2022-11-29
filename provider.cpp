@@ -31,6 +31,8 @@ Provider::Provider(nlohmann::json j) {
 	state = j.value("state", "not found");
 	zip = j.value("zip", "not found");
 	address.init_address(street, city, state, zip);
+
+	//init_list_from_file()
 }
 
 //default destructor: deletes list of services
@@ -38,6 +40,7 @@ Provider::~Provider() {
 	delete_list();
 }
 
+//ask for user input + error check
 void Provider::init_provider() {
 	std::string tmp;
 	int flag = 1;
@@ -60,10 +63,16 @@ void Provider::init_provider() {
 	address.init_address();
 }
 
-void Provider::print_provider() {
-	std::cout << "Name: " << name << std::endl;
-	std::cout << "Provider Number: " << pid << std::endl;
-	address.print_address();
+//Format:
+//<Name> - <PID>
+//<Street>
+//<City>, <ST> <zip>
+std::string Provider::to_string() {
+	std::string out;
+	out += name + " - " + pid + "\n";
+	out += address.street + "\n";
+	out += address.city + ", " + address.state + " " + address.zip + "\n";
+	return out;
 }
 
 std::string Provider::get_pid() {
@@ -79,45 +88,53 @@ bool Provider::operator<(const Provider& comp) {
 }
 
 std::ostream& operator<<(std::ostream& out, const Provider& p) {
-	// unfinished
+	out << p.to_string();
+	return out;
 }
 
 int Provider::edit_provider(std::string _name) {
-	int ret = 0;
-	ret = set_name(_name);
+	name = _name;
+	return 0;
 }
 
 int Provider::edit_provider(std::string _pid) {
-	int ret = 0;
-	ret = set_pid(_pid);
+	pid = _pid;
+	return 0;
 }
 
 int Provider::edit_provider(const Address& _address) {
-	int ret = 0;
-	ret = set_address(_address);
+	address.copy_address(_address);
+	return 0;
 }
 
 int Provider::edit_provider(std::string _name, std::string _pid) {
-	int ret = 0;
-	ret = set_name(_name);
-	ret = set_pid(_pid);
+	name = _name;
+	pid = _pid;
+	return 0;
 }
 
 int Provider::edit_provider(std::string _name, const Address & _address) {
-	int ret = 0;
-	ret = set_name(_name);
-	ret = set_address(_address);
+	name = _name;
+	address.copy_address(_address);
+	return 0;
 }
 
 int Provider::edit_provider(std::string _pid, const Address & _address) {
-	int ret = 0;
-	ret = set_pid(_pid);
-	ret = set_address(_address);
+	pid = _pid;
+	address.copy_address(_address);
+	return 0;
+}
+
+int Provider::edit_provider(std::string _name, std::string _pid, const Address & _address) {
+	name = _name;
+	pid = _pid;
+	address.copy_address(_address);
+	return 0;
 }
 
 // max len = 25
 int Provider::set_name(std::string _name) {
-	name = _name.subsrt(0,25);
+	name = _name.substr(0,25);
 	return 0;
 }
 
@@ -161,12 +178,47 @@ std::string run_manager_report() {
 
 /* **Service List Functions** */
 
-int Provider::add_service(Service * to_add) {
+int Provider::add_service(Service_Record * to_add) {
+	//incr_total_fee(service_fee)
+	head->num_services_provided += 1;
+	
+	if (!tail) {
+		tail = new node;
+		tail->service = to_add;
+		tail->next = NULL;
+		return 0;
+	}
+	tail->next = new node;
+	tail = tail->next;
+	tail->service = to_add;
+	tail->next = NULL;
 	return 0;
 }
 
-int Provider::remove_service(Service * to_remove) {
+int Provider::remove_service(Service_Record * to_remove) {
+	// empty list
+	if (!tail)
+		return 1;
+
+	node * curr = head->next;
+	while (curr->next) {
+		// need == 
+		if (curr->next->service == *to_remove) {
+			node * tmp = curr->next;
+			curr->next = tmp->next;
+			delete tmp;
+			return 0;
+		}
+		curr = curr->next;
+	}
 	return 0;
+}
+
+int Provider::clear_services() {
+	head->total_cost = 0;
+	head->num_services_provided = 0;
+
+
 }
 
 void Provider::service_to_file() {
@@ -260,7 +312,7 @@ int Address::set_street(std::string _street) {
 
 // max len = 14
 int Address::set_city(std::string _city) {
-	city = _city.subsrt(0, 14);
+	city = _city.substr(0, 14);
 	return 0;
 }
 
