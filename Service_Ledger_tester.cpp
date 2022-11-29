@@ -10,10 +10,12 @@ void SL_tester::test_Service_Ledger_class() {
     (assert_test(new_transaction_good_test(s)));
     cout << "New Transaction bad path test                   ";
     (assert_test(new_transaction_bad_test(s)));
+    /*
     cout << "Generate EFT test                               ";
     (assert_test(generate_EFT_test(s)));
     cout << "Generate APR test                               ";
     (assert_test(generate_APR_test(s)));
+    */
     cout << "SERVICE LEDGER TESTS COMPLETE" << endl;
 }
 
