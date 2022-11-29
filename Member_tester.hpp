@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "Member.h"
+#include "Member.hpp"
 using namespace std;
 class MemberTester{
 public:

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(ChocAn 
                 Driver.hpp Driver.cpp 
                 json.hpp main.cpp 
-                #Member.cpp Member.h  Member_tester.h Member_tester.cpp 
+                Member.cpp Member.hpp Member_tester.hpp Member_tester.cpp 
                 #MemberDB.cpp MemberDB.h MemberDB_tester.h 
                 #Provider_Directory.hpp Provider_Directory.cpp 
                 #Provider_Directory_tester.hpp Provider_Directory_tester.cpp
