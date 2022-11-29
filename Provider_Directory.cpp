@@ -16,7 +16,6 @@ Service::Service(string name, string sID, double fee) : name(name), sID(sID), fe
 
 Service::Service(const Service & s) : name(s.name), sID(s.sID), fee(s.fee) {} 
 
-//Service & Service::operator = (const Service &s) {
 void Service::operator = (const Service &s) {
     set_name(s.name);
     set_sID(s.sID);
@@ -71,42 +70,16 @@ void Service::display() {
     cout << "Service Fee: " << fee_output(this->fee) << endl;
 }
 
-// --------------------------------------------------
-
 // ----------------------- Provider Directory Implementation ---------------------------
-/*
-Provider_Directory::~Provider_Directory() {
-    for (auto it = services.begin(); it != services.end(); it++) {
-        delete it->second;
-        it->second = nullptr;
-    }
-    // destruct map?
-}
-*/
-
 Provider_Directory::Provider_Directory(string file_name) {
-    /*
-    json j;
-    ifstream f;
-
-    f.open(file_name);
-    if (!f.is_open()) {
-        cerr << "Can't open file!" << endl;
-    }
-
-    f >> j;
-    f.close();
-
-    init(j);
-    */
-   read_from_file();
+   read_from_file(file_name);
 }
 
 void Provider_Directory::init(nlohmann::json j) {
     for (auto& elm: j.items()) {
         json object = elm.value();
-        Service toAdd(object);
-        services.emplace(toAdd.get_sID(),toAdd);
+        Service service = (Service(object));
+        services.emplace(service.get_sID(), service);
     }
 }
 
@@ -146,22 +119,22 @@ void Provider_Directory::display() {
     }
 }
 
-void Provider_Directory::read_from_file() {
-    // open file and load it into the map
-    string file_name = "assets/services.json";
+void Provider_Directory::read_from_file(string file_name) {
     json j;
     ifstream infile(file_name);
+
     if (!infile.is_open()) { 
         cerr << "Can't open Services file!!" << endl;
         exit(-24);
     }
+
     infile >> j;
     infile.close();
     init(j);
 }
 
 void Provider_Directory::write_to_file() {
-    string file_name = "Services.json";
+    string file_name = "assets/services.json";
     fstream out;
     
     out.open(file_name);
@@ -170,7 +143,6 @@ void Provider_Directory::write_to_file() {
         return;
         exit(-25);
     }
-    //json j_umap(services);
     
     out << "{";
     for (auto it = services.begin(); it != services.end(); it++) {
@@ -223,6 +195,5 @@ string fee_output(double x) {
     string out;
     out += "$";
     out += to_string(x);
-    //return ("%" + x);
     return out;
 }
