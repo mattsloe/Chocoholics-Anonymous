@@ -11,6 +11,7 @@
 #include "Service_Record.hpp"
 #include "Provider_Directory.hpp"
 
+
 struct node {
 	Service_Record * service;
 	node * next;
@@ -30,13 +31,14 @@ struct Address {
 
 	/* Interface */
 	Address();
-	Address(std::string street, std::string city, std::string state, std::string zip);
+	Address(std::string street, std::string city, std::string state, std::string zip); // not error checked
 	void init_address();          // asks user for input
+	// *following not error checked* -> error check input before use
 	void init_address(std::string street, std::string city, std::string state, std::string zip);
 	void copy_address(const Address & source);
-	void print_address();
 
 	//following fxns do error checking
+	//  ret 0 on success
 	int set_street(std::string);
 	int set_city(std::string);
 	int set_state(std::string);
@@ -46,12 +48,12 @@ struct Address {
 class Provider {
 	/* for unit tests */
 	friend bool Provider_init_happy();
-	friend bool Provider_init_maxPid();
+	friend bool Provider_init_json();
 
 	public:
 		/* Constructors */
 		Provider();
-		Provider(std::string _name, std::string _pid, const Address & _address);
+		Provider(std::string _name, std::string _pid, const Address & _address);  // no error checking
 		Provider(nlohmann::json j);
 		~Provider();
 
@@ -81,7 +83,7 @@ class Provider {
 		/* Linked List Functionality */
 		int add_service(Service_Record * to_add);
 		int remove_service(Service_Record * to_remove);
-		int clear_services();
+		int clear_services();  // for resetting at end of week
 
 
 	protected:

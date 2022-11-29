@@ -405,11 +405,6 @@ void Address::copy_address(const Address & source) {
 	zip = source.zip;
 }
 
-void Address::print_address() {
-	std::cout << street << std::endl;
-	std::cout << city << "," << state << " " << zip << std::endl;
-}
-
 int Address::set_street(std::string _street) {
 	street = _street.substr(0, 25);
 	return 0;
