@@ -38,7 +38,23 @@ bool SL_tester::new_transaction_good_test(Service_Ledger* s) {
     s->new_transaction(s1b);
     s->new_transaction(s1c);
 
-    
+    if (s->in_ledger(s1b.get_pID()) && s->in_ledger(s1c.get_pID()))
+        return true;
+    return false;
+}
+
+bool SL_tester::new_transaction_bad_test(Service_Ledger* s) {
+    Service_Record s1b, s1c;
+    create_SL(s);
+
+    s1b = Service_Record(sr1d);
+    s1c = Service_Record(sr1e);
+    s->new_transaction(s1b);
+    s->new_transaction(s1c);
+
+    if (!s->in_ledger(s1b.get_pID()) && !s->in_ledger(s1c.get_pID()))
+        return true;
+    return false;
 }
 
 static void assert_test(bool ret) {
