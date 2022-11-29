@@ -11,8 +11,8 @@
 class Service_Ledger {
     public:
         void new_transaction(Service_Record &);
-        void generate_APR(Provider_Directory *);
-        void generate_EFT(Provider_Directory *); 
+        void generate_APR(Provider_Directory &);
+        void generate_EFT(Provider_Directory &); 
         bool in_ledger(std::string);
 
     private:

@@ -19,7 +19,7 @@ void Service_Ledger::new_transaction(Service_Record &record) {
     ledger.emplace(id, provider);
 }
 
-void Service_Ledger::generate_APR(Provider_Directory *provider_directory) {
+void Service_Ledger::generate_APR(Provider_Directory &provider_directory) {
     map<string, int> providers;
     string sid = "", file_name = "AccountsPayableReport";
     int total_providers = 0, total_services = 0, num_consultations = 0;
@@ -42,12 +42,12 @@ void Service_Ledger::generate_APR(Provider_Directory *provider_directory) {
         total_providers++;
         num_consultations = 0;
         for (auto pit = ledger[sid].begin(); pit != ledger[sid].end(); pit++) {
-            total_fee += provider_directory->get_fee_d(sid);
+            total_fee += provider_directory.get_fee_d(sid);
             total_services++;
             num_consultations++;
         }
         // output to file
-        out << provider_directory->get_name(sid) << " (" << sid << ")\t" << "total consultations: " << to_string(num_consultations) << "," << "total fee: " << fee_output(total_fee) << endl;
+        out << provider_directory.get_name(sid) << " (" << sid << ")\t" << "total consultations: " << to_string(num_consultations) << "," << "total fee: " << fee_output(total_fee) << endl;
     }
 
     out << "Total number of Providers who provided services: " << to_string(total_providers) << endl;
@@ -55,7 +55,7 @@ void Service_Ledger::generate_APR(Provider_Directory *provider_directory) {
     out.close();
 }
 
-void Service_Ledger::generate_EFT(Provider_Directory *provider_directory) {
+void Service_Ledger::generate_EFT(Provider_Directory &provider_directory) {
     map<string, int> providers;
     string file_name = "EFTdata", sid;
     double pay_check = 0;
@@ -78,11 +78,11 @@ void Service_Ledger::generate_EFT(Provider_Directory *provider_directory) {
         pay_check = 0;
 
         for (auto provider_transactions = ledger[sid].begin(); provider_transactions != ledger[sid].end(); provider_transactions++) {
-            pay_check += provider_directory->get_fee_d(sid);
+            pay_check += provider_directory.get_fee_d(sid);
         }
 
         // output the data to the file
-        out << provider_directory->get_name(sid) << " (" << sid << ")\t" << "Paycheck: " << to_string(pay_check) << endl;
+        out << provider_directory.get_name(sid) << " (" << sid << ")\t" << "Paycheck: " << to_string(pay_check) << endl;
 
     }
     out.close();
