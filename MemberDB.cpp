@@ -2,7 +2,7 @@
 // Created by Matt Loera on 11/16/22.
 //
 
-#include "MemberDB.h"
+#include "MemberDB.hpp"
 
 MemberDB::MemberDB() = default;
 
