@@ -18,7 +18,7 @@ struct node {
 
 struct node_head {
 	int num_services_provided;
-	int total_cost;
+	float total_cost;
 	node * next;
 };
 
@@ -29,6 +29,7 @@ struct Address {
 	std::string zip;
 
 	/* Interface */
+	Address();
 	Address(std::string street, std::string city, std::string state, std::string zip);
 	void init_address();          // asks user for input
 	void init_address(std::string street, std::string city, std::string state, std::string zip);
@@ -66,18 +67,16 @@ class Provider {
 		// overloaded for ease of use
 		//   return 0 on success
 		//   *not error checked* -> error check input before use
-		int edit_provider(std::string _name);
-		int edit_provider(std::string _pid);
+		int edit_provider(std::string name_or_pid);
 		int edit_provider(const Address & _address);
 		int edit_provider(std::string _name, std::string _pid);
-		int edit_provider(std::string _name, const Address & _address);
-		int edit_provider(std::string _pid, const Address & _address);
+		int edit_provider(std::string name_or_pid, const Address & _address);
 		int edit_provider(std::string _name, std::string _pid, const Address & _address);
 
 		/* Overloaded Operators */
 		bool operator==(const Provider & toComp);
 		bool operator<(const Provider & toComp);
-		friend std::ostream & operator<<(std::ostream & out, const Provider & p);
+		friend std::ostream & operator<<(std::ostream & out, Provider & p);
 
 		/* Linked List Functionality */
 		int add_service(Service_Record * to_add);
@@ -93,10 +92,11 @@ class Provider {
 		node * tail;         // tail of provided services list
 
 		/* Service List Helper Fxns */
-		std::string service_to_file();      // formats service data for provider json file
-		std::string service_to_string();    // formats service data for provider report
-		void delete_list();                 // destructor helper - deletes list, not head
-		void init_list();                   // initializer helper
+		std::string service_to_file();          // formats service data for provider json file - might not need
+		std::string service_to_string();        // formats service data for provider report
+		void service_load_file(nlohmann::json); // inits service list from json file - might not need
+		void delete_list();                     // destructor helper - deletes list, not head
+		void init_list();                       // initializer helper
 
 		/* Init Helper Fxns */
 		int set_name(std::string _name);
