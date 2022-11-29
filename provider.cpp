@@ -21,23 +21,13 @@ Provider::Provider(std::string _name, std::string num, const Address & _address)
 
 //json constructor
 Provider::Provider(nlohmann::json j) {
-	std::string street, city, state, zip;
-
-	name = j.value("name", "not found");
-	pid = j.value("pid", "not found");
-
-	street = j.value("street", "not found");
-	city = j.value("city", "not found");
-	state = j.value("state", "not found");
-	zip = j.value("zip", "not found");
-	address.init_address(street, city, state, zip);
-
-	//init_list_from_file()
+	load_file(j);
 }
 
 //default destructor: deletes list of services
 Provider::~Provider() {
 	delete_list();
+	delete head;
 }
 
 //ask for user input + error check
@@ -61,18 +51,6 @@ void Provider::init_provider() {
 	flag = 1;
 	
 	address.init_address();
-}
-
-//Format:
-//<Name> - <PID>
-//<Street>
-//<City>, <ST> <zip>
-std::string Provider::to_string() {
-	std::string out;
-	out += name + " - " + pid + "\n";
-	out += address.street + "\n";
-	out += address.city + ", " + address.state + " " + address.zip + "\n";
-	return out;
 }
 
 std::string Provider::get_pid() {
@@ -154,26 +132,83 @@ int Provider::set_address(const Address & _address) {
 
 /* **File Functions** */
 
-std::string Provider::to_file() {
-	return std::string();
+//Format:
+//<Name> - <PID>
+//<Street>
+//<City>, <ST> <zip>
+std::string Provider::to_string() {
+	std::string out;
+	out += name + " - " + pid + "\n";
+	out += address.street + "\n";
+	out += address.city + ", " + address.state + " " + address.zip + "\n";
+	return out;
 }
 
-void Provider::load_file() {
+std::string Provider::to_file() {
+	using json = nlohmann::json;
+	std::string out;
 
+	json j = {
+		{"name", name},
+		{"pid", pid},
+		{"street", address.street},
+		{"city", address.city},
+		{"state", address.state},
+		{"zip", address.zip}
+		//service list
+	};
+	out = j.dump(2);
+	return out;
+}
+
+void Provider::load_file(nlohmann::json j) {
+	std::string street, city, state, zip;
+
+	name = j.value("name", "not found");
+	pid = j.value("pid", "not found");
+
+	street = j.value("street", "not found");
+	city = j.value("city", "not found");
+	state = j.value("state", "not found");
+	zip = j.value("zip", "not found");
+	address.init_address(street, city, state, zip);
+
+	//init_list_from_file()
 }
 
 // outputs .txt file of provider info + provided services info
 void Provider::run_report() {
+	std::string file_name = name;
+	size_t pos = name.find(' ');
+	file_name.replace(pos, 1, 1, '_');
+	file_name += ".txt";
 
-}
+	std::ofstream output_file(file_name);
+	if (!output_file.is_open()) {
+		std::cout << "Error: could not open file" << std::endl;
+		std::cout << "Exiting..." << std::endl;
+		return;
+	}
 
-std::string Provider::run_manager_report() {
-	
+	output_file << to_string();
+	output_file << "\n";
+	output_file << service_to_string();
+	output_file.close();
+	return;
 }
 
 // returns string for database generated report
-std::string run_manager_report() {
-	return std::string();
+//Format: 
+//<Name> - <PID>
+//Number of Consults: <#>    Total Fee: <$>
+std::string Provider::run_manager_report() {
+	std::string out;
+	
+	out += name + " - " + pid + "\n";
+	out += "Number of Consults: " + head->num_services_provided + "\t";
+	out += "Total Fee: " + head->total_cost + "\n";
+
+	return out;
 }
 
 /* **Service List Functions** */
@@ -214,23 +249,64 @@ int Provider::remove_service(Service_Record * to_remove) {
 	return 0;
 }
 
+// for resetting week
 int Provider::clear_services() {
 	head->total_cost = 0;
 	head->num_services_provided = 0;
 
+	if (!tail)
+		return 1;
+	delete_list();
+	return 0;
+}
+
+// for json file
+std::string Provider::service_to_file() {
 
 }
 
-void Provider::service_to_file() {
+// for report
+//Format:
+// <Service 1 info>
+// 
+// <Service 2 info>
+// 
+// ...
+// 
+// Total Services: <#>    Total Fee: <$>
+std::string Provider::service_to_string() {
+	std::string out;
 
+	if (tail) {
+		node * curr = head->next;
+		while (curr) {
+			//out += curr->services.to_string()
+			out += "\n";
+		}
+	}
+	out += "Total Services: " + head->num_services_provided + "\t";
+	out += "Total Fee: " + head->total_cost + "\n";
+
+	return out;
 }
 
-void Provider::service_report() {
-
-}
-
+// doesn't delete head, just the list and tail
+// -> head will need to be handled by calling fxn
 void Provider::delete_list() {
+	if (!tail)
+		return;
 
+	node * curr = head->next;
+	node * tmp;
+	while (curr->next) {
+		tmp = curr->next;
+		delete curr;
+		head->next = tmp;
+		curr = tmp;
+	}
+	delete tail;
+	tail = NULL;
+	return;
 }
 
 void Provider::init_list() {

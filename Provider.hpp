@@ -4,6 +4,7 @@
 # define PROVIDER_H
 
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <string>
 #include "json.hpp"
@@ -33,6 +34,8 @@ struct Address {
 	void init_address(std::string street, std::string city, std::string state, std::string zip);
 	void copy_address(const Address & source);
 	void print_address();
+
+	//following fxns do error checking
 	int set_street(std::string);
 	int set_city(std::string);
 	int set_state(std::string);
@@ -56,7 +59,7 @@ class Provider {
 		std::string get_pid();		        // return pid
 		std::string to_string();            // returns provider formatted as string
 		std::string to_file();              // format data for json file
-		void load_file();                   // load provider from json file
+		void load_file(nlohmann::json j);   // load provider from json file
 		void run_report();                  // generate provider report
 		std::string run_manager_report();   // generate string for database gen. report
 
@@ -83,16 +86,16 @@ class Provider {
 
 
 	protected:
-		std::string name;
+		std::string name;    // expects: <first> <last> 
 		std::string pid;     // provider ID; 9 digits
 		Address address; 
-		node_head * head;     // head of provided services list
-		node * tail;          // tail of provided services list
+		node_head * head;    // head of provided services list
+		node * tail;         // tail of provided services list
 
 		/* Service List Helper Fxns */
-		void service_to_file();             // formats service data for provider json file
-		void service_report();              // formats service data for provider report
-		void delete_list();                 // destructor helper
+		std::string service_to_file();      // formats service data for provider json file
+		std::string service_to_string();    // formats service data for provider report
+		void delete_list();                 // destructor helper - deletes list, not head
 		void init_list();                   // initializer helper
 
 		/* Init Helper Fxns */
