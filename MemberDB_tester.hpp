@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "MemberDB.h"
+#include "MemberDB.hpp"
 using namespace std;
  class MemberDBtester {
  public:

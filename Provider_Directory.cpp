@@ -16,7 +16,6 @@ Service::Service(string name, string sID, double fee) : name(name), sID(sID), fe
 
 Service::Service(const Service & s) : name(s.name), sID(s.sID), fee(s.fee) {} 
 
-//Service & Service::operator = (const Service &s) {
 void Service::operator = (const Service &s) {
     set_name(s.name);
     set_sID(s.sID);
@@ -71,19 +70,7 @@ void Service::display() {
     cout << "Service Fee: " << fee_output(this->fee) << endl;
 }
 
-// --------------------------------------------------
-
 // ----------------------- Provider Directory Implementation ---------------------------
-/*
-Provider_Directory::~Provider_Directory() {
-    for (auto it = services.begin(); it != services.end(); it++) {
-        delete it->second;
-        it->second = nullptr;
-    }
-    // destruct map?
-}
-*/
-
 Provider_Directory::Provider_Directory(string file_name) {
    read_from_file(file_name);
 }
@@ -97,7 +84,7 @@ void Provider_Directory::init(nlohmann::json j) {
 }
 
 void Provider_Directory::create_new_service() {
-    bool valid = false;
+    bool valid = true;
     string name, sID;
     double fee;
     Service service = Service();
@@ -208,6 +195,5 @@ string fee_output(double x) {
     string out;
     out += "$";
     out += to_string(x);
-    //return ("%" + x);
     return out;
 }
