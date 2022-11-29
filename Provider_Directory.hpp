@@ -36,7 +36,7 @@ class Provider_Directory {
         void init(nlohmann::json); // create DS with json object
         void create_new_service(); // allows the provider to create a new service that they wish to offer
         void display(); // displays all available services to the terminal
-        void read_from_file(); // read Services from Services.json
+        void read_from_file(std::string); // read Services from Services.json
         void write_to_file(); // write Services to Services.json
 
         // the following functions allow for easy access to the needed data as you just need to pass in the service code and catch it with a new string
@@ -54,6 +54,6 @@ class Provider_Directory {
 
 std::string fee_output(double);
 
-Provider_Directory provider_directory = Provider_Directory("assets/services.json");
+//Provider_Directory provider_directory = Provider_Directory("assets/services.json");
 
 #endif // PROVIDER_DIRECTORY_HPP
