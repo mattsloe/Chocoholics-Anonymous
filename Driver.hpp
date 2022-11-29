@@ -8,13 +8,6 @@
 #include <string>
 
 
-#include "Service.hpp"
-#include "Service_Record.hpp"
-#include "Service_Ledger.hpp"
-
-#include "Member.h"
-
-
 using namespace std;
 
 
@@ -73,7 +66,7 @@ class Provider_Terminal {
 		int add_service_to_member(/*ProviderDB &, MemberDB &, Service_Ledger &*/);	//Locates member with member number in the MemberDB. Locates Service with service ID from provider from ProviderDB. Adds service to member
 												//and then adds Service_Record to the Service_Ledger.
 		
-		int add_service_to_provider(/*ProviderDB &*/);					//Generates a service object that is then added to a provider from the ProviderDB.
+		
 		int generate_provider_report(/*ProviderDB &*/);					//Finds a provider in the ProviderDB and then generates a provider report using a function from the provider class 
 												//(provider report from section 2.2.1 of the design document).
 
@@ -95,6 +88,7 @@ class Interactive_Terminal {
 		int add_provider(/*ProviderDB &*/);						//Generates a provider object with user input and adds it to the MemberDB.
 		int remove_provider(/*ProviderDB &*/);						//Finds and removes a provider from the ProviderDB using a provider number from the user.
 		int edit_provider(/*ProviderDB &*/);						//Finds a provider and edits provider data members with user input.
+		int add_service_to_provider(/*ProviderDB &*/);					//Generates a service object that is then added to a provider from the ProviderDB.
 
 		int generate_member_reports(/*MemberDB &*/);					//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
 		int generate_provider_reports(/*ProviderDB &*/);				//Can either generate an individual provider report or the entire ProviderDB directory. Relies on member functions in DB and 
