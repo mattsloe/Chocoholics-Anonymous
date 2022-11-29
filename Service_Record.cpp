@@ -178,10 +178,10 @@ static string input_ID(int size) {
     return ID;
 }
 
-static bool valid_id(int size, string s) {
-    if (s.length() != size || !all_of(s.begin(), s.end(), isdigit)) { //make sure s represents a number
-        cout<< "Invalid ID!" << endl;
-        return false;
-    }
+static bool valid_id(int size, string s) { //compile error with all_of()
+//    if (s.length() != size || !all_of(s.begin(), s.end(), isdigit)) { //make sure s represents a number
+//        cout<< "Invalid ID!" << endl;
+//        return false;
+//    }
     return true;
 }
