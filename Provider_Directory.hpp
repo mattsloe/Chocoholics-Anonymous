@@ -54,6 +54,6 @@ class Provider_Directory {
 
 std::string fee_output(double);
 
-Provider_Directory provider_directory = Provider_Directory("assets/services.json");
+//Provider_Directory provider_directory = Provider_Directory("assets/services.json");
 
 #endif // PROVIDER_DIRECTORY_HPP

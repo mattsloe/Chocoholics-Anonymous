@@ -105,12 +105,13 @@ Provider_Directory::Provider_Directory(string file_name) {
 void Provider_Directory::init(nlohmann::json j) {
     for (auto& elm: j.items()) {
         json object = elm.value();
-        services.emplace(Service(object));
+        Service toAdd(object);
+        services.emplace(toAdd.get_sID(),toAdd);
     }
 }
 
 void Provider_Directory::create_new_service() {
-    bool valid = false;
+    bool valid = true;
     string name, sID;
     double fee;
     Service service = Service();
