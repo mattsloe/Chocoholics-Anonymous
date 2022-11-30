@@ -390,7 +390,7 @@ int Interactive_Terminal::edit_member() {
 
 
 
-int Interactive_Terminal::display_member_db() {
+int Interactive_Terminal::display_provider_db() {
 
 	//DISPLAY PROVIDER_DB HERE.
 
