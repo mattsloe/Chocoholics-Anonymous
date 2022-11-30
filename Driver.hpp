@@ -9,7 +9,7 @@
 
 //Custom file includes from our project.
 #include "Member.hpp"
-#include "Provider.hpp"
+#include "Provider_Database.hpp"
 #include "Service_Ledger.hpp" //Includes Service_Ledger, Service_Record, Service, and Provider_Directory
 
 
@@ -28,10 +28,12 @@ char 	get_char(const string prompt);						//Always returns true.
 
 
 ///////////	The following functions will be used to facilitate the the manipulation of the ProviderDB, MemberDB, and Service_Ledger.	////////////////
-bool validate_member(string m_id, Member *&to_find/*,MemberDB &*/);									//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
-bool validate_provider(string p_id, Provider *&to_find/*ProviderDB &*/);								//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
-bool validate_service(string s_id, Service *&to_find/*Provider_Directory &, Service &*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
+bool validate_member(const string prompt);
+bool validate_member(const string prompt, Member & to_find, string &m_id/*,MemberDB &*/);									//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
+bool validate_provider(const string prompt, Provider & to_find, string &p_id/*ProviderDB &*/);								//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
+bool validate_service(const string prompt, Service & to_find, string &s_id/*Provider_Directory &, Service &*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
 																		//Service stores the service found from the provider.
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -60,7 +62,7 @@ class Driver {
 	//Will need to add ProviderDB, MemberDB, Service_Ledger, and a Provider_Directory (based on design document).
 	//Potential private member functions include functions that delegate the output of menus. TBD...
 	Service_Ledger ledger;
-	//Provider_Directory directory;
+	Provider_Directory * directory;
 
 };
 
