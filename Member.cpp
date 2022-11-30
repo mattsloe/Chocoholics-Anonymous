@@ -211,3 +211,9 @@ void Member::copy(const Member& toCopy){
     accountActive = toCopy.accountActive;
 }
 
+//add service to serviceList
+int Member::add_service(const Service_Record & toAdd) {
+    serviceList.push_back(toAdd);
+    return true;
+}
+
