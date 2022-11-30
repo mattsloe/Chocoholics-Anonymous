@@ -1,6 +1,6 @@
 #include "Driver.hpp"
 
-//Author: Nathan W.
+//Author: Nathan Waggoner
 
 
 /////////////////////////////// HELPER FUNCTIONS ///////////////////////////////////
@@ -10,16 +10,6 @@ void get_string(string &user_str, const string prompt) {
 	cout << prompt;
 	
 	getline(cin, user_str, '\n');
-	
-	/*
-	while(!cin) {
-		cin.clear();
-		cin.ignore(MAX_CHARS, '\n');
-		cout << "This is invalid an input. Please try again...\n> ";
-		getline(cin, user_str, '\n');
-	}
-	cin.ignore(MAX_CHARS, '\n');
-	*/
 
 	return;
 }
@@ -69,9 +59,60 @@ char get_char(const string prompt) {
 
 
 //Need to be implemented. Will request user input for member, provider, and service ID's
-int validate_member(){return 1;}
-int validate_provider(){return 1;}
-int validate_service(){return 1;}
+int validate_member(){
+	Member to_find;
+	string m_id;
+
+	get_string(m_id, "Please enter a 9-digit member ID: ");
+
+	//FIND AND PRINT MEMBER.
+	if (true) { //Replace true with function call to find member.
+		cout << "The following the member information found in the database:\n\n";
+		//Print member here.
+
+		return 0;
+	}
+
+	return 1;
+}
+
+
+
+int validate_provider(){
+	//Provider to_find;
+	string p_id;
+
+	get_string(p_id, "Please enter a 9-digit provider ID: ");
+
+	//FIND AND PRINT MEMBER.
+	if (true) { //Replace true with function call to find member.
+		cout << "The following the provider information found in the database:\n\n";
+		//Print member here.
+
+		return 0;
+	}
+	
+	return 1;
+}
+
+
+
+int validate_service(){
+	
+	//Service to_find;
+	string s_id;
+
+	get_string(s_id, "Please enter a 6-digit service ID: ");
+
+	//FIND AND PRINT MEMBER.
+	if (true) { //Replace true with function call to find member.
+		cout << "The following the service information found in the service directory:\n\n";
+		//Print member here.
+
+		return 0;
+	}
+	return 1;
+}
 
 
 
@@ -185,9 +226,10 @@ void Driver::start_iterm() {
 		6) Add a provider\n\t \
 		7) Remove a provider\n\t \
 		8) Edit a provider\n\t \
-		9) Generate member reports\n\t \
-		10) Generate provider reports\n\t \
-		11) Exit terminal\n> ");
+		9) Add service to list of available services\n\t \
+		10) Generate member reports\n\t \
+		11) Generate provider reports\n\t \
+		12) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
@@ -212,6 +254,8 @@ void Driver::start_iterm() {
 			case 10:
 				break;
 			case 11:
+				break;
+			case 12:
 				break;
 		}
 	}	
@@ -255,6 +299,15 @@ void Driver::start_fterm() {
 /////////////////////////////// INTERACTIVE_TERMINAL CLASS ///////////////////////////////////
 
 
+int Interactive_Terminal::display_member_db() {
+	
+	//DISPLAY MEMBER_DB HERE.
+
+	return 1;
+}
+
+
+
 int Interactive_Terminal::add_member() {
 
 	//Create Member object to be added to MemberDB
@@ -283,11 +336,63 @@ int Interactive_Terminal::add_member() {
 		member_to_add.set_zip(zip);
 
 		cout << "\n\n" << member_to_add << "\n\n";
-		option = get_char("Is this the information for the member correct? (y/n): ");
+		option = get_char("Is this the member information correct? (y/n): ");
 	}
 
 	//ADD MEMBER TO DB HERE
 
 
 	return 0;
+}
+
+
+
+int Interactive_Terminal::remove_member() {
+	string m_id;
+
+	char option = 'n';
+	while (option != tolower('Y')) {
+		get_string(m_id, "Please enter the member ID of the member you would like to remove: ");
+
+		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
+		option = get_char("Is this the member ID correct? (y/n): ");
+	}
+
+	if (true) { //validate member here.
+		//REMOVE MEMBER FROM DB HERE.
+
+		return 1;
+	}
+
+	return 0;
+}
+
+
+int Interactive_Terminal::edit_member() {
+	string m_id;
+
+	char option = 'n';
+	while (option != tolower('Y')) {
+		get_string(m_id, "Please enter the member ID of the member you would like to edit: ");
+
+		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
+		option = get_char("Is this the member ID correct? (y/n): ");
+	}
+
+	if (true) { //validate member here.
+		//EDIT MEMBER FROM DB HERE.
+
+		return 1;
+	}
+
+	return 0;
+}
+
+
+
+int Interactive_Terminal::display_member_db() {
+
+	//DISPLAY PROVIDER_DB HERE.
+
+	return 1;
 }

@@ -1,7 +1,7 @@
 #ifndef DRIVER_H
 #define DRIVER_H
 
-//Author: Nathan W.
+//Author: Nathan Waggoner
 
 
 #include <iostream>
@@ -9,6 +9,8 @@
 
 //Custom file includes from our project.
 #include "Member.hpp"
+#include "Service_Ledger.hpp" //Includes Service_Record and Provider_Directory
+
 
 using namespace std;
 
@@ -24,9 +26,9 @@ char 	get_char(const string prompt);				//Always returns true.
 
 
 ///////////	The following functions will be used to facilitate the the manipulation of the ProviderDB, MemberDB, and Service_Ledger.	////////////////
-int validate_member(/*MemberDB &, Member *&*/);					//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
-int validate_provider(/*ProviderDB &, Provider *&*/);			//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
-int validate_service(/*Provider &, Service *&*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
+int validate_member(/*MemberDB &, Member &*/);					//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
+int validate_provider(/*ProviderDB &, Provider &*/);			//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
+int validate_service(/*Provider &, Service &*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
 																//Service stores the service found from the provider.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +64,7 @@ class Driver {
 //This is the provider terminal for providers within ChocAn to interact with.
 class Provider_Terminal {
 	public:
-		int add_service_to_member(/*ProviderDB &, MemberDB &, Service_Ledger &*/);	//Locates member with member number in the MemberDB. Locates Service with service ID from provider from ProviderDB. Adds service to member
+		int provide_service_to_member(/*ProviderDB &, MemberDB &, Service_Ledger &*/);	//Locates member with member number in the MemberDB. Locates Service with service ID from provider from ProviderDB. Adds service to member
 																					//and then adds Service_Record to the Service_Ledger.
 		int generate_provider_report(/*ProviderDB &*/);								//Finds a provider in the ProviderDB and then generates a provider report using a function from the provider class 
 																					//(provider report from section 2.2.1 of the design document).
@@ -85,7 +87,8 @@ class Interactive_Terminal {
 		int add_provider(/*ProviderDB &*/);											//Generates a provider object with user input and adds it to the MemberDB.
 		int remove_provider(/*ProviderDB &*/);										//Finds and removes a provider from the ProviderDB using a provider number from the user.
 		int edit_provider(/*ProviderDB &*/);										//Finds a provider and edits provider data members with user input.
-		int add_service_to_provider_directory(/*ProviderDB &*/);					//Generates a service object that is then added to a provider from the ProviderDB.
+
+		int add_service_to_provider_directory(/*Provider_Directory &*/);			//Generates a service object that is then added to a provider from the ProviderDB.
 
 		int generate_member_reports(/*MemberDB &*/);								//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
 		int generate_provider_reports(/*ProviderDB &*/);							//Can either generate an individual provider report or the entire ProviderDB directory. Relies on member functions in DB and 
@@ -102,7 +105,7 @@ class Financial_Terminal {
 		int generate_EFT(/*Service_Ledger &*/);				//Generates a financial report for the past week of transactions from the Service_Ledger. 
 															//(EFT Data from section 2.2.5 of the design document).
 		int generate_APR(/*Service_Ledger &*/);
-		int suspend_reinstate_member(/*MemberDB &*/);					//Will find a member from the MemberDB and manipulate the suspended data member.
+		int suspend_reinstate_member(/*MemberDB &*/);		//Will find a member from the MemberDB and manipulate the suspended data member.
 
 };
 

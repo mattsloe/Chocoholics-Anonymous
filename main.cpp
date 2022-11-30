@@ -15,9 +15,8 @@ int main()
 {
    	using namespace std;
 
-   	//Add testing to the menu.cpp class structure. 
-	//Main will now be for the menu class to operate as a driver. 
-	
+   	//Add testing below. 
+		
 	/*
 	cout << "Testing Member Class" << endl;
     MemberTester::testMemberClass();
@@ -27,7 +26,7 @@ int main()
 
 
 	//Creating space between driver and any tests we decide to run above.
-	cout << "\n\n\n";
+	cout << "\n\n\n\n\n\n";
 
 	Driver term;
 
