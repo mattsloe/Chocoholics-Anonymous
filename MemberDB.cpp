@@ -86,7 +86,7 @@ int MemberDB::display_all() {
     return mid_map.size();
 }
 
-void MemberDB::print_map(std::string_view comment, const std::map<std::string,Member*>& m) {
+void MemberDB::print_map(std::string comment, const std::map<std::string,Member*>& m) {
         std::cout << comment;
         // iterate
         for (const auto& [key, value] : m)

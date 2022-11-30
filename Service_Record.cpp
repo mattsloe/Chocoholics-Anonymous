@@ -189,7 +189,7 @@ static string input_ID(int size) {
 }
 
 static bool valid_id(int intended_size, string s) { 
-    if (s.length() != intended_size || !all_of(s.begin(), s.end(), isdigit)) { //make sure s represents a number
+    if (s.length() != intended_size || !all_of(s.begin(), s.end(), [](unsigned char c){ return std::isdigit(c); })) { //make sure s represents a number
         cout<< "Invalid ID!" << endl;
         return false;
     }

@@ -43,7 +43,7 @@ public:
 private:
     int add_member(Member*);
     void init(nlohmann::json); //initialize with json object
-    void print_map(std::string_view comment,const std::map<std::string,Member*>& m);
+    void print_map(std::string comment,const std::map<std::string,Member*>& m);
 
 };
 
