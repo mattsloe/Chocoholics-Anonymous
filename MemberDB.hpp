@@ -30,6 +30,8 @@ public:
     ~MemberDB(); //destructor
 
     /*Interface*/
+    int get(std::string mid,Member&)const; //retrieve member matching mid. Returns false if not found
+    int edit(std::string mid,Member&); //retrieve member matching mid. Returns false if not found. Full access
 
     int get_member(std::string mid,Member&);
 
