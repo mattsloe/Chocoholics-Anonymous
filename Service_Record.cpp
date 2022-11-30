@@ -107,6 +107,16 @@ string Service_Record::to_string_exp() {
     return s;
 }
 
+string Service_Record::to_string_provider() {
+    string out;
+    out += "Current Date: " + date + "\n";
+    out += "Date Service was provided: " + sDate + "\n";
+    out += "Provider ID: " + pID + "\n";
+    out += "Member ID: " + mID + "\n";
+    out += "Service Code: " + sID + "\n";
+    return out;
+}
+
 Service_Record & Service_Record::operator = (const Service_Record &source) {
     // copy data
     this->date = source.date;
