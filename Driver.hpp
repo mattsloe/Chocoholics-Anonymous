@@ -10,7 +10,7 @@
 //Custom file includes from our project.
 #include "Member.hpp"
 #include "Provider.hpp"
-#include "Service_Ledger.hpp" //Includes Service_Record and Provider_Directory
+#include "Service_Ledger.hpp" //Includes Service_Ledger, Service_Record, Service, and Provider_Directory
 
 
 
@@ -22,15 +22,15 @@ const int MAX_CHARS = 256;
 
 //Some helper functions for user input.
 void 	get_string(string &user_str, const string prompt); 	//Retrieves a string from the user.
-long	get_long(const string prompt);				//Returns the long retrieved from the user.
-char 	get_char(const string prompt);				//Always returns true.
+long	get_long(const string prompt);						//Returns the long retrieved from the user.
+char 	get_char(const string prompt);						//Always returns true.
 
 
 
 ///////////	The following functions will be used to facilitate the the manipulation of the ProviderDB, MemberDB, and Service_Ledger.	////////////////
-bool validate_member(string m_id, Member &to_find/*,MemberDB &*/);									//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
-bool validate_provider(string p_id, Provider &to_find/*ProviderDB &*/);								//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
-bool validate_service(string s_id, Service &to_find/*Provider_Directory &, Service &*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
+bool validate_member(string m_id, Member *&to_find/*,MemberDB &*/);									//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
+bool validate_provider(string p_id, Provider *&to_find/*ProviderDB &*/);								//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
+bool validate_service(string s_id, Service *&to_find/*Provider_Directory &, Service &*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
 																		//Service stores the service found from the provider.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,9 +48,9 @@ class Driver {
 		~Driver();
 
 		void start_driver();	//Main driver (this class)
-		void start_pterm();	//Provider terminal
-		void start_fterm();	//Financial Terminal
-		void start_iterm();	//Interactive Mode Terminal
+		void start_pterm();		//Provider terminal
+		void start_fterm();		//Financial Terminal
+		void start_iterm();		//Interactive Mode Terminal
 
 
 	private:
@@ -85,7 +85,6 @@ class Interactive_Terminal {
 		int remove_member(/*MemberDB &*/);											//Finds and removes a member from the MemberDB using a member number from the user.
 		int edit_member(/*MemberDB &*/);											//Finds a member and edits member data members with user input.
 	
-
 		int display_provider_db();
 	
 		int add_provider(/*ProviderDB &*/);											//Generates a provider object with user input and adds it to the MemberDB.
