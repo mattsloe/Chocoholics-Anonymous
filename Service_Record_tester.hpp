@@ -22,6 +22,9 @@ class Service_Record_tester {
         static bool setting_mID(Service_Record *);
         static bool setting_pID(Service_Record *);
         static bool setting_comments(Service_Record *);
+
+	private:
+		Service_Record_tester();
 };
 
 static void assert_test(bool);

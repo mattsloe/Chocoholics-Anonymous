@@ -11,6 +11,8 @@ class PD_tester {
         static bool file_constructor(Provider_Directory *);
         static bool validateID_success(Provider_Directory *);
         static bool validateID_fail(Provider_Directory *);
+	private:
+		PD_tester();
 };
 
 static void assert_test(bool);
