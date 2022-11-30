@@ -5,22 +5,33 @@ using namespace std;
 void PD_tester::test_Provider_Directory_class() {
     Provider_Directory *p = nullptr;
     cout << endl;
-    cout << "------------------------------------------";
     cout << "PROVIDER DIRECTORY TESTS STARTING..." << endl;
     cout << "File Constructor test                  ";
     (assert_test(file_constructor(p)));
+    delete_PD(p);
+
     cout << "Validate Service Code (Success) test   ";
     (assert_test(validateID_success(p)));
+    delete_PD(p);
+
     cout << "Validate Service Code (Failure) test   ";
     (assert_test(validateID_fail(p)));
+    delete_PD(p);
+
     cout << "PROVIDER DIRECTORY TESTS COMPLETE";
-    cout << "------------------------------------------";
     cout << endl;
 }
 
 void PD_tester::create_PD(Provider_Directory *&p) {
     string file_name = "assets/services.json";
     p = new Provider_Directory(file_name);
+}
+
+void PD_tester::delete_PD(Provider_Directory*& p) {
+    if (!p)
+        return;
+    delete p;
+    p = nullptr;
 }
 
 bool PD_tester::file_constructor(Provider_Directory *p) {
@@ -31,7 +42,7 @@ bool PD_tester::file_constructor(Provider_Directory *p) {
     p->get_service(id, service);
 
     // data retrieved from line 21 of services.json
-    if (service->get_name() == "Okuma" 
+    if (service->get_name() == "Okuma"
         && service->get_sID() == id 
         && service->get_fee() == 770.72)
         return true;
