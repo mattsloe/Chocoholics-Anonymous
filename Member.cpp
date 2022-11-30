@@ -83,7 +83,17 @@ std::string Member::to_string_exp()const {
             {"zip",zip},
             {"accountActive",accountActive}
     };
+    auto services = json::array();
+    json temp;
+    for (Service_Record r : serviceList) {
+        temp = json::parse(r.to_string_exp());
+        services.push_back(temp);
+    }
+
+    j["serviceList"] = services; //append services
     s = j.dump(2); // the 2 is number of spaces for indent
+    //add the service records here
+
     return s;
 }
 
@@ -193,12 +203,19 @@ city = j.value("city","not found");
 state = j.value("state","not found");
 zip = j.value("zip","not found");
 accountActive = j["accountActive"].get<bool>(); //extracts bool from accountActive
+
+//Service List Init
+    for (auto elem : j["serviceList"]) {
+        Service_Record toAdd(elem);
+        serviceList.push_back(toAdd);
+    }
 }
 
 //copy constructor
 Member::Member(const Member& toCopy)
-:name(toCopy.name), mid(toCopy.mid),address(toCopy.address),city(toCopy.city),state(toCopy.state),zip(toCopy.zip),accountActive(toCopy.accountActive)
-{}
+:name(toCopy.name), mid(toCopy.mid),address(toCopy.address),city(toCopy.city),state(toCopy.state),zip(toCopy.zip),accountActive(toCopy.accountActive),serviceList(toCopy.serviceList)
+{
+}
 
 //copy
 void Member::copy(const Member& toCopy){
@@ -209,5 +226,12 @@ void Member::copy(const Member& toCopy){
     state = toCopy.state;
     zip = toCopy.zip;
     accountActive = toCopy.accountActive;
+    serviceList = toCopy.serviceList;
+}
+
+//add service to serviceList
+int Member::add_service(const Service_Record & toAdd) {
+    serviceList.push_back(toAdd);
+    return true;
 }
 

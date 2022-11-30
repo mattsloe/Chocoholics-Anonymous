@@ -26,6 +26,7 @@ class Service_Record {
         std::string get_mID();
         std::string get_sID();
         std::string to_string_exp();  //- returns a string json object representing the instance of the Service Record 
+        std::string to_string_provider();  //- returns a string that formats the Service Record for Provider Reports
         Service_Record & operator = (const Service_Record &);
 
         // functionality to create a Service Record

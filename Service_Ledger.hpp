@@ -10,11 +10,10 @@
 
 class Service_Ledger {
     public:
-        Service_Ledger();
-        ~Service_Ledger();
         void new_transaction(Service_Record &);
-        void generate_APR();
-        void generate_EFT(); 
+        void generate_APR(Provider_Directory &);
+        void generate_EFT(Provider_Directory &); 
+        bool in_ledger(std::string);
 
     private:
         std::unordered_map<std::string, std::vector<Service_Record>> ledger;

@@ -107,6 +107,16 @@ string Service_Record::to_string_exp() {
     return s;
 }
 
+string Service_Record::to_string_provider() {
+    string out;
+    out += "Current Date: " + date + "\n";
+    out += "Date Service was provided: " + sDate + "\n";
+    out += "Provider ID: " + pID + "\n";
+    out += "Member ID: " + mID + "\n";
+    out += "Service Code: " + sID + "\n";
+    return out;
+}
+
 Service_Record & Service_Record::operator = (const Service_Record &source) {
     // copy data
     this->date = source.date;
@@ -178,10 +188,10 @@ static string input_ID(int size) {
     return ID;
 }
 
-static bool valid_id(int size, string s) { //compile error with all_of()
-//    if (s.length() != size || !all_of(s.begin(), s.end(), isdigit)) { //make sure s represents a number
-//        cout<< "Invalid ID!" << endl;
-//        return false;
-//    }
+static bool valid_id(int intended_size, string s) { 
+    if (s.length() != intended_size || !all_of(s.begin(), s.end(), [](unsigned char c){ return std::isdigit(c); })) { //make sure s represents a number
+        cout<< "Invalid ID!" << endl;
+        return false;
+    }
     return true;
 }

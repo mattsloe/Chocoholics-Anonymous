@@ -86,11 +86,12 @@ int MemberDB::display_all() {
     return mid_map.size();
 }
 
-void MemberDB::print_map(std::string_view comment, const std::map<std::string,Member*>& m) {
+void MemberDB::print_map(std::string comment, const std::map<std::string,Member*>& m) {
         std::cout << comment;
         // iterate
-        for (const auto& [key, value] : m)
-            std::cout << std::endl << *value << std::endl;
+//        for (const auto& [key, value] : m)
+        for(auto value = m.begin(); value != m.end(); value++)
+            std::cout << std::endl << *(value->second) << std::endl;
 
         std::cout << std::endl;
 }

@@ -4,7 +4,7 @@ project(Chocaholics-Anonymous-Software)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(ChocAn 
-                Driver.hpp Driver.cpp 
+                # Driver.hpp Driver.cpp
                 json.hpp main.cpp 
                 Member.cpp Member.hpp Member_tester.hpp Member_tester.cpp 
                 MemberDB.cpp MemberDB.hpp MemberDB_tester.hpp
@@ -13,6 +13,7 @@ add_executable(ChocAn
                 Service_Ledger.hpp Service_Ledger.cpp 
                 Service_Record.hpp Service_Record.cpp
                 Service_Record_tester.hpp Service_Record_tester.cpp
+                Provider.hpp Provider.cpp Provider_tester.hpp Provider.cpp
                 )
 
 file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
