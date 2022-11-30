@@ -13,8 +13,8 @@
 //#include "Service_Record_tester.hpp"
 #include "Service_Ledger_tester.hpp"
 #include "Provider_Directory_tester.hpp"
-#include "Member_tester.hpp"
-#include "MemberDB_tester.hpp"
+//#include "Member_tester.hpp"
+//#include "MemberDB_tester.hpp"
 
 int main()
 {
@@ -23,7 +23,7 @@ int main()
    	//Add testing below. 
 		
 
-	MemberDBtester::testMemberDBClass();
+//	MemberDBtester::testMemberDBClass();
 
 
 	

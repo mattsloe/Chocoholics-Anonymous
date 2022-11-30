@@ -122,4 +122,21 @@ void MemberDB::print_map(std::string comment, const std::map<std::string,Member*
         std::cout << std::endl;
 }
 
+int MemberDB::get(std::string mid, Member & retrieve) {
+    Member m;
+    if (!get_member(mid,m)) return false;
+    retrieve.copy(*(mid_map[mid]));
+    return 0;
+}
+
+int MemberDB::edit(std::string mid,const Member & toEmplace ) {
+    Member * m = new Member();
+    if (!get_member(mid,*m)) return false; //return false if member not found
+    delete m;
+    m = new Member(toEmplace);
+    delete_member(mid);
+    add_member(m);
+    return true;
+}
+
 

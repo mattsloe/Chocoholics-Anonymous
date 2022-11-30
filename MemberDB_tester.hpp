@@ -21,6 +21,7 @@ using namespace std;
     static bool test8(); //test large DB with persistence
     static bool test9(); //does it come back from file properly?
     static bool test10(); //proper init from file
+    static bool test11(); //test get and edit functions
 
     static void createMemberInstance(Member*& mPtr){
         mPtr = new Member("0","123456789", true,"123 xolo ln","Portland","OR","12345");
@@ -44,10 +45,8 @@ using namespace std;
 //        cout << "Test 7: " << ((test7()==0)?"false":"true") << endl;
 //        cout << "Test 8: " << ((test8()==0)?"false":"true") << endl;
 //        cout << "Test 9: " << ((test9()==0)?"false":"true") << endl;
-        for (int i = 0; i < 100; ++i) {
-         cout << "Test 10: " << ((test10()==0)?"false":"true") << endl;
-        }
-        cout << "Test 10: " << ((test10()==0)?"false":"true") << endl;
+//        cout << "Test 10: " << ((test10()==0)?"false":"true") << endl;
+        cout << "Test 11: " << ((test11()==0)?"false":"true") << endl;
 
         cout<<"--------------------"<<endl;
         return;
@@ -171,6 +170,26 @@ bool MemberDBtester::test9() {
 bool MemberDBtester::test10(){
     MemberDB members;
     members.display_all();
+    return true;
+}
+
+bool MemberDBtester::test11() {
+    string  filename = "assets/test-members-small.json";
+    MemberDB members(filename);
+
+    //test get
+    Member m;
+    members.get("984092090",m);
+    cout << endl << "Testing get()" << endl << m << endl;
+
+    // Test edit
+    m.name = "New Name";
+    m.mid = "000000000";
+    members.edit("984092090",m);
+
+    cout << endl << "Testing edit()" << endl;
+    members.display_all();
+
     return true;
 }
 
