@@ -4,13 +4,13 @@
     // Kobe Norcross
     // Ashton Sawyer
     // Matt Loera
-    // Yuki Yamada
-
+ 
 #include <iostream>
 
 #include "Driver.hpp"
+
 //#include "Member_tester.cpp"
-#include "Service_Record_tester.hpp"
+//#include "Service_Record_tester.hpp"
 #include "Service_Ledger_tester.hpp"
 #include "Provider_Directory_tester.hpp"
 
@@ -18,24 +18,22 @@ int main()
 {
    	using namespace std;
 
-   	//Add testing to the menu.cpp class structure. 
-	//Main will now be for the menu class to operate as a driver. 
-	
+   	//Add testing below. 
+		
 	/*
 	cout << "Testing Member Class" << endl;
     MemberTester::testMemberClass();
 	MemberDBtester::testMemberDBClass();
 	cout << "Ending Member Class Testing" << endl;
 	*/
-	/*
-	PD_tester::test_Provider_Directory_class();
-	SL_tester::test_Service_Ledger_class();
-	Service_Record_tester::test_Service_Record_class();
-	*/
 
+	
+	//PD_tester::test_Provider_Directory_class();
+	//SL_tester::test_Service_Ledger_class();
+	//Service_Record_tester::test_Service_Record_class();
 
 	//Creating space between driver and any tests we decide to run above.
-	cout << "\n\n\n";
+	cout << "\n\n\n\n\n\n";
 
 	Driver term;
 
