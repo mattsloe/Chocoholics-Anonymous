@@ -10,6 +10,8 @@
 #include <string>
 #include <iostream>
 #include "json.hpp"
+#include "Provider_Directory.hpp"
+#include "Service_Record.hpp"
 
 class Member {
 public:
@@ -84,6 +86,9 @@ public:
     //safe copies Member
     void copy(const Member&);
 
+    //adds a service for the member
+    int add_service(const Service_Record&);
+
 
 
     /*Overloaded Operators*/
@@ -94,6 +99,7 @@ public:
 
 private:
     void init();
+    std::vector<Service_Record> serviceList;
 
 
 
