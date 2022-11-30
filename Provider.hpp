@@ -89,8 +89,11 @@ class Provider {
 		std::string name;    // expects: <first> <last> 
 		std::string pid;     // provider ID; 9 digits
 		Address address; 
-		node_head * head;    // head of provided services list
-		node * tail;         // tail of provided services list
+		int num_services_provided;
+		float total_cost;    // price to be paid for all services on record
+		std::vector<Service_Record> service_list;
+		//node_head * head;    // head of provided services list
+		//node * tail;         // tail of provided services list
 
 		/* Service List Helper Fxns */
 		void service_load_file(nlohmann::json, Provider_Directory&);  // inits service list from json file
