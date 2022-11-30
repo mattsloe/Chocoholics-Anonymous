@@ -8,6 +8,7 @@ class SL_tester {
     public:
         static void test_Service_Ledger_class();
         static void create_SL(Service_Ledger *&);
+        static void delete_SL(Service_Ledger *&);
         
         // tests
         static bool new_transaction_good_test(Service_Ledger *);
@@ -18,6 +19,8 @@ class SL_tester {
         static bool generate_EFT_test(Service_Ledger *);
         static bool generate_APR_test(Service_Ledger *);
         */
+	private:
+		SL_tester();
 };
 
 static void assert_test(bool);
