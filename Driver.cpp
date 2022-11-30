@@ -59,7 +59,7 @@ char get_char(const string prompt) {
 
 
 //Need to be implemented. Will request user input for member, provider, and service ID's
-bool validate_member(string m_id, Member &to_find){
+bool validate_member(string m_id, Member *&to_find){
 
 	//FIND MEMBER.
 	if (true) { //Replace true with function call to find member.
@@ -73,7 +73,7 @@ bool validate_member(string m_id, Member &to_find){
 
 
 
-bool validate_provider(string p_id, Provider &to_find){
+bool validate_provider(string p_id, Provider *&to_find){
 
 	//FIND PROVIDER
 	if (true) { //Replace true with function call to find provider.
@@ -87,7 +87,7 @@ bool validate_provider(string p_id, Provider &to_find){
 
 
 
-bool validate_service(string s_id, Service &to_find){
+bool validate_service(string s_id, Service *&to_find){
 	
 	//FIND SERVICE
 	if (true) { //Replace true with function call to find service.
@@ -277,12 +277,15 @@ void Driver::start_fterm() {
 		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
 		1) Suspend or reinstate a member\n\t \
 		2) Generate a EFT Data Report\n\t \
-		3) Exit terminal\n> ");
+		3) Generate APR Data Report\n\t \
+		4) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
 				break;
 			case 2:
+				break;
+			case 3:
 				break;
 		}
 	}	
@@ -293,6 +296,28 @@ void Driver::start_fterm() {
 }
 
 
+
+
+/////////////////////////////// PROVIDER_TERMINAL CLASS ///////////////////////////////////
+
+int Provider_Terminal::provide_service_to_member() {
+
+
+
+	return 1;
+}
+
+
+int Provider_Terminal::generate_provider_report() {
+
+	return 1;
+}
+
+
+int Provider_Terminal::generate_provider_directory() {
+
+	return 1;
+}
 
 
 
