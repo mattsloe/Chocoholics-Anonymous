@@ -231,16 +231,31 @@ int Provider::remove_service(Service_Record & to_remove) {
 		return 1;
 
 	node * curr = head->next;
-	while (curr->next) {
-		if (curr->next->service->get_sID() == to_remove.get_sID() && 
-			curr->next->service->get_date() == to_remove.get_date()) {
-			node * tmp = curr->next;
-			curr->next = tmp->next;
-			delete tmp->service;
-			delete tmp;
-			return 0;
+	while (curr) {
+		if (curr->next) {
+			if (curr->next->service->get_sID() == to_remove.get_sID() &&
+				curr->next->service->get_date() == to_remove.get_date()) {
+				node* tmp = curr->next;
+				curr->next = tmp->next;
+				if (tmp == tail)
+					tail = curr;
+				delete tmp->service;
+				delete tmp;
+				return 0;
+			}
+			curr = curr->next;
 		}
-		curr = curr->next;
+		// must be first node in list if it's going to match
+		// otherwise would have been caught by above
+		else {
+			if (curr->service->get_sID() == to_remove.get_sID() &&
+				curr->service->get_date() == to_remove.get_date()) {
+				delete curr->service;
+				delete curr;
+				head->next = tail = NULL;
+				return 0;
+			}
+		}
 	}
 	// service not found
 	return 1;
@@ -281,10 +296,12 @@ std::string Provider::service_to_file() {
 }
 
 void Provider::service_load_file(nlohmann::json j, Provider_Directory & d) {
-	int len = j.size();
+	using json = nlohmann::json;
 
+	int len = j.size();
+	json j_array = j;
 	for (int i = 0; i < len; ++i) {
-		Service_Record tmp(j[i]);
+		Service_Record tmp(j_array[i]);
 		add_service(tmp, d);
 	}
 

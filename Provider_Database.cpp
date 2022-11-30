@@ -27,9 +27,16 @@ int Provider_Database::edit_provider(std::string pid) {
 }
 
 void Provider_Database::to_file() {
+	std::ofstream out_file("assets/provider_database.json");
 
+	for (int i = 0; i < pids.size(); ++i) {
+		out_file << (table.find(pids[i])).to_file();
+	}
+	out_file.close();
+	return;
 }
 
 void Provider_Database::load_file() {
 
 }
+

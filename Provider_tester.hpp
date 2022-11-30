@@ -60,7 +60,7 @@ nlohmann::json j_obj = {
 	{"city", city},
 	{"state", state},
 	{"zip", zip},
-	{"serviceList", {}}
+	{"serviceList", "[]"}
 };
 
 
