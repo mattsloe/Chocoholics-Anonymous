@@ -58,13 +58,13 @@ class Provider {
 		~Provider();
 
 		/* Interface */
-		void init_provider();               // asks user for input
-		std::string get_pid();		        // return pid
-		std::string to_string();            // returns provider formatted as string
-		std::string to_file();              // format data for json file
-		void load_file(nlohmann::json j);   // load provider from json file
-		void run_report();                  // generate provider report
-		std::string run_manager_report();   // generate string for database gen. report
+		void init_provider();                     // asks user for input
+		std::string get_pid();		              // return pid
+		std::string to_string();                  // returns provider formatted as string
+		std::string to_file();                    // format data for json file
+		void load_file(nlohmann::json j);         // load provider from json file
+		void run_report(Provider_Directory & d);  // generate provider report
+		std::string run_manager_report();         // generate string for database gen. report
 
 		// overloaded for ease of use
 		//   return 0 on success
@@ -81,7 +81,7 @@ class Provider {
 		friend std::ostream & operator<<(std::ostream & out, Provider & p);
 
 		/* Linked List Functionality */
-		int add_service(Service_Record * to_add);
+		int add_service(Service_Record * to_add, Provider_Directory & directory);
 		int remove_service(Service_Record * to_remove);
 		int clear_services();  // for resetting at end of week
 
@@ -94,9 +94,9 @@ class Provider {
 		node * tail;         // tail of provided services list
 
 		/* Service List Helper Fxns */
-		std::string service_to_file();          // formats service data for provider json file - might not need
+		std::string service_to_file();          // formats service data for provider json file 
 		std::string service_to_string();        // formats service data for provider report
-		void service_load_file(nlohmann::json); // inits service list from json file - might not need
+		void service_load_file(nlohmann::json); // inits service list from json file 
 		void delete_list();                     // destructor helper - deletes list, not head
 		void init_list();                       // initializer helper
 

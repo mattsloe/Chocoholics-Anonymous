@@ -1,4 +1,5 @@
 //Ashton Sawyer 11/1
+// wrappers -> when doing things give back ref for driver to print
 
 #ifndef PROVIDER_DB_H
 # define PROVIDER_DB_H
@@ -18,7 +19,7 @@ class Provider_Database {
 		int get_provider(std::string pid, const Provider &); 
 		int add_provider(const Provider &);
 		int delete_provider(std::string pid);
-		int edit_provider(std::string pid, const Provider & to_fill);
+		int edit_provider(std::string pid, Provider & to_fill);
 		int add_service(std::string pid, Service_Record * service);
 		void to_file();
 		void load_file();

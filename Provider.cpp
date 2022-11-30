@@ -307,7 +307,7 @@ std::string Provider::service_to_string() {
 	if (tail) {
 		node * curr = head->next;
 		while (curr) {
-			//out += curr->service->to_string()
+			out += curr->service->to_string_provider();
 			out += "\n";
 		}
 	}
