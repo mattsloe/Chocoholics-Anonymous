@@ -11,7 +11,8 @@ class Provider_Database {
 	public:
 		/* Constructors */
 		Provider_Database();
-		explicit Provider_Database(nlohmann::json)  // init from json
+		explicit Provider_Database(nlohmann::json);
+		// init from json
 		~Provider_Database();
 
 		/* Interface */
