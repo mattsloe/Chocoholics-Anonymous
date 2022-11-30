@@ -3,32 +3,54 @@ using namespace std;
 
 void Service_Record_tester::test_Service_Record_class() {
     Service_Record * sr = nullptr;
-    cout << endl;
-    cout << "------------------------------------------";
+    cout << endl << endl;
     cout << "SERVICE RECORD TESTS STARTING..." << endl;
+
     cout << "Default Constuctor test ";
     (assert_test(default_constructor(sr)));
+    delete_SR(sr);
+
     cout << "Copy Constuctor test    ";
     (assert_test(copy_constructor(sr)));
+    delete_SR(sr);
+
     cout << "JSON Constuctor test    ";
     (assert_test(json_constructor(sr)));
+    delete_SR(sr);
+
     cout << "Setting Date test       "; 
     (assert_test(setting_date(sr)));
+    delete_SR(sr);
+    
     cout << "Setting sID test        "; 
     (assert_test(setting_sID(sr)));
+    delete_SR(sr);
+
     cout << "Setting mID test        "; 
     (assert_test(setting_mID(sr)));
+    delete_SR(sr);
+
     cout << "Setting pID test        "; 
     (assert_test(setting_pID(sr)));
+    delete_SR(sr);
+
     cout << "Setting comments test   "; 
     (assert_test(setting_comments(sr)));
+    delete_SR(sr);
+
     cout << "SERVICE RECORD TESTS COMPLETE";
-    cout << "------------------------------------------";
-    cout << endl;
+    cout << endl << endl;
 }
 
 void Service_Record_tester::create_SR(Service_Record *&s) {
     s = new Service_Record(j);
+}
+
+void Service_Record_tester::delete_SR(Service_Record*& s) {
+    if (s == nullptr) 
+        return
+    delete s;
+    s = nullptr;
 }
 
 bool Service_Record_tester::default_constructor(Service_Record *s) {
@@ -81,6 +103,9 @@ bool Service_Record_tester::copy_constructor(Service_Record *s) {
         compare = true;
     else
         compare = false;
+
+    delete_SR(s);
+    delete_SR(test);
 
     return compare; 
 }
