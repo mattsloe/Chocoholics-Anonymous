@@ -46,6 +46,8 @@ private:
     int add_member(Member*);
     void init(nlohmann::json); //initialize with json object
     void print_map(std::string comment,const std::map<std::string,Member*>& m);
+    std::string  filename;
+    const char* data_filename = "assets/test-members.json";
 
 };
 

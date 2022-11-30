@@ -4,7 +4,19 @@
 
 #include "MemberDB.hpp"
 
-MemberDB::MemberDB() = default;
+MemberDB::MemberDB(){
+    this->filename = data_filename;
+    nlohmann::json j;
+    std::ifstream infile(filename);
+    if (!infile.is_open())
+    {
+        std::cout<<"Cant open file!!"<<std::endl; //error
+    }
+    infile >> j;
+    infile.close();
+    init(j); //init with extracted json data
+
+}
 
 //initialized with json object
 MemberDB::MemberDB(nlohmann::json j) {
@@ -14,6 +26,7 @@ MemberDB::MemberDB(nlohmann::json j) {
 //initialized with a file name
 
 MemberDB::MemberDB(std::string filename) {
+    this->filename = filename;
     nlohmann::json j;
     std::ifstream infile(filename);
     if (!infile.is_open())
@@ -28,7 +41,20 @@ MemberDB::MemberDB(std::string filename) {
 //destructor
 //must delete all dynamically allocated memory
 MemberDB::~MemberDB() {
+    using json = nlohmann::json;
+    //write to file
+    std::ofstream  out(filename);
+    json j = json::array();
+    for (auto value = name_map.begin(); value != name_map.end(); value++) {
+        j.push_back(json::parse((value->second)->to_string_exp())); //push back member
+    }
+    out << j.dump(2);
+    out.close();
 
+    //delete memory
+    for(auto value = mid_map.begin(); value != mid_map.end(); value++) {
+        delete value->second;
+    }
 }
 
 int MemberDB::get_member(std::string mid, Member & m) {
