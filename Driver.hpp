@@ -8,7 +8,7 @@
 #include <string>
 
 //Custom file includes from our project.
-#include "Member.hpp"
+#include "MemberDB.hpp"
 #include "Provider_Database.hpp"
 #include "Service_Ledger.hpp" //Includes Service_Ledger, Service_Record, Service, and Provider_Directory
 
@@ -56,13 +56,18 @@ class Driver {
 
 
 	private:
-	Provider_Terminal 		*pterm;
-	Interactive_Terminal 	*iterm;
-	Financial_Terminal		*fterm;
-	//Will need to add ProviderDB, MemberDB, Service_Ledger, and a Provider_Directory (based on design document).
-	//Potential private member functions include functions that delegate the output of menus. TBD...
-	Service_Ledger ledger;
-	Provider_Directory * directory;
+		Provider_Terminal 		*pterm;
+		Interactive_Terminal 	*iterm;
+		Financial_Terminal		*fterm;
+
+		//Will need to add ProviderDB, MemberDB, Service_Ledger, and a Provider_Directory (based on design document).
+		//Potential private member functions include functions that delegate the output of menus. TBD...
+
+		Service_Ledger			ledger;
+		MemberDB				member_db;
+		//Provider_Database		provider_db;
+
+		Provider_Directory		*directory;
 
 };
 
