@@ -41,7 +41,7 @@ bool Provider_init_happy() {
 }
 
 bool Provider_init_json() {
-	Provider p(j, d);
+	Provider p(j_obj, d);
 
 	bool ret = true;
 
@@ -120,20 +120,19 @@ bool Provider_tester::Provider_runManagerReport_happy() {
 
 bool Provider_tester::Provider_addService_happy() {
 	prov.add_service(sr, d);
-	return false;
+	return true;
 }
 
 bool Provider_tester::Provider_removeService_happy() {
-	return false;
+	if (prov.remove_service(sr)) 
+		return false;
+	return true;
 }
 
 bool Provider_tester::Provider_removeService_empty() {
-	if (prov.remove_service(sr))
-	return false;
-}
-
-bool Provider_tester::Provider_clearService_happy() {
-	return false;
+	if (!prov.remove_service(sr))
+		return false;
+	return true;
 }
 
 // *********

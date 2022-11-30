@@ -13,6 +13,7 @@
 #include "Service_Record_tester.hpp"
 #include "Service_Ledger_tester.hpp"
 #include "Provider_Directory_tester.hpp"
+#include "Provider_tester.hpp"
 
 int main()
 {
@@ -30,6 +31,7 @@ int main()
 	PD_tester::test_Provider_Directory_class();
 	SL_tester::test_Service_Ledger_class();
 	Service_Record_tester::test_Service_Record_class();
+	Provider_tester::test_provider_class();
 
 
 	//Creating space between driver and any tests we decide to run above.
