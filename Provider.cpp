@@ -9,28 +9,31 @@
 
 //default constructor
 Provider::Provider() {
-	init_list();
+	num_services_provided = 0;
+	total_cost = 0.0;
 }
 
 Provider::Provider(std::string _name, std::string num, const Address & _address) {
 	name = _name;
 	pid = num;
 	address.copy_address(_address);
-	init_list();
+	num_services_provided = 0;
+	total_cost = 0.0;
+}
+
+Provider::Provider(const Provider & to_copy) {
+	copy(to_copy);
 }
 
 //json constructor
-Provider::Provider(nlohmann::json j) {
-	load_file(j);
+Provider::Provider(nlohmann::json j, Provider_Directory & d) {
+	load_file(j, d);
 }
 
-//default destructor: deletes list of services
-Provider::~Provider() {
-	delete_list();
-	delete head;
-}
+Provider::~Provider() = default;
 
 //ask for user input + error check
+//doesn't add services
 void Provider::init_provider() {
 	std::string tmp;
 	int flag = 1;
@@ -53,16 +56,21 @@ void Provider::init_provider() {
 	address.init_address();
 }
 
+void Provider::copy(const Provider & to_copy) {
+	name = to_copy.name;
+	pid = to_copy.pid;
+	address.copy_address(to_copy.address);
+	num_services_provided = to_copy.num_services_provided;
+	total_cost = to_copy.total_cost;
+	service_list = to_copy.service_list;
+}
+
 std::string Provider::get_pid() {
 	return pid;
 }
 
 bool Provider::operator==(const Provider& comp) {
 	return (pid == comp.pid);
-}
-
-bool Provider::operator<(const Provider& comp) {
-	return (pid < comp.pid);
 }
 
 std::ostream& operator<<(std::ostream& out, Provider & p) {
@@ -150,18 +158,22 @@ std::string Provider::to_file() {
 		{"street", address.street},
 		{"city", address.city},
 		{"state", address.state},
-		{"zip", address.zip},
-		{"serviceList", service_to_file()}
+		{"zip", address.zip}
 	};
 
-	//json service_array = service_to_file();
-	//j.insert(service_array.begin(), service_array.end());
+	auto services = json::array();
+	json temp;
+	for (Service_Record r : service_list) {
+		temp = json::parse(r.to_string_exp());
+		services.push_back(temp);
+	}
+	j["serviceList"] = services; //append services
 
 	out = j.dump(2);
 	return out;
 }
 
-void Provider::load_file(nlohmann::json j) {
+void Provider::load_file(nlohmann::json j, Provider_Directory & d) {
 	std::string street, city, state, zip, service_array;
 
 	name = j.value("name", "not found");
@@ -173,12 +185,17 @@ void Provider::load_file(nlohmann::json j) {
 	zip = j.value("zip", "not found");
 	address.init_address(street, city, state, zip);
 
-	service_array = j.value("serviceList", "not found");
-	service_load_file(service_array);
+	for (auto elem : j["serviceList"]) {
+		Service_Record to_add(elem);
+		service_list.push_back(to_add);
+
+		num_services_provided += 1;
+		total_cost += d.get_fee_d(to_add.get_sID());
+	}
 }
 
 // outputs .txt file of provider info + provided services info
-void Provider::run_report() {
+void Provider::run_report(Provider_Directory & d) {
 	std::string file_name = name;
 	size_t pos = name.find(' ');
 	file_name.replace(pos, 1, 1, '_');
@@ -193,7 +210,7 @@ void Provider::run_report() {
 
 	output_file << to_string();
 	output_file << "\n";
-	output_file << service_to_string();
+	output_file << service_to_string(d);
 	output_file.close();
 	return;
 }
@@ -206,90 +223,29 @@ std::string Provider::run_manager_report() {
 	std::string out;
 	
 	out += name + " - " + pid + "\n";
-	out += "Number of Consults: " + std::to_string(head->num_services_provided) + "\t";
-	out += "Total Fee: " + std::to_string(head->total_cost) + "\n";
+	out += "Number of Consults: " + std::to_string(num_services_provided) + "\t";
+	out += "Total Fee: $" + std::to_string(total_cost) + "\n";
 
 	return out;
 }
 
 /* **Service List Functions** */
 
-int Provider::add_service(Service_Record * to_add) {
-	//incr_total_fee(service_fee)
-	head->num_services_provided += 1;
-	
-	if (!tail) {
-		tail = new node;
-		tail->service = to_add;
-		tail->next = NULL;
-		return 0;
-	}
-	tail->next = new node;
-	tail = tail->next;
-	tail->service = to_add;
-	tail->next = NULL;
-	return 0;
-}
+int Provider::add_service(Service_Record & to_add, Provider_Directory & d) {
+	service_list.push_back(to_add);
 
-// defines Service_Record == Service_Record as sid == r.sid && date == r.date
-int Provider::remove_service(Service_Record * to_remove) {
-	// empty list
-	if (!tail)
-		return 1;
+	num_services_provided += 1;
+	total_cost += d.get_fee_d(to_add.get_sID());
 
-	node * curr = head->next;
-	while (curr->next) {
-		if (curr->next->service->get_sID() == to_remove->get_sID() && 
-			curr->next->service->get_date() == to_remove->get_date()) {
-			node * tmp = curr->next;
-			curr->next = tmp->next;
-			delete tmp;
-			return 0;
-		}
-		curr = curr->next;
-	}
 	return 0;
 }
 
 // for resetting week
 int Provider::clear_services() {
-	head->total_cost = 0;
-	head->num_services_provided = 0;
-
-	if (!tail)
-		return 1;
-	delete_list();
+	service_list.clear();
+	total_cost = 0.0;
+	num_services_provided = 0;
 	return 0;
-}
-
-// for json file
-std::string Provider::service_to_file() {
-	using json = nlohmann::json;
-	std::string out;
-
-	json j = json::array({});
-
-	if (!tail) {
-		out = j.dump(2);
-		return out;
-	}
-
-	node * curr = head->next;
-	while (curr) {
-		j.insert(j.begin(), curr->service->to_string_exp());
-		curr = curr->next;
-	}
-	
-	out = j.dump(2);
-
-	return out;
-}
-
-// might not need if service ledger passes initialized 
-// records to provider on startup -> sharing pointer so don't want to
-// duplicate data
-void Provider::service_load_file(nlohmann::json j) {
-
 }
 
 // for report
@@ -301,47 +257,18 @@ void Provider::service_load_file(nlohmann::json j) {
 // ...
 // 
 // Total Services: <#>    Total Fee: <$>
-std::string Provider::service_to_string() {
+std::string Provider::service_to_string(Provider_Directory & d) {
 	std::string out;
 
-	if (tail) {
-		node * curr = head->next;
-		while (curr) {
-			//out += curr->service->to_string()
+	for (int i = 0; i < service_list.size(); ++i) {
+			out += service_list[i].to_string_provider();
+			out += "Service Fee: " + d.get_fee(service_list[i].get_sID()) + "\n";
 			out += "\n";
-		}
 	}
-	out += "Total Services: " + std::to_string(head->num_services_provided) + "\t";
-	out += "Total Fee: " + std::to_string(head->total_cost) + "\n";
+	out += "Total Services: " + std::to_string(num_services_provided) + "\t";
+	out += "Total Fee: " + std::to_string(total_cost) + "\n";
 
 	return out;
-}
-
-// doesn't delete head, just the list and tail
-// -> head will need to be handled by calling fxn
-void Provider::delete_list() {
-	if (!tail)
-		return;
-
-	node * curr = head->next;
-	node * tmp;
-	while (curr->next) {
-		tmp = curr->next;
-		delete curr;
-		head->next = tmp;
-		curr = tmp;
-	}
-	delete tail;
-	tail = NULL;
-	return;
-}
-
-void Provider::init_list() {
-	head = new node_head;
-	head->num_services_provided = 0;
-	head->total_cost = 0;
-	head->next = NULL;
-	tail = NULL;
 }
 
 // **********

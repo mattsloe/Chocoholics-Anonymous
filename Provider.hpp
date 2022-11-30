@@ -11,18 +11,6 @@
 #include "Service_Record.hpp"
 #include "Provider_Directory.hpp"
 
-
-struct node {
-	Service_Record * service;
-	node * next;
-};
-
-struct node_head {
-	int num_services_provided;
-	float total_cost;
-	node * next;
-};
-
 struct Address {
 	std::string street;   // 25 char
 	std::string city;     // 14 char
@@ -54,17 +42,20 @@ class Provider {
 		/* Constructors */
 		Provider();
 		Provider(std::string _name, std::string _pid, const Address & _address);  // no error checking
-		Provider(nlohmann::json j);
+		Provider(nlohmann::json j, Provider_Directory &);
+		Provider(const Provider &);  //copy costructor
 		~Provider();
 
 		/* Interface */
-		void init_provider();               // asks user for input
-		std::string get_pid();		        // return pid
-		std::string to_string();            // returns provider formatted as string
-		std::string to_file();              // format data for json file
-		void load_file(nlohmann::json j);   // load provider from json file
-		void run_report();                  // generate provider report
-		std::string run_manager_report();   // generate string for database gen. report
+		void init_provider();                     // asks user for input
+		void copy(const Provider &);              // copies data from given provider
+		std::string get_pid();		              // return pid
+		std::string to_string();                  // returns provider formatted as string
+		std::string to_file();                    // format data for json file
+		void run_report(Provider_Directory&);     // generate provider report
+		std::string run_manager_report();         // generate string for database gen. report
+		void load_file(nlohmann::json j, Provider_Directory&);   // load provider from json file
+		
 
 		// overloaded for ease of use
 		//   return 0 on success
@@ -77,12 +68,10 @@ class Provider {
 
 		/* Overloaded Operators */
 		bool operator==(const Provider & toComp);
-		bool operator<(const Provider & toComp);
 		friend std::ostream & operator<<(std::ostream & out, Provider & p);
 
 		/* Linked List Functionality */
-		int add_service(Service_Record * to_add);
-		int remove_service(Service_Record * to_remove);
+		int add_service(Service_Record & to_add, Provider_Directory & directory);
 		int clear_services();  // for resetting at end of week
 
 
@@ -90,15 +79,12 @@ class Provider {
 		std::string name;    // expects: <first> <last> 
 		std::string pid;     // provider ID; 9 digits
 		Address address; 
-		node_head * head;    // head of provided services list
-		node * tail;         // tail of provided services list
+		float total_cost;    // price to be paid for all services on record
+		int num_services_provided;
+		std::vector<Service_Record> service_list;
 
 		/* Service List Helper Fxns */
-		std::string service_to_file();          // formats service data for provider json file - might not need
-		std::string service_to_string();        // formats service data for provider report
-		void service_load_file(nlohmann::json); // inits service list from json file - might not need
-		void delete_list();                     // destructor helper - deletes list, not head
-		void init_list();                       // initializer helper
+		std::string service_to_string(Provider_Directory&);  // formats service data for provider report
 
 		/* Init Helper Fxns */
 		int set_name(std::string _name);
