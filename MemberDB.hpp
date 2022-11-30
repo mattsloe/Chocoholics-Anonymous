@@ -30,6 +30,8 @@ public:
     ~MemberDB(); //destructor
 
     /*Interface*/
+    int get(std::string mid,Member&); //retrieve member matching mid. Returns false if not found
+    int edit(std::string mid,const Member&); //retrieve member matching mid. Returns false if not found. Full access
 
     int get_member(std::string mid,Member&);
 
@@ -44,6 +46,8 @@ private:
     int add_member(Member*);
     void init(nlohmann::json); //initialize with json object
     void print_map(std::string comment,const std::map<std::string,Member*>& m);
+    std::string  filename;
+    const char* data_filename = "assets/test-members.json";
 
 };
 

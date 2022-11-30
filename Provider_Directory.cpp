@@ -84,7 +84,7 @@ void Provider_Directory::init(nlohmann::json j) {
 }
 
 void Provider_Directory::create_new_service() {
-    bool valid = true;
+    bool valid = false;
     string name, sID;
     double fee;
     Service service = Service();
@@ -92,7 +92,8 @@ void Provider_Directory::create_new_service() {
     while (!valid) {
         cout << "Please enter a new name for the service to be provided: ";
         cin >> name; 
-        service.set_name(name);    
+        service.set_name(name);
+        valid = true;
     }
     valid = false;
 
@@ -100,6 +101,7 @@ void Provider_Directory::create_new_service() {
         cout << "Please enter a new Service ID that has not been used in the past: ";
         cin >> sID;
         service.set_sID(sID);
+        valid = true;
     }
     valid = false;
 
@@ -107,6 +109,7 @@ void Provider_Directory::create_new_service() {
         cout << "Lastly, please enter the fee for this service to be provided: ";
         cin >> fee;
         service.set_fee(fee);
+        valid = true;
     }
     valid = false;
 
