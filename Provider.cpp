@@ -21,15 +21,16 @@ Provider::Provider(std::string _name, std::string num, const Address & _address)
 	total_cost = 0.0;
 }
 
+Provider::Provider(const Provider & to_copy) {
+	copy(to_copy);
+}
+
 //json constructor
 Provider::Provider(nlohmann::json j, Provider_Directory & d) {
 	load_file(j, d);
 }
 
-//default destructor: deletes list of services
-Provider::~Provider() {
-	// default
-}
+Provider::~Provider() = default;
 
 //ask for user input + error check
 //doesn't add services
@@ -53,6 +54,15 @@ void Provider::init_provider() {
 	flag = 1;
 	
 	address.init_address();
+}
+
+void Provider::copy(const Provider & to_copy) {
+	name = to_copy.name;
+	pid = to_copy.pid;
+	address.copy_address(to_copy.address);
+	num_services_provided = to_copy.num_services_provided;
+	total_cost = to_copy.total_cost;
+	service_list = to_copy.service_list;
 }
 
 std::string Provider::get_pid() {
@@ -180,7 +190,7 @@ void Provider::load_file(nlohmann::json j, Provider_Directory & d) {
 		service_list.push_back(to_add);
 
 		num_services_provided += 1;
-		total_cost += d.get_fee_d(to_add.get_sID())
+		total_cost += d.get_fee_d(to_add.get_sID());
 	}
 }
 
@@ -226,6 +236,8 @@ int Provider::add_service(Service_Record & to_add, Provider_Directory & d) {
 
 	num_services_provided += 1;
 	total_cost += d.get_fee_d(to_add.get_sID());
+
+	return 0;
 }
 
 // for resetting week
@@ -233,6 +245,7 @@ int Provider::clear_services() {
 	service_list.clear();
 	total_cost = 0.0;
 	num_services_provided = 0;
+	return 0;
 }
 
 // for report

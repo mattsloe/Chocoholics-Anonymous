@@ -43,14 +43,16 @@ class Provider {
 		Provider();
 		Provider(std::string _name, std::string _pid, const Address & _address);  // no error checking
 		Provider(nlohmann::json j, Provider_Directory &);
+		Provider(const Provider &);  //copy costructor
 		~Provider();
 
 		/* Interface */
 		void init_provider();                     // asks user for input
+		void copy(const Provider &);              // copies data from given provider
 		std::string get_pid();		              // return pid
 		std::string to_string();                  // returns provider formatted as string
 		std::string to_file();                    // format data for json file
-		void run_report(Provider_Directory & d);  // generate provider report
+		void run_report(Provider_Directory&);     // generate provider report
 		std::string run_manager_report();         // generate string for database gen. report
 		void load_file(nlohmann::json j, Provider_Directory&);   // load provider from json file
 		

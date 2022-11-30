@@ -1,7 +1,9 @@
 // Ashton Sawyer 11/1 
 #include "Provider_Database.hpp"
 
-Provider_Database::Provider_Database() {
+Provider_Database::Provider_Database() = default;
+
+Provider_Database::Provider_Database(Provider_Directory & d) {
 	std::ifstream in_file(data_filename);
 	if (!in_file.is_open()) {
 		std::cout << "Error: Unable to open file" << std::endl;
@@ -10,15 +12,15 @@ Provider_Database::Provider_Database() {
 
 	nlohmann::json j;
 	in_file >> j;
-	init(j);
+	init(j, d);
 }
 
 Provider_Database::Provider_Database(std::string file_name, Provider_Directory& d) {
-	load_file(file_name);
+	load_file(file_name, d);
 }
 
 Provider_Database::Provider_Database(nlohmann::json j, Provider_Directory & d) {
-	init(j);
+	init(j, d);
 }
 
 Provider_Database::~Provider_Database() {
@@ -70,9 +72,9 @@ bool Provider_Database::delete_provider(std::string pid) {
 		return false;
 	}
 	
-	for (int i = 0; i < pids.size(); ++i) {
-		if (pids[i] == pid)
-			pids.erase(i);
+	for (auto value = pids.begin(); value != pids.end(); ++value) {
+		if (*value == pid)
+			pids.erase(value);
 	}
 
 	return true;
@@ -97,7 +99,7 @@ void Provider_Database::to_file() {
 	return;
 }
 
-void Provider_Database::load_file(std::string file_name) {
+void Provider_Database::load_file(std::string file_name, Provider_Directory & d) {
 	std::ifstream in_file(file_name);
 	if (!in_file.is_open()) {
 		std::cout << "Error: Unable to open file" << std::endl;
@@ -108,14 +110,14 @@ void Provider_Database::load_file(std::string file_name) {
 	in_file >> j;
 	in_file.close();
 
-	init(j);
+	init(j, d);
 }
 
-void Provider_Database::generate_provider_reports() {
+void Provider_Database::generate_provider_reports(Provider_Directory & d) {
 	int len = pids.size();
 
 	for (int i = 0; i < len; ++i) {
-		table[pids[i]]->run_report();
+		table[pids[i]]->run_report(d);
 	}
 }
 
@@ -128,22 +130,33 @@ void Provider_Database::generate_manager_report() {
 	}
 }
 
-void Provider_Database::generate_single_report(std::string pid) {
+void Provider_Database::generate_single_report(std::string pid, Provider_Directory & d) {
 	if (!table.contains(pid)) {
 		std::cout << "Error: Provider doesn't exist" << std::endl;
 		return;
 	}
 
-	table[pid]->run_report();
+	table[pid]->run_report(d);
 	return;
 }
 
-void Provider_Database::init(nlohmann::json j) {
+int Provider_Database::display_all() {
+	int len = pids.size();
+
+	for (int i = 0; i < len; ++i) {
+		std::cout << *table[pids[i]] << std::endl;
+	}
+	return table.size();
+}
+
+void Provider_Database::init(nlohmann::json j, Provider_Directory & d) {
 	using json = nlohmann::json;
 
 	// elm = Provider in json array
 	for (auto& elm : j.items()) {
 		json object = elm.value();
-		add_provider(new Provider(object, directory)); 
+		Provider * p = new Provider(object, d);
+		table[p->get_pid()] = p;
+		pids.push_back(p->get_pid());
 	}
 }

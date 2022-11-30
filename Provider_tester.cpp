@@ -24,8 +24,6 @@
 	cout << "Test 7: Run Report\t\t\tResult: " << Provider_runReport_happy() << endl;
 	cout << "Test 8: Run Manager Report\t\tResult: " << Provider_runManagerReport_happy() << endl;
 	cout << "Test 9: Add Service\t\t\tResult: " << (Provider_addService_happy() ? "pass" : "fail") << endl;
-	cout << "Test 10: Remove Service Happy\t\tResult: " << ((Provider_removeService_happy()) ? "pass" : "fail") << endl;
-	cout << "Test 11: Remove Service Empty List\tResult: " << ((Provider_removeService_empty()) ? "pass" : "fail") << endl;
 	cout << "PROVIDER TESTS COMPLETE" << endl;
 	cout << "------------------------------------" << endl;
 	return;
@@ -130,18 +128,6 @@ bool Provider_tester::Provider_runManagerReport_happy() {
 
 bool Provider_tester::Provider_addService_happy() {
 	prov.add_service(sr, d);
-	return true;
-}
-
-bool Provider_tester::Provider_removeService_happy() {
-	if (prov.remove_service(sr)) 
-		return false;
-	return true;
-}
-
-bool Provider_tester::Provider_removeService_empty() {
-	if (!prov.remove_service(sr))
-		return false;
 	return true;
 }
 

@@ -22,10 +22,6 @@ class Provider_tester {
 		static bool Provider_runReport_happy();         // uses Service_Record fxn
 		static bool Provider_runManagerReport_happy();  // uses Service_Record fxn
 		static bool Provider_addService_happy();
-		static bool Provider_removeService_happy();
-		static bool Provider_removeService_empty();
-
-
 
 
 		/* Address Tests - finished */
