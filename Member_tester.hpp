@@ -78,6 +78,7 @@ bool MemberTester::test5(Member* mPtr){
     nlohmann::json  j = nlohmann::json ::parse(in); //instantiate object using parse with the infile stream
     mPtr = new Member(j);
     cout << endl << *mPtr << endl;
+    cout << endl << (*mPtr).to_string_exp() << endl;
     delete mPtr;
     return true;
 }
@@ -121,6 +122,7 @@ bool MemberTester::test8() { //test addService()
     test->to_string();
     //display json
     cout << endl<< test->to_string_exp() << endl;
+    delete test;
     return true;
 }
 
@@ -138,14 +140,15 @@ bool MemberTester::test9() {
     test->to_string();
     //display json
     cout << endl<< test->to_string_exp() << endl;
+    delete test;
     return true;
 }
 
 bool MemberTester::test10() { //test json import
     //CREATE MEMBER WITH SERVICES ADDED
     Member * test;
-    createMemberInstance(test);
-    cout << endl << *test << endl;
+    test5(test);
+
 
     return true;
 }

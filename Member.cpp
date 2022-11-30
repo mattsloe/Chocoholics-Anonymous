@@ -203,12 +203,19 @@ city = j.value("city","not found");
 state = j.value("state","not found");
 zip = j.value("zip","not found");
 accountActive = j["accountActive"].get<bool>(); //extracts bool from accountActive
+
+//Service List Init
+    for (auto elem : j["serviceList"]) {
+        Service_Record toAdd(elem);
+        serviceList.push_back(toAdd);
+    }
 }
 
 //copy constructor
 Member::Member(const Member& toCopy)
-:name(toCopy.name), mid(toCopy.mid),address(toCopy.address),city(toCopy.city),state(toCopy.state),zip(toCopy.zip),accountActive(toCopy.accountActive)
-{}
+:name(toCopy.name), mid(toCopy.mid),address(toCopy.address),city(toCopy.city),state(toCopy.state),zip(toCopy.zip),accountActive(toCopy.accountActive),serviceList(toCopy.serviceList)
+{
+}
 
 //copy
 void Member::copy(const Member& toCopy){
@@ -219,6 +226,7 @@ void Member::copy(const Member& toCopy){
     state = toCopy.state;
     zip = toCopy.zip;
     accountActive = toCopy.accountActive;
+    serviceList = toCopy.serviceList;
 }
 
 //add service to serviceList
