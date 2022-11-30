@@ -9,7 +9,9 @@
 
 //Custom file includes from our project.
 #include "Member.hpp"
+#include "Provider.hpp"
 #include "Service_Ledger.hpp" //Includes Service_Record and Provider_Directory
+
 
 
 using namespace std;
@@ -26,10 +28,10 @@ char 	get_char(const string prompt);				//Always returns true.
 
 
 ///////////	The following functions will be used to facilitate the the manipulation of the ProviderDB, MemberDB, and Service_Ledger.	////////////////
-int validate_member(/*MemberDB &, Member &*/);					//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
-int validate_provider(/*ProviderDB &, Provider &*/);			//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
-int validate_service(/*Provider &, Service &*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
-																//Service stores the service found from the provider.
+bool validate_member(string m_id, Member &to_find/*,MemberDB &*/);									//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
+bool validate_provider(string p_id, Provider &to_find/*ProviderDB &*/);								//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
+bool validate_service(string s_id, Service &to_find/*Provider_Directory &, Service &*/);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
+																		//Service stores the service found from the provider.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -57,6 +59,8 @@ class Driver {
 	Financial_Terminal		*fterm;
 	//Will need to add ProviderDB, MemberDB, Service_Ledger, and a Provider_Directory (based on design document).
 	//Potential private member functions include functions that delegate the output of menus. TBD...
+	Service_Ledger ledger;
+	//Provider_Directory directory;
 
 };
 
@@ -65,10 +69,10 @@ class Driver {
 class Provider_Terminal {
 	public:
 		int provide_service_to_member(/*ProviderDB &, MemberDB &, Service_Ledger &*/);	//Locates member with member number in the MemberDB. Locates Service with service ID from provider from ProviderDB. Adds service to member
-																					//and then adds Service_Record to the Service_Ledger.
-		int generate_provider_report(/*ProviderDB &*/);								//Finds a provider in the ProviderDB and then generates a provider report using a function from the provider class 
-																					//(provider report from section 2.2.1 of the design document).
-
+																						//and then adds Service_Record to the Service_Ledger and Provider.
+		int generate_provider_report(/*ProviderDB &*/);									//Finds a provider in the ProviderDB and then generates a provider report using a function from the provider class 
+																						//(provider report from section 2.2.1 of the design document).
+		int generate_provider_directory(/*Provider_Directory &*/);
 };
 
 
@@ -77,9 +81,9 @@ class Interactive_Terminal {
 	public:
 		int display_member_db();
 
-		int add_member(/*MemberDB &*/);							//Generates a member object with user input and adds it to the MemberDB.
-		int remove_member(/*MemberDB &*/);						//Finds and removes a member from the MemberDB using a member number from the user.
-		int edit_member(/*MemberDB &*/);						//Finds a member and edits member data members with user input.
+		int add_member(/*MemberDB &*/);												//Generates a member object with user input and adds it to the MemberDB.
+		int remove_member(/*MemberDB &*/);											//Finds and removes a member from the MemberDB using a member number from the user.
+		int edit_member(/*MemberDB &*/);											//Finds a member and edits member data members with user input.
 	
 
 		int display_provider_db();
@@ -110,4 +114,4 @@ class Financial_Terminal {
 };
 
 
-#endif
+#endif 

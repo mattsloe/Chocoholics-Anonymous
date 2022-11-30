@@ -59,59 +59,43 @@ char get_char(const string prompt) {
 
 
 //Need to be implemented. Will request user input for member, provider, and service ID's
-int validate_member(){
-	Member to_find;
-	string m_id;
+bool validate_member(string m_id, Member &to_find){
 
-	get_string(m_id, "Please enter a 9-digit member ID: ");
-
-	//FIND AND PRINT MEMBER.
+	//FIND MEMBER.
 	if (true) { //Replace true with function call to find member.
-		cout << "The following the member information found in the database:\n\n";
-		//Print member here.
+		cout << "\n\n VALIDATED \n\n";
 
-		return 0;
+		return true;
 	}
 
-	return 1;
+	return false;
 }
 
 
 
-int validate_provider(){
-	//Provider to_find;
-	string p_id;
+bool validate_provider(string p_id, Provider &to_find){
 
-	get_string(p_id, "Please enter a 9-digit provider ID: ");
+	//FIND PROVIDER
+	if (true) { //Replace true with function call to find provider.
+		cout << "\n\n VALIDATED \n\n";
 
-	//FIND AND PRINT MEMBER.
-	if (true) { //Replace true with function call to find member.
-		cout << "The following the provider information found in the database:\n\n";
-		//Print member here.
-
-		return 0;
+		return true;
 	}
 	
-	return 1;
+	return false;
 }
 
 
 
-int validate_service(){
+bool validate_service(string s_id, Service &to_find){
 	
-	//Service to_find;
-	string s_id;
+	//FIND SERVICE
+	if (true) { //Replace true with function call to find service.
+		cout << "\n\n VALIDATED \n\n";
 
-	get_string(s_id, "Please enter a 6-digit service ID: ");
-
-	//FIND AND PRINT MEMBER.
-	if (true) { //Replace true with function call to find member.
-		cout << "The following the service information found in the service directory:\n\n";
-		//Print member here.
-
-		return 0;
+		return true;
 	}
-	return 1;
+	return false;
 }
 
 
@@ -127,6 +111,8 @@ Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr)
 	pterm = new Provider_Terminal();
 	iterm = new Interactive_Terminal();
 	fterm = new Financial_Terminal();
+
+	//READ FROM DISC HERE
 }
 
 
@@ -143,6 +129,8 @@ Driver::~Driver() {
 		delete fterm;
 		fterm = nullptr;
 	}
+
+	//WRITE TO DISC HERE
 }
 
 
@@ -189,7 +177,8 @@ void Driver::start_pterm() {
 		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
 		1) Add a provided service to a member\n\t \
 		3) Generate your provider report\n\t \
-		4) Exit terminal\n> ");
+		4) Generate provider directory (list of available services)\n\t \
+		5) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
@@ -198,10 +187,12 @@ void Driver::start_pterm() {
 				break;
 			case 3:
 				break;
+			case 4: 
+				break;
 		}
 	}	
 	
-	cout << '\n' << endl;
+	cout << "\n\n" << endl;
 
 	return;
 }
@@ -218,49 +209,57 @@ void Driver::start_iterm() {
 
 	while(option <= 10) {
 		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
-		1) Display the member directory\n\t \
+		1) Display the member database\n\t \
 		2) Add a member\n\t \
 		3) Remove a member\n\t \
 		4) Edit a member\n\t \
-		5) Display the provider directory\n\t \
+		5) Display the provider database\n\t \
 		6) Add a provider\n\t \
 		7) Remove a provider\n\t \
 		8) Edit a provider\n\t \
-		9) Add service to list of available services\n\t \
+		9) Add service to provider directory\n\t \
 		10) Generate member reports\n\t \
 		11) Generate provider reports\n\t \
 		12) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
+				iterm->display_member_db();
 				break;
 			case 2:
 				iterm->add_member();
 				break;
 			case 3:
+				iterm->remove_member();
 				break;
 			case 4:
+				iterm->edit_member();
 				break;
 			case 5:
+				iterm->display_provider_db();
 				break;
 			case 6:
+				iterm->add_provider();
 				break;
 			case 7:
+				iterm->remove_member();
 				break;
 			case 8:
+				iterm->edit_provider();
 				break;
 			case 9:
+				iterm->add_service_to_provider_directory();
 				break;
 			case 10:
+				iterm->generate_member_reports();
 				break;
 			case 11:
-				break;
-			case 12:
+				iterm->generate_provider_reports();
 				break;
 		}
 	}	
 	
-	cout << '\n' << endl;
+	cout << "\n\n" << endl;
 
 	return;
 }
@@ -288,7 +287,7 @@ void Driver::start_fterm() {
 		}
 	}	
 	
-	cout << '\n' << endl;
+	cout << "\n\n" << endl;
 
 	return;
 }
@@ -296,15 +295,12 @@ void Driver::start_fterm() {
 
 
 
+
+
 /////////////////////////////// INTERACTIVE_TERMINAL CLASS ///////////////////////////////////
 
 
-int Interactive_Terminal::display_member_db() {
-	
-	//DISPLAY MEMBER_DB HERE.
-
-	return 1;
-}
+int Interactive_Terminal::display_member_db() { return 1; }
 
 
 
@@ -322,7 +318,7 @@ int Interactive_Terminal::add_member() {
 	char option = 'n';
 	while (option != tolower('Y')) {
 		get_string(name, "Please enter the name of the member: ");
-		get_string(m_id, "Please enter the member ID of the member: ");
+		get_string(m_id, "Please enter the 9-digit member ID of the member: ");
 		get_string(address, "Please enter the street address of the member: ");
 		get_string(city, "Please enter the city in which the member resides: ");
 		get_string(state, "Please enter the state in which the member resides: ");
@@ -342,23 +338,24 @@ int Interactive_Terminal::add_member() {
 	//ADD MEMBER TO DB HERE
 
 
-	return 0;
+	return 1;
 }
 
 
 
 int Interactive_Terminal::remove_member() {
 	string m_id;
+	Member to_find;
 
 	char option = 'n';
 	while (option != tolower('Y')) {
-		get_string(m_id, "Please enter the member ID of the member you would like to remove: ");
+		get_string(m_id, "Please enter the 9-digit member ID of the member you would like to remove: ");
 
 		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
 		option = get_char("Is this the member ID correct? (y/n): ");
 	}
 
-	if (true) { //validate member here.
+	if (validate_member(m_id, to_find)) { //validate member here.
 		//REMOVE MEMBER FROM DB HERE.
 
 		return 1;
@@ -368,18 +365,21 @@ int Interactive_Terminal::remove_member() {
 }
 
 
+
+
 int Interactive_Terminal::edit_member() {
 	string m_id;
+	Member to_find;
 
 	char option = 'n';
 	while (option != tolower('Y')) {
-		get_string(m_id, "Please enter the member ID of the member you would like to edit: ");
+		get_string(m_id, "Please enter the 9-digit member ID of the member you would like to edit: ");
 
 		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
 		option = get_char("Is this the member ID correct? (y/n): ");
 	}
 
-	if (true) { //validate member here.
+	if (validate_member(m_id, to_find)) { //validate member here.
 		//EDIT MEMBER FROM DB HERE.
 
 		return 1;
@@ -390,9 +390,97 @@ int Interactive_Terminal::edit_member() {
 
 
 
-int Interactive_Terminal::display_provider_db() {
+int Interactive_Terminal::display_provider_db() { return 1; }
 
-	//DISPLAY PROVIDER_DB HERE.
+
+
+int Interactive_Terminal::add_provider() {
+
+	//Create Member object to be added to MemberDB
+	Provider provider_to_add;
+	Address	 address_to_add;
+	string	name, \
+		p_id, \
+		street, \
+		city, \
+		state, \
+		zip;
+
+	char option = 'n';
+	while (option != tolower('Y')) {
+		get_string(name, "Please enter the name of the provider: ");
+		get_string(p_id, "Please enter the 9-digit member ID of the provider: ");
+		get_string(street, "Please enter the street address of the provider: ");
+		get_string(city, "Please enter the city in which the provider resides: ");
+		get_string(state, "Please enter the state in which the provider resides: ");
+		get_string(zip, "Please enter the zipcode of the provider: ");
+
+		address_to_add.init_address(street, city, state, zip);
+		provider_to_add.edit_provider(name, p_id, address_to_add);
+
+		cout << "\n\n" << provider_to_add << "\n\n";
+		option = get_char("Is this the provider information correct? (y/n): ");
+	}
+
+	//ADD PROVIDER TO DB HERE
+
 
 	return 1;
 }
+
+
+
+int Interactive_Terminal::remove_provider() {
+	string p_id;
+	Provider to_find;
+
+	char option = 'n';
+	while (option != tolower('Y')) {
+		get_string(p_id, "Please enter the 9-digit provider ID of the provider you would like to remove: ");
+
+		cout << "\n\n" << "Provider ID: " << p_id << "\n\n";
+		option = get_char("Is this the provider ID correct? (y/n): ");
+	}
+
+	if (validate_provider(p_id, to_find)) { //validate provider here.
+		//REMOVE PROVIDER FROM DB HERE.
+
+		return 1;
+	}
+
+	return 0;
+}
+
+
+
+
+int Interactive_Terminal::edit_provider() {
+	string p_id;
+	Provider to_find;
+
+	char option = 'n';
+	while (option != tolower('Y')) {
+		get_string(p_id, "Please enter the 9-digit provider ID of the provider you would like to edit: ");
+
+		cout << "\n\n" << "Provider ID: " << p_id << "\n\n";
+		option = get_char("Is this the provider ID correct? (y/n): ");
+	}
+
+	if (validate_provider(p_id, to_find)) { //validate provider here.
+		//EDIT PROVIDER FROM DB HERE.
+
+		return 1;
+	}
+
+	return 0;
+}
+
+
+
+
+int Interactive_Terminal::add_service_to_provider_directory() { return 0; }
+int Interactive_Terminal::generate_member_reports() { return 0; }
+int Interactive_Terminal::generate_provider_reports() { return 0; }
+
+
+
