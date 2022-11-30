@@ -18,6 +18,7 @@ class Provider_Database {
 
 		/* Interface */
 		bool get_provider(std::string pid, Provider & to_fill);
+		bool validate_pid(std::string pid);
 		bool edit_provider(std::string pid, const Provider & to_copy);   // takes to_copy and copies it into provider w/ matching pid
 		int add_provider();
 		bool delete_provider(std::string pid);
@@ -28,9 +29,10 @@ class Provider_Database {
 		void load_file(std::string file_name);
 
 	protected:
-		std::unordered_map<int, Provider*> table; // maps Providers by PID
+		std::unordered_map <std::string, Provider* > table; // maps Providers by PID
 		std::vector<std::string> pids;            // list of pids in table to iterate through map
-		Provider_Directory directory;             // for use with Provider fxns
+
+		std::string data_filename = "assets/test-providers.json";
 
 		void init(nlohmann::json);                // init from json obj
 }; 

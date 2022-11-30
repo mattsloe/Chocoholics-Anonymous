@@ -11,18 +11,6 @@
 #include "Service_Record.hpp"
 #include "Provider_Directory.hpp"
 
-
-struct node {
-	Service_Record * service;
-	node * next;
-};
-
-struct node_head {
-	int num_services_provided;
-	float total_cost;
-	node * next;
-};
-
 struct Address {
 	std::string street;   // 25 char
 	std::string city;     // 14 char
@@ -82,7 +70,6 @@ class Provider {
 
 		/* Linked List Functionality */
 		int add_service(Service_Record & to_add, Provider_Directory & directory);
-		int remove_service(Service_Record & to_remove);
 		int clear_services();  // for resetting at end of week
 
 
@@ -90,18 +77,12 @@ class Provider {
 		std::string name;    // expects: <first> <last> 
 		std::string pid;     // provider ID; 9 digits
 		Address address; 
-		int num_services_provided;
 		float total_cost;    // price to be paid for all services on record
+		int num_services_provided;
 		std::vector<Service_Record> service_list;
-		//node_head * head;    // head of provided services list
-		//node * tail;         // tail of provided services list
 
 		/* Service List Helper Fxns */
-		void service_load_file(nlohmann::json, Provider_Directory&);  // inits service list from json file
 		std::string service_to_string(Provider_Directory&);  // formats service data for provider report
-		std::string service_to_file();                       // formats service data for provider json file 
-		void delete_list();                                  // destructor helper - deletes list, not head
-		void init_list();                                    // initializer helper
 
 		/* Init Helper Fxns */
 		int set_name(std::string _name);

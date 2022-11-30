@@ -9,14 +9,16 @@
 
 //default constructor
 Provider::Provider() {
-	init_list();
+	num_services_provided = 0;
+	total_cost = 0.0;
 }
 
 Provider::Provider(std::string _name, std::string num, const Address & _address) {
 	name = _name;
 	pid = num;
 	address.copy_address(_address);
-	init_list();
+	num_services_provided = 0;
+	total_cost = 0.0;
 }
 
 //json constructor
@@ -26,11 +28,11 @@ Provider::Provider(nlohmann::json j, Provider_Directory & d) {
 
 //default destructor: deletes list of services
 Provider::~Provider() {
-	delete_list();
-	delete head;
+	// default
 }
 
 //ask for user input + error check
+//doesn't add services
 void Provider::init_provider() {
 	std::string tmp;
 	int flag = 1;
@@ -146,15 +148,22 @@ std::string Provider::to_file() {
 		{"street", address.street},
 		{"city", address.city},
 		{"state", address.state},
-		{"zip", address.zip},
-		{"serviceList", service_to_file()}
+		{"zip", address.zip}
 	};
+
+	auto services = json::array();
+	json temp;
+	for (Service_Record r : service_list) {
+		temp = json::parse(r.to_string_exp());
+		services.push_back(temp);
+	}
+	j["serviceList"] = services; //append services
 
 	out = j.dump(2);
 	return out;
 }
 
-void Provider::load_file(nlohmann::json j, Provider_Directory& d) {
+void Provider::load_file(nlohmann::json j, Provider_Directory & d) {
 	std::string street, city, state, zip, service_array;
 
 	name = j.value("name", "not found");
@@ -166,8 +175,13 @@ void Provider::load_file(nlohmann::json j, Provider_Directory& d) {
 	zip = j.value("zip", "not found");
 	address.init_address(street, city, state, zip);
 
-	service_array = j.value("serviceList", "not found");
-	service_load_file(service_array, d);
+	for (auto elem : j["serviceList"]) {
+		Service_Record to_add(elem);
+		service_list.push_back(to_add);
+
+		num_services_provided += 1;
+		total_cost += d.get_fee_d(to_add.get_sID())
+	}
 }
 
 // outputs .txt file of provider info + provided services info
@@ -199,8 +213,8 @@ std::string Provider::run_manager_report() {
 	std::string out;
 	
 	out += name + " - " + pid + "\n";
-	out += "Number of Consults: " + std::to_string(head->num_services_provided) + "\t";
-	out += "Total Fee: " + std::to_string(head->total_cost) + "\n";
+	out += "Number of Consults: " + std::to_string(num_services_provided) + "\t";
+	out += "Total Fee: $" + std::to_string(total_cost) + "\n";
 
 	return out;
 }
@@ -208,104 +222,17 @@ std::string Provider::run_manager_report() {
 /* **Service List Functions** */
 
 int Provider::add_service(Service_Record & to_add, Provider_Directory & d) {
-	head->total_cost = 
-	head->num_services_provided += 1;
-	
-	if (!tail) {
-		tail = new node;
-		tail->service = new Service_Record(to_add);
-		tail->next = NULL;
-		return 0;
-	}
-	tail->next = new node;
-	tail = tail->next;
-	tail->service = new Service_Record(to_add);
-	tail->next = NULL;
-	return 0;
-}
+	service_list.push_back(to_add);
 
-// defines Service_Record == Service_Record as sid == r.sid && date == r.date
-int Provider::remove_service(Service_Record & to_remove) {
-	// empty list
-	if (!tail)
-		return 1;
-
-	node * curr = head->next;
-	while (curr) {
-		if (curr->next) {
-			if (curr->next->service->get_sID() == to_remove.get_sID() &&
-				curr->next->service->get_date() == to_remove.get_date()) {
-				node* tmp = curr->next;
-				curr->next = tmp->next;
-				if (tmp == tail)
-					tail = curr;
-				delete tmp->service;
-				delete tmp;
-				return 0;
-			}
-			curr = curr->next;
-		}
-		// must be first node in list if it's going to match
-		// otherwise would have been caught by above
-		else {
-			if (curr->service->get_sID() == to_remove.get_sID() &&
-				curr->service->get_date() == to_remove.get_date()) {
-				delete curr->service;
-				delete curr;
-				head->next = tail = NULL;
-				return 0;
-			}
-		}
-	}
-	// service not found
-	return 1;
+	num_services_provided += 1;
+	total_cost += d.get_fee_d(to_add.get_sID());
 }
 
 // for resetting week
 int Provider::clear_services() {
-	head->total_cost = 0;
-	head->num_services_provided = 0;
-
-	if (!tail)
-		return 1;
-	delete_list();
-	return 0;
-}
-
-// for json file
-std::string Provider::service_to_file() {
-	using json = nlohmann::json;
-	std::string out;
-
-	json j = json::array({});
-
-	if (!tail) {
-		out = j.dump(2);
-		return out;
-	}
-
-	node * curr = head->next;
-	while (curr) {
-		j.insert(j.begin(), curr->service->to_string_exp());
-		curr = curr->next;
-	}
-	
-	out = j.dump(2);
-
-	return out;
-}
-
-void Provider::service_load_file(nlohmann::json j, Provider_Directory & d) {
-	using json = nlohmann::json;
-
-	int len = j.size();
-	json j_array = j;
-	for (int i = 0; i < len; ++i) {
-		Service_Record tmp(j_array[i]);
-		add_service(tmp, d);
-	}
-
-	return;
+	service_list.clear();
+	total_cost = 0.0;
+	num_services_provided = 0;
 }
 
 // for report
@@ -320,46 +247,15 @@ void Provider::service_load_file(nlohmann::json j, Provider_Directory & d) {
 std::string Provider::service_to_string(Provider_Directory & d) {
 	std::string out;
 
-	if (tail) {
-		node * curr = head->next;
-		while (curr) {
-			out += curr->service->to_string_provider();
-			out += "Service Fee: " + d.get_fee(curr->service->get_sID()) + "\n";
+	for (int i = 0; i < service_list.size(); ++i) {
+			out += service_list[i].to_string_provider();
+			out += "Service Fee: " + d.get_fee(service_list[i].get_sID()) + "\n";
 			out += "\n";
-		}
 	}
-	out += "Total Services: " + std::to_string(head->num_services_provided) + "\t";
-	out += "Total Fee: " + std::to_string(head->total_cost) + "\n";
+	out += "Total Services: " + std::to_string(num_services_provided) + "\t";
+	out += "Total Fee: " + std::to_string(total_cost) + "\n";
 
 	return out;
-}
-
-// doesn't delete head, just the list and tail
-// -> head will need to be handled by calling fxn
-void Provider::delete_list() {
-	if (!tail)
-		return;
-
-	node * curr = head->next;
-	node * tmp;
-	while (curr->next) {
-		tmp = curr->next;
-		delete curr->service;
-		delete curr;
-		head->next = tmp;
-		curr = tmp;
-	}
-	delete tail;
-	tail = NULL;
-	return;
-}
-
-void Provider::init_list() {
-	head = new node_head;
-	head->num_services_provided = 0;
-	head->total_cost = 0;
-	head->next = NULL;
-	tail = NULL;
 }
 
 // **********

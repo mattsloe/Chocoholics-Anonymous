@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(Chocaholics-Anonymous-Software)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 
 add_executable(ChocAn 
                 Driver.hpp Driver.cpp
@@ -14,6 +14,7 @@ add_executable(ChocAn
                 Service_Record.hpp Service_Record.cpp
                 Service_Record_tester.hpp Service_Record_tester.cpp
                 Provider.hpp Provider.cpp Provider_tester.hpp Provider_tester.cpp
+                Provider_Database.hpp Provider_Database.cpp
                 )
 
 file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

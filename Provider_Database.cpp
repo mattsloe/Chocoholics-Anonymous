@@ -1,15 +1,23 @@
 // Ashton Sawyer 11/1 
 #include "Provider_Database.hpp"
 
-Provider_Database::Provider_Database() = default;
+Provider_Database::Provider_Database() {
+	std::ifstream in_file(data_filename);
+	if (!in_file.is_open()) {
+		std::cout << "Error: Unable to open file" << std::endl;
+		return;
+	}
+
+	nlohmann::json j;
+	in_file >> j;
+	init(j);
+}
 
 Provider_Database::Provider_Database(std::string file_name, Provider_Directory& d) {
 	load_file(file_name);
-	directory = d;
 }
 
 Provider_Database::Provider_Database(nlohmann::json j, Provider_Directory & d) {
-	directory = d;
 	init(j);
 }
 
