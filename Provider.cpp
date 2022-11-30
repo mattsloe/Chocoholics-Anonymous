@@ -20,8 +20,8 @@ Provider::Provider(std::string _name, std::string num, const Address & _address)
 }
 
 //json constructor
-Provider::Provider(nlohmann::json j) {
-	load_file(j);
+Provider::Provider(nlohmann::json j, Provider_Directory & d) {
+	load_file(j, d);
 }
 
 //default destructor: deletes list of services
@@ -59,10 +59,6 @@ std::string Provider::get_pid() {
 
 bool Provider::operator==(const Provider& comp) {
 	return (pid == comp.pid);
-}
-
-bool Provider::operator<(const Provider& comp) {
-	return (pid < comp.pid);
 }
 
 std::ostream& operator<<(std::ostream& out, Provider & p) {
@@ -154,14 +150,11 @@ std::string Provider::to_file() {
 		{"serviceList", service_to_file()}
 	};
 
-	//json service_array = service_to_file();
-	//j.insert(service_array.begin(), service_array.end());
-
 	out = j.dump(2);
 	return out;
 }
 
-void Provider::load_file(nlohmann::json j) {
+void Provider::load_file(nlohmann::json j, Provider_Directory& d) {
 	std::string street, city, state, zip, service_array;
 
 	name = j.value("name", "not found");
@@ -174,11 +167,11 @@ void Provider::load_file(nlohmann::json j) {
 	address.init_address(street, city, state, zip);
 
 	service_array = j.value("serviceList", "not found");
-	service_load_file(service_array);
+	service_load_file(service_array, d);
 }
 
 // outputs .txt file of provider info + provided services info
-void Provider::run_report() {
+void Provider::run_report(Provider_Directory & d) {
 	std::string file_name = name;
 	size_t pos = name.find(' ');
 	file_name.replace(pos, 1, 1, '_');
@@ -193,7 +186,7 @@ void Provider::run_report() {
 
 	output_file << to_string();
 	output_file << "\n";
-	output_file << service_to_string();
+	output_file << service_to_string(d);
 	output_file.close();
 	return;
 }
@@ -214,41 +207,43 @@ std::string Provider::run_manager_report() {
 
 /* **Service List Functions** */
 
-int Provider::add_service(Service_Record * to_add) {
-	//incr_total_fee(service_fee)
+int Provider::add_service(Service_Record & to_add, Provider_Directory & d) {
+	head->total_cost = 
 	head->num_services_provided += 1;
 	
 	if (!tail) {
 		tail = new node;
-		tail->service = to_add;
+		tail->service = new Service_Record(to_add);
 		tail->next = NULL;
 		return 0;
 	}
 	tail->next = new node;
 	tail = tail->next;
-	tail->service = to_add;
+	tail->service = new Service_Record(to_add);
 	tail->next = NULL;
 	return 0;
 }
 
 // defines Service_Record == Service_Record as sid == r.sid && date == r.date
-int Provider::remove_service(Service_Record * to_remove) {
+int Provider::remove_service(Service_Record & to_remove) {
 	// empty list
 	if (!tail)
 		return 1;
 
 	node * curr = head->next;
 	while (curr->next) {
-		if (curr->next->service->get_sID() == to_remove->get_sID() && 
-			curr->next->service->get_date() == to_remove->get_date()) {
+		if (curr->next->service->get_sID() == to_remove.get_sID() && 
+			curr->next->service->get_date() == to_remove.get_date()) {
 			node * tmp = curr->next;
 			curr->next = tmp->next;
+			delete tmp->service;
 			delete tmp;
 			return 0;
 		}
 		curr = curr->next;
 	}
-	return 0;
+	// service not found
+	return 1;
 }
 
 // for resetting week
@@ -285,11 +280,15 @@ std::string Provider::service_to_file() {
 	return out;
 }
 
-// might not need if service ledger passes initialized 
-// records to provider on startup -> sharing pointer so don't want to
-// duplicate data
-void Provider::service_load_file(nlohmann::json j) {
+void Provider::service_load_file(nlohmann::json j, Provider_Directory & d) {
+	int len = j.size();
 
+	for (int i = 0; i < len; ++i) {
+		Service_Record tmp(j[i]);
+		add_service(tmp, d);
+	}
+
+	return;
 }
 
 // for report
@@ -301,13 +300,14 @@ void Provider::service_load_file(nlohmann::json j) {
 // ...
 // 
 // Total Services: <#>    Total Fee: <$>
-std::string Provider::service_to_string() {
+std::string Provider::service_to_string(Provider_Directory & d) {
 	std::string out;
 
 	if (tail) {
 		node * curr = head->next;
 		while (curr) {
 			out += curr->service->to_string_provider();
+			out += "Service Fee: " + d.get_fee(curr->service->get_sID()) + "\n";
 			out += "\n";
 		}
 	}
@@ -327,6 +327,7 @@ void Provider::delete_list() {
 	node * tmp;
 	while (curr->next) {
 		tmp = curr->next;
+		delete curr->service;
 		delete curr;
 		head->next = tmp;
 		curr = tmp;

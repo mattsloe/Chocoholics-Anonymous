@@ -54,7 +54,7 @@ class Provider {
 		/* Constructors */
 		Provider();
 		Provider(std::string _name, std::string _pid, const Address & _address);  // no error checking
-		Provider(nlohmann::json j);
+		Provider(nlohmann::json j, Provider_Directory &);
 		~Provider();
 
 		/* Interface */
@@ -62,9 +62,9 @@ class Provider {
 		std::string get_pid();		              // return pid
 		std::string to_string();                  // returns provider formatted as string
 		std::string to_file();                    // format data for json file
-		void load_file(nlohmann::json j);         // load provider from json file
 		void run_report(Provider_Directory & d);  // generate provider report
 		std::string run_manager_report();         // generate string for database gen. report
+		void load_file(nlohmann::json j, Provider_Directory&);   // load provider from json file
 
 		// overloaded for ease of use
 		//   return 0 on success
@@ -77,12 +77,11 @@ class Provider {
 
 		/* Overloaded Operators */
 		bool operator==(const Provider & toComp);
-		bool operator<(const Provider & toComp);
 		friend std::ostream & operator<<(std::ostream & out, Provider & p);
 
 		/* Linked List Functionality */
-		int add_service(Service_Record * to_add, Provider_Directory & directory);
-		int remove_service(Service_Record * to_remove);
+		int add_service(Service_Record & to_add, Provider_Directory & directory);
+		int remove_service(Service_Record & to_remove);
 		int clear_services();  // for resetting at end of week
 
 
@@ -94,11 +93,11 @@ class Provider {
 		node * tail;         // tail of provided services list
 
 		/* Service List Helper Fxns */
-		std::string service_to_file();          // formats service data for provider json file 
-		std::string service_to_string();        // formats service data for provider report
-		void service_load_file(nlohmann::json); // inits service list from json file 
-		void delete_list();                     // destructor helper - deletes list, not head
-		void init_list();                       // initializer helper
+		void service_load_file(nlohmann::json, Provider_Directory&);  // inits service list from json file
+		std::string service_to_string(Provider_Directory&);  // formats service data for provider report
+		std::string service_to_file();                       // formats service data for provider json file 
+		void delete_list();                                  // destructor helper - deletes list, not head
+		void init_list();                                    // initializer helper
 
 		/* Init Helper Fxns */
 		int set_name(std::string _name);

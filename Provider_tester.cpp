@@ -5,12 +5,14 @@
 // Provider Tests
 // *********
 
-void Provider_tester::test_provider_class() {
+// The compiler says I need a semi-colon before the void... 
+// I don't know why
+; void Provider_tester::test_provider_class() {
 	cout << endl;
 	cout << "------------------------------------------";
 	cout << "PROVIDER TESTS STARTING..." << endl;
 	cout << "-----ADDRESS TESTS STARTING..." << endl;
-	testAddressStruct();
+	test_address_struct();
 	cout << "-----ADDRESS TESTS COMPLETE" << endl;
 
 	cout << "Test 1: Init\tResult: " << ((Provider_init_happy()) ? "pass" : "fail") << endl;
@@ -22,7 +24,7 @@ void Provider_tester::test_provider_class() {
 	return;
 }
 
-bool Provider_tester::Provider_init_happy() {
+bool Provider_init_happy() {
 	bool ret = true;
 
 	if (prov.name != name) {
@@ -38,8 +40,8 @@ bool Provider_tester::Provider_init_happy() {
 	
 }
 
-bool Provider_tester::Provider_init_json() {
-	Provider p(j);
+bool Provider_init_json() {
+	Provider p(j, d);
 
 	bool ret = true;
 
@@ -75,9 +77,8 @@ bool Provider_tester::Provider_toString_happy() {
 	return true;
 }
 
-// unfinished
 bool Provider_tester::Provider_toFile_happy() {
-	string expected = "{\"name\": \"John Smith\", \"pid\": \"123456789\", \"street\": \"9427 n Ivnanhoe st\", \"city\": \"Portland\", \"state\": \"OR\", \"zip\": \"97203\"}"; ;
+	string expected = "{\"name\": \"John Smith\", \"pid\": \"123456789\", \"street\": \"9427 n Ivnanhoe st\", \"city\": \"Portland\", \"state\": \"OR\", \"zip\": \"97203\", \"serviceList\": {}}"; ;
 
 	if (prov.to_file() != expected)
 		return false;
@@ -85,7 +86,7 @@ bool Provider_tester::Provider_toFile_happy() {
 }
 
 bool Provider_tester::Provider_loadFile_happy() {
-
+	return false;
 }
 
 bool Provider_tester::Provider_opEqual_match() {
@@ -100,42 +101,39 @@ bool Provider_tester::Provider_opEqual_noMatch() {
 	Provider p(name, pid, a1);
 	p.edit_provider("987654321");
 
-	if (prov == prov2)
+	if (prov == p)
 		return false;
 	return true;
 }
 
-bool Provider_tester::Provider_opLess_less() {
-
-
-}
-
-bool Provider_tester::Provider_opLess_more() {
-
-}
-
 bool Provider_tester::Provider_runReport_happy() {
-
+	prov.run_report(d);
+	cout << "\tVerify correctness with output file" << endl;
+	return true;
 }
 
 bool Provider_tester::Provider_runManagerReport_happy() {
-
+	prov.run_manager_report();
+	cout << "\tVerify correctness with output file" << endl;
+	return true;
 }
 
 bool Provider_tester::Provider_addService_happy() {
-
+	prov.add_service(sr, d);
+	return false;
 }
 
 bool Provider_tester::Provider_removeService_happy() {
-
+	return false;
 }
 
 bool Provider_tester::Provider_removeService_empty() {
-
+	if (prov.remove_service(sr))
+	return false;
 }
 
 bool Provider_tester::Provider_clearService_happy() {
-
+	return false;
 }
 
 // *********
@@ -193,7 +191,7 @@ bool Provider_tester::Address_set_badZipLen() {
 }
 
 bool Provider_tester::Address_set_badZipChar() {
-	if (address.set_zip("9720x"))
+	if (a1.set_zip("9720x"))
 		return false;
 	return true;
 }
@@ -202,7 +200,7 @@ bool Provider_tester::Address_copy_happy() {
 	Address a2;
 
 	a2.copy_address(a1);
-	if (!(a2.street == a1 && a2.city == a1.city && a2.state == a1.state && a2.zip == a1.zip)) {
+	if (!(a2.street == a1.street && a2.city == a1.city && a2.state == a1.state && a2.zip == a1.zip)) {
 		cout << "\t\tError: Not Copied Correctly" << endl;
 		return false;
 	}
