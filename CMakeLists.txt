@@ -4,7 +4,7 @@ project(Chocaholics-Anonymous-Software)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(ChocAn 
-                # Driver.hpp Driver.cpp
+                Driver.hpp Driver.cpp
                 json.hpp main.cpp 
                 Member.cpp Member.hpp Member_tester.hpp Member_tester.cpp 
                 MemberDB.cpp MemberDB.hpp MemberDB_tester.hpp
