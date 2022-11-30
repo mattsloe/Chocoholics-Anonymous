@@ -31,6 +31,8 @@ public:
 //         cout << "Test 6:" << ((test6(m_ptr)==0) ? "false" : "true") << endl;
 //        cout << "Test 7:" << ((test7(m_ptr)==0) ? "false" : "true") << endl;
     cout << "Test 8: " << ((test8()==0) ? "false" : "true") << endl;
+        cout << "Test 9: " << ((test9()==0) ? "false" : "true") << endl;
+        cout << "Test 10: " << ((test10()==0) ? "false" : "true") << endl;
          cout<<"--------------------"<<endl;
         return;
 }
@@ -90,6 +92,11 @@ bool MemberTester::test6(Member * mPtr){
 
 void MemberTester::createMemberInstance(Member*&  mPtr){
     mPtr = new Member("Matt","123456789", true,"123 xolo ln","Portland","OR","12345");
+    Service_Record toAdd("10-10-1010","10-20-1010","123456789", "123456789","666666","Here are some comments");
+    Service_Record toAdd2("12-34-5678","10-20-1010","999999999", "888888888","666665","Comments for service 2");
+
+    mPtr->add_service(toAdd);
+    mPtr->add_service(toAdd2);
 
 }
 
@@ -113,6 +120,32 @@ bool MemberTester::test8() { //test addService()
     //display member
     test->to_string();
     //display json
-    test->to_string_exp();
+    cout << endl<< test->to_string_exp() << endl;
+    return true;
+}
+
+bool MemberTester::test9() {
+    //create a service
+    Service_Record toAdd("10-10-1010","10-20-1010","123456789", "123456789","666666","Here are some comments");
+    Service_Record toAdd2("12-34-5678","10-20-1010","999999999", "888888888","666665","Comments for service 2");
+
+    Member * test;
+    createMemberInstance(test);
+    //add it to the Member
+    test->add_service(toAdd);
+    test->add_service(toAdd2);
+    //display member
+    test->to_string();
+    //display json
+    cout << endl<< test->to_string_exp() << endl;
+    return true;
+}
+
+bool MemberTester::test10() { //test json import
+    //CREATE MEMBER WITH SERVICES ADDED
+    Member * test;
+    createMemberInstance(test);
+    cout << endl << *test << endl;
+
     return true;
 }

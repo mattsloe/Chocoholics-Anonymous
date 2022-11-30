@@ -83,7 +83,17 @@ std::string Member::to_string_exp()const {
             {"zip",zip},
             {"accountActive",accountActive}
     };
+    auto services = json::array();
+    json temp;
+    for (Service_Record r : serviceList) {
+        temp = json::parse(r.to_string_exp());
+        services.push_back(temp);
+    }
+
+    j["serviceList"] = services; //append services
     s = j.dump(2); // the 2 is number of spaces for indent
+    //add the service records here
+
     return s;
 }
 
