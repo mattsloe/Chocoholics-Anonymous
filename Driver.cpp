@@ -56,45 +56,112 @@ char get_char(const string prompt) {
 
 
 
+bool validate_member(const string prompt) {
+	string m_id;
+	Member to_find;
+	char option = 'n';
 
+	while (option != tolower('Y')) {
+		cout << '\n';
+		get_string(m_id, prompt);
 
-//Need to be implemented. Will request user input for member, provider, and service ID's
-bool validate_member(string m_id, Member *&to_find){
+		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
+		option = get_char("Is this the member ID correct? (y/n): ");
+	}
 
 	//FIND MEMBER.
 	if (true) { //Replace true with function call to find member.
-		cout << "\n\n VALIDATED \n\n";
-
-		return true;
+		if (!to_find.is_active())
+			cout << "\n\n Member is suspended \n\n";
+		else {
+			cout << "\n\n VALIDATED \n\n";
+			return true;
+		}
 	}
+
+
+	cout << "\n\n Invalid Member Number \n\n";
 
 	return false;
 }
 
 
 
-bool validate_provider(string p_id, Provider *&to_find){
+//Need to be implemented. Will request user input for member, provider, and service ID's
+bool validate_member(const string prompt, Member & to_find, string &m_id){
+	char option = 'n';
+
+	while (option != tolower('Y')) {
+		cout << '\n';
+		get_string(m_id, prompt);
+
+		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
+		option = get_char("Is this the member ID correct? (y/n): ");
+	}
+
+	//FIND MEMBER.
+	if (true) { //Replace true with function call to find member.
+		if (!to_find.is_active())
+			cout << "\n\n Member is suspended \n\n";
+		else {
+			cout << "\n\n VALIDATED \n\n";
+			return true;
+		}
+	}
+	
+	cout << "\n\n Invalid Member Number \n\n";
+	
+	return false;
+}
+
+
+
+bool validate_provider(const string prompt, Provider & to_find, string &p_id) {
+	char option = 'n';
+
+	while (option != tolower('Y')) {
+		cout << '\n';
+		get_string(p_id, prompt);
+
+		cout << "\n\n" << "Provider ID: " << p_id << "\n\n";
+		option = get_char("Is this the provider ID correct? (y/n): ");
+	}
 
 	//FIND PROVIDER
 	if (true) { //Replace true with function call to find provider.
 		cout << "\n\n VALIDATED \n\n";
-
 		return true;
 	}
 	
+	cout << "\n\n Invalid Provider Number \n\n";
+
 	return false;
 }
 
 
 
-bool validate_service(string s_id, Service *&to_find){
-	
+bool validate_service(const string prompt, Service& to_find, string &s_id) {
+	string lo_id;
+	char option = 'n';
+
+	while (option != tolower('Y')) {
+		cout << '\n';
+		get_string(s_id, prompt);
+
+		cout << "\n\n" << "Service ID: " << s_id << "\n\n";
+		option = get_char("Is this the service ID correct? (y/n): ");
+	}
+
 	//FIND SERVICE
 	if (true) { //Replace true with function call to find service.
 		cout << "\n\n VALIDATED \n\n";
-
+		s_id = lo_id;
 		return true;
 	}
+	
+	
+	cout << "\n\n Invalid Service Number \n\n";
+
 	return false;
 }
 
@@ -106,11 +173,13 @@ bool validate_service(string s_id, Service *&to_find){
 
 /////////////////////////////// DRIVER CLASS ///////////////////////////////////
 
-Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr)
+Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr), directory(nullptr)
 {
 	pterm = new Provider_Terminal();
 	iterm = new Interactive_Terminal();
 	fterm = new Financial_Terminal();
+
+	directory = new Provider_Directory("assets/services.json");
 
 	//READ FROM DISC HERE
 }
@@ -130,6 +199,10 @@ Driver::~Driver() {
 		fterm = nullptr;
 	}
 
+	if (directory) {
+		delete directory;
+		directory = nullptr;
+	}
 	//WRITE TO DISC HERE
 }
 
@@ -173,17 +246,20 @@ void Driver::start_pterm() {
 
 	cout << "Welcome to the provider terminal! This is the terminal where you, the valued ChocAn provider, can manage your business and services provided to members.\n" << endl;
 
-	while(option <= 3) {
+	while(option <= 4) {
 		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
-		1) Add a provided service to a member\n\t \
+		1) Validate Member\n\t \
+		2) Add a provided service to a member\n\t \
 		3) Generate your provider report\n\t \
 		4) Generate provider directory (list of available services)\n\t \
 		5) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
+				validate_member("Please enter the 9-digit member ID number of the member you wish to validate: ");
 				break;
 			case 2:
+				pterm->provide_service_to_member();
 				break;
 			case 3:
 				break;
@@ -207,7 +283,7 @@ void Driver::start_iterm() {
 
 	cout << "Welcome to the interactive terminal! This is the terminal where you, the valued ChocAn manager, can manage your members, providers, and generate reports individually or in bulk for a given database/directory.\n" << endl;
 
-	while(option <= 10) {
+	while(option <= 11) {
 		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
 		1) Display the member database\n\t \
 		2) Add a member\n\t \
@@ -273,7 +349,7 @@ void Driver::start_fterm() {
 
 	cout << "Welcome to the Financial (ACME) terminal! This is the terminal where you, the valued ChocAn financial accountant, can manage a member's status and generate financial reports.\n" << endl;
 
-	while(option <= 2) {
+	while(option <= 3) {
 		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
 		1) Suspend or reinstate a member\n\t \
 		2) Generate a EFT Data Report\n\t \
@@ -301,8 +377,12 @@ void Driver::start_fterm() {
 /////////////////////////////// PROVIDER_TERMINAL CLASS ///////////////////////////////////
 
 int Provider_Terminal::provide_service_to_member() {
+	Member to_find;
+	string m_id;
 
+	if (validate_member("Please enter the 9-digit provider ID of the provider you would like to validate: ", to_find, m_id)) {
 
+	}
 
 	return 1;
 }
@@ -314,10 +394,7 @@ int Provider_Terminal::generate_provider_report() {
 }
 
 
-int Provider_Terminal::generate_provider_directory() {
-
-	return 1;
-}
+int Provider_Terminal::generate_provider_directory() { return 1; }
 
 
 
@@ -369,18 +446,10 @@ int Interactive_Terminal::add_member() {
 
 
 int Interactive_Terminal::remove_member() {
-	string m_id;
 	Member to_find;
+	string m_id;
 
-	char option = 'n';
-	while (option != tolower('Y')) {
-		get_string(m_id, "Please enter the 9-digit member ID of the member you would like to remove: ");
-
-		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
-		option = get_char("Is this the member ID correct? (y/n): ");
-	}
-
-	if (validate_member(m_id, to_find)) { //validate member here.
+	if (validate_member("Please enter the 9-digit member ID of the member you would like to remove: ", to_find, m_id)) { //validate member here.
 		//REMOVE MEMBER FROM DB HERE.
 
 		return 1;
@@ -393,18 +462,10 @@ int Interactive_Terminal::remove_member() {
 
 
 int Interactive_Terminal::edit_member() {
-	string m_id;
 	Member to_find;
+	string m_id;
 
-	char option = 'n';
-	while (option != tolower('Y')) {
-		get_string(m_id, "Please enter the 9-digit member ID of the member you would like to edit: ");
-
-		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
-		option = get_char("Is this the member ID correct? (y/n): ");
-	}
-
-	if (validate_member(m_id, to_find)) { //validate member here.
+	if (validate_member("Please enter the 9-digit member ID of the member you would like to edit: ", to_find, m_id)) { //validate member here.
 		//EDIT MEMBER FROM DB HERE.
 
 		return 1;
@@ -456,18 +517,10 @@ int Interactive_Terminal::add_provider() {
 
 
 int Interactive_Terminal::remove_provider() {
-	string p_id;
 	Provider to_find;
+	string p_id;
 
-	char option = 'n';
-	while (option != tolower('Y')) {
-		get_string(p_id, "Please enter the 9-digit provider ID of the provider you would like to remove: ");
-
-		cout << "\n\n" << "Provider ID: " << p_id << "\n\n";
-		option = get_char("Is this the provider ID correct? (y/n): ");
-	}
-
-	if (validate_provider(p_id, to_find)) { //validate provider here.
+	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to remove: ", to_find, p_id)) { //validate provider here.
 		//REMOVE PROVIDER FROM DB HERE.
 
 		return 1;
@@ -480,18 +533,10 @@ int Interactive_Terminal::remove_provider() {
 
 
 int Interactive_Terminal::edit_provider() {
-	string p_id;
 	Provider to_find;
+	string p_id;
 
-	char option = 'n';
-	while (option != tolower('Y')) {
-		get_string(p_id, "Please enter the 9-digit provider ID of the provider you would like to edit: ");
-
-		cout << "\n\n" << "Provider ID: " << p_id << "\n\n";
-		option = get_char("Is this the provider ID correct? (y/n): ");
-	}
-
-	if (validate_provider(p_id, to_find)) { //validate provider here.
+	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to edit: ", to_find, p_id)) { //validate provider here.
 		//EDIT PROVIDER FROM DB HERE.
 
 		return 1;
