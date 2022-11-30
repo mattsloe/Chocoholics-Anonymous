@@ -1,6 +1,28 @@
 // Ashton Sawyer 11/17
 #include "Provider_tester.hpp"
 
+/* Dummy Data */
+std::string street = "1234 n Street st";
+std::string city = "Portland";
+std::string state = "OR";
+std::string zip = "97203";
+std::string name = "John Smith";
+std::string pid = "123456789";
+
+Address a1(street, city, state, zip);
+Provider prov(name, pid, a1);
+Service_Record sr("123", "234", "123456789", "123456789", "012345", "hi world");
+Provider_Directory d("assets/services.json");
+
+nlohmann::json j_obj = {
+	{"name", name},
+	{"pid", pid},
+	{"street", street},
+	{"city", city},
+	{"state", state},
+	{"zip", zip}
+};
+
 // *********
 // Provider Tests
 // *********
@@ -8,6 +30,8 @@
 // The compiler says I need a semi-colon before the void... 
 // I don't know why
 ; void Provider_tester::test_provider_class() {
+	prov.add_service(sr, d);
+
 	cout << endl;
 	cout << "------------------------------------------";
 	cout << "PROVIDER TESTS STARTING..." << endl;
