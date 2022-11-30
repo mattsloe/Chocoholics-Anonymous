@@ -65,6 +65,7 @@ class Provider {
 		void run_report(Provider_Directory & d);  // generate provider report
 		std::string run_manager_report();         // generate string for database gen. report
 		void load_file(nlohmann::json j, Provider_Directory&);   // load provider from json file
+		
 
 		// overloaded for ease of use
 		//   return 0 on success
