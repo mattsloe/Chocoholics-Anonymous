@@ -8,8 +8,12 @@ void SL_tester::test_Service_Ledger_class() {
     cout << "SERVICE LEDGER TESTS STARTING..." << endl;
     cout << "New Transaction good path test                  ";
     (assert_test(new_transaction_good_test(s)));
+    delete_SL();
+
     cout << "New Transaction bad path test                   ";
     (assert_test(new_transaction_bad_test(s)));
+    delete_SL();
+
     /*
     cout << "Generate EFT test                               ";
     (assert_test(generate_EFT_test(s)));
@@ -27,6 +31,12 @@ void SL_tester::create_SL(Service_Ledger *&s) {
     s->new_transaction(s1);
     s->new_transaction(s2);
     s->new_transaction(s3);
+}
+
+void SL_tester::delete_SL(Service_Ledger*& s) {
+    if (!s) return;
+    delete s;
+    s = nullptr;
 }
 
 bool SL_tester::new_transaction_good_test(Service_Ledger* s) {

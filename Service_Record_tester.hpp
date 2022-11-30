@@ -8,6 +8,7 @@ class Service_Record_tester {
         // Main Driver Call 
         static void test_Service_Record_class();
         static void create_SR(Service_Record *&);
+        static void delete_SR(Service_Record *&);
 
         // constructor tests
         static bool default_constructor(Service_Record *);
