@@ -65,22 +65,20 @@ bool Provider::operator<(const Provider& comp) {
 	return (pid < comp.pid);
 }
 
-std::ostream& operator<<(std::ostream& out, const Provider& p) {
+std::ostream& operator<<(std::ostream& out, Provider & p) {
 	out << p.to_string();
 	return out;
 }
 
-int Provider::edit_provider(std::string _name) {
-	name = _name;
+int Provider::edit_provider(std::string s) {
+	if (std::all_of(s.begin(), s.end(), ::isdigit))
+		pid = s;
+	else
+		name = s;
 	return 0;
 }
 
-int Provider::edit_provider(std::string _pid) {
-	pid = _pid;
-	return 0;
-}
-
-int Provider::edit_provider(const Address& _address) {
+int Provider::edit_provider(const Address & _address) {
 	address.copy_address(_address);
 	return 0;
 }
@@ -91,14 +89,11 @@ int Provider::edit_provider(std::string _name, std::string _pid) {
 	return 0;
 }
 
-int Provider::edit_provider(std::string _name, const Address & _address) {
-	name = _name;
-	address.copy_address(_address);
-	return 0;
-}
-
-int Provider::edit_provider(std::string _pid, const Address & _address) {
-	pid = _pid;
+int Provider::edit_provider(std::string s, const Address & _address) {
+	if (std::all_of(s.begin(), s.end(), ::isdigit))
+		pid = s;
+	else
+		name = s;
 	address.copy_address(_address);
 	return 0;
 }
@@ -127,7 +122,8 @@ int Provider::set_pid(std::string _pid) {
 }
 
 int Provider::set_address(const Address & _address) {
-	return address.copy_address(_address);
+	address.copy_address(_address);
+	return 0;
 }
 
 /* **File Functions** */
@@ -154,15 +150,19 @@ std::string Provider::to_file() {
 		{"street", address.street},
 		{"city", address.city},
 		{"state", address.state},
-		{"zip", address.zip}
-		//service list
+		{"zip", address.zip},
+		{"serviceList", service_to_file()}
 	};
+
+	//json service_array = service_to_file();
+	//j.insert(service_array.begin(), service_array.end());
+
 	out = j.dump(2);
 	return out;
 }
 
 void Provider::load_file(nlohmann::json j) {
-	std::string street, city, state, zip;
+	std::string street, city, state, zip, service_array;
 
 	name = j.value("name", "not found");
 	pid = j.value("pid", "not found");
@@ -173,7 +173,8 @@ void Provider::load_file(nlohmann::json j) {
 	zip = j.value("zip", "not found");
 	address.init_address(street, city, state, zip);
 
-	//init_list_from_file()
+	service_array = j.value("serviceList", "not found");
+	service_load_file(service_array);
 }
 
 // outputs .txt file of provider info + provided services info
@@ -205,8 +206,8 @@ std::string Provider::run_manager_report() {
 	std::string out;
 	
 	out += name + " - " + pid + "\n";
-	out += "Number of Consults: " + head->num_services_provided + "\t";
-	out += "Total Fee: " + head->total_cost + "\n";
+	out += "Number of Consults: " + std::to_string(head->num_services_provided) + "\t";
+	out += "Total Fee: " + std::to_string(head->total_cost) + "\n";
 
 	return out;
 }
@@ -230,6 +231,7 @@ int Provider::add_service(Service_Record * to_add) {
 	return 0;
 }
 
+// defines Service_Record == Service_Record as sid == r.sid && date == r.date
 int Provider::remove_service(Service_Record * to_remove) {
 	// empty list
 	if (!tail)
@@ -237,8 +239,8 @@ int Provider::remove_service(Service_Record * to_remove) {
 
 	node * curr = head->next;
 	while (curr->next) {
-		// need == 
-		if (curr->next->service == *to_remove) {
+		if (curr->next->service->get_sID() == to_remove->get_sID() && 
+			curr->next->service->get_date() == to_remove->get_date()) {
 			node * tmp = curr->next;
 			curr->next = tmp->next;
 			delete tmp;
@@ -262,6 +264,31 @@ int Provider::clear_services() {
 
 // for json file
 std::string Provider::service_to_file() {
+	using json = nlohmann::json;
+	std::string out;
+
+	json j = json::array({});
+
+	if (!tail) {
+		out = j.dump(2);
+		return out;
+	}
+
+	node * curr = head->next;
+	while (curr) {
+		j.insert(j.begin(), curr->service->to_string_exp());
+		curr = curr->next;
+	}
+	
+	out = j.dump(2);
+
+	return out;
+}
+
+// might not need if service ledger passes initialized 
+// records to provider on startup -> sharing pointer so don't want to
+// duplicate data
+void Provider::service_load_file(nlohmann::json j) {
 
 }
 
@@ -280,12 +307,12 @@ std::string Provider::service_to_string() {
 	if (tail) {
 		node * curr = head->next;
 		while (curr) {
-			//out += curr->services.to_string()
+			//out += curr->service->to_string()
 			out += "\n";
 		}
 	}
-	out += "Total Services: " + head->num_services_provided + "\t";
-	out += "Total Fee: " + head->total_cost + "\n";
+	out += "Total Services: " + std::to_string(head->num_services_provided) + "\t";
+	out += "Total Fee: " + std::to_string(head->total_cost) + "\n";
 
 	return out;
 }
@@ -320,6 +347,8 @@ void Provider::init_list() {
 // **********
 // ADDRESS
 // **********
+
+Address::Address() = default;
 
 Address::Address(std::string street, std::string city, std::string state, std::string zip) {
 	init_address(street, city, state, zip);
@@ -356,12 +385,12 @@ void Address::init_address() {
 		std::cout << "Zip: ";
 		std::cin >> tmp;
 		std::cin.ignore(100, '\n');
-		flag = set_zip(tmp)
+		flag = set_zip(tmp);
 	}
 
 }
 
-int Address::init_address(std::string _street, std::string _city, std::string _state, std::string _zip) {
+void Address::init_address(std::string _street, std::string _city, std::string _state, std::string _zip) {
 	street = _street;
 	city = _city;
 	state = _state;
@@ -374,11 +403,6 @@ void Address::copy_address(const Address & source) {
 	city = source.city;
 	state = source.state;
 	zip = source.zip;
-}
-
-void Address::print_address() {
-	std::cout << street << std::endl;
-	std::cout << city << "," << state << " " << zip << std::endl;
 }
 
 int Address::set_street(std::string _street) {
@@ -402,7 +426,7 @@ int Address::set_state(std::string _state) {
 }
 
 int Address::set_zip(std::string _zip) {
-	if (_zip.length != 5 || !std::all_of(_zip.begin(), _zip.end(), ::isdigit)) {
+	if (_zip.length() != 5 || !std::all_of(_zip.begin(), _zip.end(), ::isdigit)) {
 		std::cout << "Invalid zipcode!" << std::endl;
 		return 1;
 	}
