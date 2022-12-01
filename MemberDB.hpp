@@ -35,6 +35,8 @@ public:
 
     int get_member(std::string mid,Member&);
 
+    int run_member_reports(Provider_Directory&,Provider_Database&)const; //runs member reports for all members. Returns false if there were errors
+
     //no validation: make sure the member does not already exist in the DB first!
     //@post member is added to db, returns true
     int add_member(const Member&);
