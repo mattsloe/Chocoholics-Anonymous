@@ -19,6 +19,20 @@ using namespace std;
 
 const int MAX_CHARS = 256;
 
+//Directories/filenames where reports are stored.
+const string SERVICES = "assets/services.json";					//Used to initialize the Provider_Directory
+
+const string PROVIDERS = "assets/provider_database.json";
+const string PROVIDER_REPORTS = "reports/";
+
+const string MEMBERS = "assets/test-members.json";
+const string MEMBER_REPORTS = "";
+
+const string APR = "AccountsPayableReport";
+const string EFT = "EFTDATA";
+
+
+
 
 //Some helper functions for user input.
 void 	get_string(string &user_str, const string prompt); 	//Retrieves a string from the user.
@@ -28,10 +42,10 @@ char 	get_char(const string prompt);						//Always returns true.
 
 
 ///////////	The following functions will be used to facilitate the the manipulation of the ProviderDB, MemberDB, and Service_Ledger.	////////////////
-bool validate_member(const string prompt, MemberDB &);
+bool validate_member(const string prompt, MemberDB & m_db);
 bool validate_member(const string prompt, Member & to_find, string &m_id, MemberDB &);									//Returns 0 if the member number is found in the MemberDB else returns 1. Member object stores the member found.
-bool validate_provider(const string prompt, Provider & to_find, string &p_id/*ProviderDB &*/);								//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
-bool validate_service(const string prompt, Service *& to_find, string &s_id, Provider_Directory *&);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
+bool validate_provider(const string prompt, Provider & to_find, string &p_id, Provider_Database & p_db);								//Returns 0 if provider number is found in the ProviderDB else returns 1. Provider object stores the provider found.
+bool validate_service(const string prompt, Service *& to_find, string &s_id, Provider_Directory *& dir);				//Returns 0 if service ID is found in the list of services provided by the provider else returns 1. 
 																		//Service stores the service found from the provider.
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +116,7 @@ class Interactive_Terminal {
 		
 		int display_provider_directory(Provider_Directory*&);
 
-		int generate_member_reports(MemberDB &);								//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
+		int generate_member_reports(MemberDB &, Provider_Directory *&);								//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
 		int generate_provider_reports(Provider_Database &, Provider_Directory *&);							//Can either generate an individual provider report or the entire ProviderDB directory. Relies on member functions in DB and 
 																					//the Provider class. 
 																					//(provider report from section 2.2.1 of the design document).
