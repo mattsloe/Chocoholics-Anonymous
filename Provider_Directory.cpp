@@ -118,10 +118,12 @@ void Provider_Directory::create_new_service() {
     valid = false;
 
     services.emplace(sID, service);
+
+    return;
 }
 
 void Provider_Directory::display() {
-    for (auto it = services.begin(); it != services.begin(); it++) {
+    for (auto it = services.begin(); it != services.end(); it++) {
         it->second.display();
     }
 }
