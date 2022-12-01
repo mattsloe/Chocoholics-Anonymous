@@ -128,7 +128,7 @@ bool validate_provider(const string prompt, Provider & to_find, string &p_id, Pr
 
 	//FIND PROVIDER
 	if (p_db.get_provider(p_id, to_find)) { //Replace true with function call to find provider.
-		cout << "\n\n VALIDATED \n\n";
+		cout << "\n\nVALIDATED\n\n";
 		return true;
 	}
 	
@@ -139,7 +139,7 @@ bool validate_provider(const string prompt, Provider & to_find, string &p_id, Pr
 
 
 
-bool validate_service(const string prompt, Service*& to_find, string& s_id, Provider_Directory*& dir) {
+bool validate_service(const string prompt, Service*& to_find, string& s_id, Provider_Directory & dir) {
 	char option = 'y'; 
 
 	while(option != tolower('N')) {
@@ -155,7 +155,7 @@ bool validate_service(const string prompt, Service*& to_find, string& s_id, Prov
 		}
 
 		//FIND SERVICE
-		if (dir->get_service(s_id, to_find)) { //Replace true with function call to find service.
+		if (dir.get_service(s_id, to_find)) { //Replace true with function call to find service.
 			cout << "\n\n" << "Name of the service: " << to_find->get_name() << "\n\n";
 
 			option = get_char("Is this the correct service name? (y/n): ");
@@ -178,13 +178,13 @@ bool validate_service(const string prompt, Service*& to_find, string& s_id, Prov
 /////////////////////////////// DRIVER CLASS ///////////////////////////////////
 
 
-Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr), directory(nullptr)
+Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr) //, directory(nullptr)
 {
 	pterm = new Provider_Terminal();
 	iterm = new Interactive_Terminal();
 	fterm = new Financial_Terminal();
 
-	directory = new Provider_Directory();
+	//directory = new Provider_Directory();
 
 	//READ FROM DISC HERE
 }
@@ -203,11 +203,12 @@ Driver::~Driver() {
 		delete fterm;
 		fterm = nullptr;
 	}
-
+	/*
 	if (directory) {
 		delete directory;
 		directory = nullptr;
 	}
+	*/
 	//WRITE TO DISC HERE
 }
 
@@ -391,7 +392,7 @@ void Driver::start_fterm() {
 /////////////////////////////// PROVIDER_TERMINAL CLASS ///////////////////////////////////
 
 
-int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger & ledger, Provider_Directory *& dir, Provider_Database & p_db) {
+int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger & ledger, Provider_Directory & dir, Provider_Database & p_db) {
 	Member m_to_find;
 	string m_id;
 
@@ -435,7 +436,7 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 
 
 				cout << "Adding service record to the provider database...\n";
-				p_to_find.add_service(record, *dir);
+				p_to_find.add_service(record, dir);
 				p_db.edit_provider(p_id, p_to_find);
 
 
@@ -454,7 +455,7 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 }
 
 //Call function from providerDB (single report for a specific pID)
-int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provider_Directory *& dir) { 
+int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provider_Directory & dir) { 
 	
 	Provider to_find;
 	string p_id;
@@ -463,7 +464,7 @@ int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provid
 	if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
 		//CALL MEMBERDB REPORT FUNCTION HERE
 		cout << "Generating report for the following provider ID: " << p_id << "\n\n";
-		p_db.generate_single_report(p_id, *dir);
+		p_db.generate_single_report(p_id, dir);
 
 		return 1;
 	}
@@ -474,7 +475,7 @@ int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provid
 
 
 //Generate provider directory (list of services) to email to a provider.
-int Provider_Terminal::generate_provider_directory_report(Provider_Directory *& dir) { 
+int Provider_Terminal::generate_provider_directory_report(Provider_Directory & dir) { 
 	cout << "\n\nThis option is not implemented\n\n";
 	return 0; 
 }
@@ -486,7 +487,11 @@ int Provider_Terminal::generate_provider_directory_report(Provider_Directory *& 
 
 
 int Interactive_Terminal::display_member_db(MemberDB & m_db) {
-	int total = m_db.display_all();
+	int total = 0;
+
+	cout << "\n\n";
+	total = m_db.display_all();
+
 	cout << "\n\n" << "The total number of members is: " << total << "\n\n";
 	return 1; 
 }
@@ -540,6 +545,9 @@ int Interactive_Terminal::remove_member(MemberDB& m_db) {
 	Member to_find;
 	string m_id;
 
+	cout << "\n\n";
+	m_db.display_all();
+
 	if (validate_member("Please enter the 9-digit member ID of the member you would like to remove: ", to_find, m_id, m_db)) { //validate member here.
 		//REMOVE MEMBER FROM DB HERE.
 		if (m_db.delete_member(m_id))
@@ -565,7 +573,9 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 			state, \
 			zip;
 
+	cout << "\n\n";
 	m_db.display_all();
+
 	if (validate_member("Please enter the 9-digit member ID of the member you would like to edit: ", to_find, m_id, m_db)) { //validate provider here.
 		//EDIT PROVIDER FROM DB HERE.
 		cout << "\n\n" << to_find << "\n\n";
@@ -609,7 +619,11 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 
 
 int Interactive_Terminal::display_provider_db(Provider_Database & p_db) { 
-	int total = p_db.display_all();
+	int total = 0;
+
+	cout << "\n\n";
+	total = p_db.display_all();
+
 	cout << "\n\n" << "The total number of providers is: " << total << "\n\n"; 
 	return 1; 
 }
@@ -659,6 +673,9 @@ int Interactive_Terminal::remove_provider(Provider_Database & p_db) {
 	Provider to_find;
 	string p_id;
 
+	cout << "\n\n";
+	p_db.display_all();
+
 	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to remove: ", to_find, p_id, p_db)) { //validate provider here.
 		//REMOVE MEMBER FROM DB HERE.
 		if (p_db.delete_provider(p_id))
@@ -685,7 +702,9 @@ int Interactive_Terminal::edit_provider(Provider_Database & p_db) {
 		state, \
 		zip;
 
+	cout << "\n\n";
 	p_db.display_all();
+
 	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to edit: ", to_find, p_id, p_db)) { //validate provider here.
 		//EDIT PROVIDER FROM DB HERE.
 		cout << "\n\n" << to_find << "\n\n";
@@ -725,15 +744,19 @@ int Interactive_Terminal::edit_provider(Provider_Database & p_db) {
 
 
 
-int Interactive_Terminal::add_service_to_provider_directory(Provider_Directory *& dir) { 
-	dir->create_new_service();
+int Interactive_Terminal::add_service_to_provider_directory(Provider_Directory & dir) { 
+	cout << "\n\n";
+	dir.create_new_service();
+	cout << "\n\n";
 	return 1; 
 }
 
 
 
-int Interactive_Terminal::display_provider_directory(Provider_Directory*& dir) {
-	dir->display();
+int Interactive_Terminal::display_provider_directory(Provider_Directory & dir) {
+	cout << "\n\n";
+	dir.display();
+	cout << "\n\n";
 	return 1;
 }
 
@@ -741,7 +764,7 @@ int Interactive_Terminal::display_provider_directory(Provider_Directory*& dir) {
 
 
 //Call function from memberDB (single report for a specific mID or the entire database.
-int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Database & p_db, Provider_Directory *& dir) { 
+int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Database & p_db, Provider_Directory & dir) { 
 	
 	int option = 0;
 
@@ -767,7 +790,7 @@ int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Datab
 		case 2:
 			//CALL MEMBERDB REPORT FUNCTION HERE
 			cout << "\n\nRunning member reports on entire database...\n\n";
-			m_db.run_member_reports(*dir, p_db);
+			m_db.run_member_reports(dir, p_db);
 			break;
 		}
 	}
@@ -776,7 +799,7 @@ int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Datab
 } 
 
 
-int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Provider_Directory *& dir) { 
+int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Provider_Directory & dir) { 
 	int option = 0;
 
 	while (option <= 2) {
@@ -792,14 +815,14 @@ int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Pr
 			if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
 				//CALL MEMBERDB REPORT FUNCTION HERE
 				cout << "\n\nRunning report for the following provider ID: " << p_id << "\n\n";
-				p_db.generate_single_report(p_id, *dir);
+				p_db.generate_single_report(p_id, dir);
 			}
 		}
 		break;
 		case 2:
 			//CALL MEMBERDB REPORT FUNCTION HERE
 			cout << "\n\nRunning provider reports on entire database...\n\n";
-			p_db.generate_provider_reports(*dir);
+			p_db.generate_provider_reports(dir);
 			break;
 		}
 	}
@@ -811,19 +834,19 @@ int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Pr
 
 /////////////////////////////// FINANCIAL_TERMINAL CLASS ///////////////////////////////////
 
-int Financial_Terminal::generate_EFT(Service_Ledger& ledger, Provider_Directory *& dir) {
+int Financial_Terminal::generate_EFT(Service_Ledger& ledger, Provider_Directory & dir) {
 
 	cout << "\n\nGenerating EFT Data\n\n";
-	ledger.generate_EFT(*dir);
+	ledger.generate_EFT(dir);
 	return 1;
 }
 
 
 
-int Financial_Terminal::generate_APR(Service_Ledger& ledger, Provider_Directory*& dir) {
+int Financial_Terminal::generate_APR(Service_Ledger& ledger, Provider_Directory & dir) {
 
 	cout << "\n\nGenerating APR Data\n\n";
-	ledger.generate_APR(*dir);
+	ledger.generate_APR(dir);
 	return 1;
 }
 
@@ -833,6 +856,7 @@ int Financial_Terminal::suspend_reinstate_member(MemberDB& m_db) {
 	Member to_find;
 	string m_id;
 
+	cout << "\n\n";
 	m_db.display_all();
 
 	char option = 'n';
