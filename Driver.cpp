@@ -128,7 +128,7 @@ bool validate_provider(const string prompt, Provider & to_find, string &p_id, Pr
 
 	//FIND PROVIDER
 	if (p_db.get_provider(p_id, to_find)) { //Replace true with function call to find provider.
-		cout << "\n\n VALIDATED \n\n";
+		cout << "\n\nVALIDATED\n\n";
 		return true;
 	}
 	
