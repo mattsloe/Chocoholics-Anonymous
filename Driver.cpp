@@ -558,6 +558,7 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 				member_to_edit.set_city(city);
 				member_to_edit.set_state(state);
 				member_to_edit.set_zip(zip);
+				member_to_edit.set_MID(m_id);
 
 				cout << "\n\n" << member_to_edit << "\n\n";
 				option = get_char("Is this the member information correct? (y/n): ");
