@@ -139,4 +139,17 @@ int MemberDB::edit(std::string mid,const Member & toEmplace ) {
     return true;
 }
 
+//run member report for each member
+int MemberDB::run_member_reports(Provider_Directory& directory, Provider_Database& pDB) const {
+    int flag = 1;
+    for(auto value = name_map.begin(); value != name_map.end(); value++) {
+        std::cout << "Generating Record for " << value->first << "..." ;
+        if (value->second->run_member_report(directory,pDB))
+            std::cout << "done";
+        else flag = 0;
+        std::cout << std::endl;
+    }
+    return flag;
+}
+
 

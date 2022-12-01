@@ -262,6 +262,10 @@ std::string Provider::service_to_string(Provider_Directory & d) {
 	return out;
 }
 
+std::string Provider::get_name() {
+    return name;
+}
+
 // **********
 // ADDRESS
 // **********

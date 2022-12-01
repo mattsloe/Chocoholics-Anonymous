@@ -235,3 +235,55 @@ int Member::add_service(const Service_Record & toAdd) {
     return true;
 }
 
+//Create member report as a .txt file
+//Save to /docs/member_report/memberName_currentDate.txt
+//Format: [Member]
+//        ---------
+//        [Service - Provider - Date] (in order of service date)
+//        ---------
+//        [Service - Provider - Date]
+int Member::run_member_report(Provider_Directory & providerDirectory, Provider_Database& providerDB) const {
+    //create file name
+    const int MAXLEN = 80;
+    char s[MAXLEN];
+    std::time_t now = std::time(nullptr);
+    strftime(s,MAXLEN,"%d_%m_%Y", localtime(&now)); //string length should be 10
+    std::string date(s);
+    std::string  outputFilename = std::string("docs/member_reports/") + name + date;
+    //open file
+    using namespace std;
+    ofstream  out(outputFilename,ofstream::trunc); //overwrite existing file
+    if (!out.is_open()){
+        cout << "Unable to open output file for member report." << endl;
+        return 0;
+    }
+    //Create File
+    out << *this <<endl;
+        //for each service record, output record info
+
+   /* USE THIS TO SORT SERVICELIST BEFORE OUTPUTTING
+    //create a clone of serviceList and sort it by service date
+    std::vector<Service_Record> sortedServices = serviceList;
+    //lambda sort function
+    sort(sortedServices.begin(),sortedServices.end(),[](Service_Record& lhs,Service_Record& rhs)
+        {return lhs.get_sDate() < rhs.get_sDate();});
+    */
+
+    for (auto record:serviceList) {
+
+        //get service name
+        string serviceName = providerDirectory.get_name(record.get_sID());
+        //get provider name
+        Provider p;
+        providerDB.get_provider(record.get_pID(),p);
+        string providerName = p.get_name();
+        //output string
+        out << "----------" << endl;
+        out << "  " << serviceName << " - " << providerName << " - " << record.get_sDate() << endl;
+    }
+
+    //close file
+    out.close();
+    return true;
+}
+
