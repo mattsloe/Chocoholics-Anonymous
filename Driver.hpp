@@ -10,7 +10,7 @@
 //Custom file includes from our project.
 #include "MemberDB.hpp"
 #include "Provider_Database.hpp"
-#include "Service_Ledger.hpp" //Includes Service_Ledger, Service_Record, Service, and Provider_Directory
+#include "Service_Ledger.hpp"		//Includes Service_Ledger, Service_Record, Service, and Provider_Directory
 
 
 
@@ -19,7 +19,7 @@ using namespace std;
 
 const int MAX_CHARS = 256;
 
-//Directories/filenames where reports are stored.
+//Directories/filenames where reports and save data are stored.
 const string SERVICES = "assets/services.json";					
 const string SERVICE_LEDGER = "assets/service_ledger.json";
 
@@ -117,7 +117,7 @@ class Interactive_Terminal {
 		
 		int display_provider_directory(Provider_Directory*&);
 
-		int generate_member_reports(MemberDB &, Provider_Directory *&);								//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
+		int generate_member_reports(MemberDB &, Provider_Database &, Provider_Directory *&);								//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
 		int generate_provider_reports(Provider_Database &, Provider_Directory *&);							//Can either generate an individual provider report or the entire ProviderDB directory. Relies on member functions in DB and 
 																					//the Provider class. 
 																					//(provider report from section 2.2.1 of the design document).
