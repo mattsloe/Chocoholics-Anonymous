@@ -406,7 +406,7 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 
 		if (validate_service("Please enter the 6-digit service ID to locate in the provider directory: ", s_to_find, s_id, dir)) { //Service validated
 			//Build Service record
-			get_string(comments, "Enter any comments about the service provied to member: \n");
+			get_string(comments, "Enter any comments about the service provided to the member: \n");
 
 			record.set_date(date);
 			record.set_sDate(service_date);
