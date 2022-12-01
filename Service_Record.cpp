@@ -182,7 +182,7 @@ static string get_part_date(int size) {
 
 static string input_ID(int size) {
     string ID;
-    while (valid_id(size, ID)) {
+    while (!valid_id(size, ID)) {
         getline(cin, ID);
     }
     return ID;
