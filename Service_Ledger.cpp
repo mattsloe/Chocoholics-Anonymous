@@ -41,7 +41,6 @@ void Service_Ledger::write_to_file() {
     string file_name = "assets/service_records.json";
     ofstream o;
     json j_ledger;
-    json j_vec;
 
     o.open(file_name);
     
@@ -52,9 +51,10 @@ void Service_Ledger::write_to_file() {
 
 
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
-        j_ledger["pID"] = vec_to_string(it->first);
+        j_ledger["pID"] = it->second;
     }
 
+    // output json ledger to output
     j_ledger >> o;
     o.close();
 

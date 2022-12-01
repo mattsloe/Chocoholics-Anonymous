@@ -31,9 +31,10 @@ class Service_Record {
 
         // functionality to create a Service Record
         void create_Service_Record();
-        bool input_date();
+        //bool input_date();
         std::string input_sDate();
         void input_comments();
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE(Service_Record, date, sDate, pID, mID, sID, comments);
 
     private:
         std::string date;
