@@ -7,7 +7,7 @@ Service_Ledger::Service_Ledger() {
 }
 
 void Service_Ledger::load() {
-    string file_name = "assets/service_records.json";
+    string file_name = "assets/service_ledger.json";
     json j;
     ifstream in(file_name);
 
@@ -21,7 +21,7 @@ Service_Ledger::~Service_Ledger() {
 }
 
 void Service_Ledger::save() {
-    string file_name = "assets/service_records.json";
+    string file_name = "assets/service_ledger.json";
     ofstream o(file_name);
     json j_ledger;
 
