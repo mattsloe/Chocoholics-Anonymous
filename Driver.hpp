@@ -24,13 +24,13 @@ const string SERVICES = "assets/services.json";
 const string SERVICE_LEDGER = "assets/service_ledger.json";
 
 const string PROVIDERS = "assets/provider_database.json";
-const string PROVIDER_REPORTS = "reports/";
+const string PROVIDER_REPORTS = "docs/provider_reports/";
 
 const string MEMBERS = "assets/test-members.json";
-const string MEMBER_REPORTS = "";
+const string MEMBER_REPORTS = "docs/member_reports/";
 
-const string APR = "AccountsPayableReport";
-const string EFT = "EFTDATA";
+const string APR = "docs/AccountsPayableReport";
+const string EFT = "docs/EFTDATA";
 
 
 

@@ -769,9 +769,10 @@ int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Datab
 	int option = 0;
 
 	while (option <= 2) {
-		option = (int) get_long("Which option would you prefer?\n\t \
+		option = (int) get_long("Which option would you prefer?\t\n \
 							1) Generate an individual member report\n\t \
-							2) Generate the entire member database\n>");
+							2) Generate the entire member database\n\t \
+							3) Exit report generation menu\n>");
 		switch (option) {
 		case 1:
 		{
@@ -801,9 +802,10 @@ int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Pr
 	int option = 0;
 
 	while (option <= 2) {
-		option = (int)get_long("Which option would you prefer?\n\t \
+		option = (int)get_long("Which option would you prefer?\t\n \
 							1) Generate an individual provider report\n\t \
-							2) Generate the entire provider database\n>");
+							2) Generate the entire provider database\n\t \
+							3) Exit report generation menu\n>");
 		switch (option) {
 		case 1:
 		{
