@@ -20,7 +20,8 @@ using namespace std;
 const int MAX_CHARS = 256;
 
 //Directories/filenames where reports are stored.
-const string SERVICES = "assets/services.json";					//Used to initialize the Provider_Directory
+const string SERVICES = "assets/services.json";					
+const string SERVICE_LEDGER = "assets/service_ledger.json";
 
 const string PROVIDERS = "assets/provider_database.json";
 const string PROVIDER_REPORTS = "reports/";

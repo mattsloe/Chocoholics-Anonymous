@@ -3,7 +3,7 @@ using namespace std;
 using json = nlohmann::json;
 
 Service_Ledger::Service_Ledger() {
-    load();
+    //load();
 }
 
 void Service_Ledger::load() {
