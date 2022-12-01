@@ -72,14 +72,14 @@ bool validate_member(const string prompt, MemberDB &m_db) {
 	//FIND MEMBER.
 	if (m_db.get_member(m_id, to_find)) { //Replace true with function call to find member.
 		if (!to_find.is_active())
-			cout << "\n\n Member is suspended \n\n";
+			cout << "\n\nMember is suspended\n\n";
 		else {
-			cout << "\n\n VALIDATED \n\n";
+			cout << "\n\nVALIDATED\n\n";
 			return true;
 		}
 	}
 	else
-		cout << "\n\n Invalid Member Number \n\n";
+		cout << "\n\nInvalid Member Number\n\n";
 
 	return false;
 }
@@ -101,14 +101,14 @@ bool validate_member(const string prompt, Member & to_find, string &m_id, Member
 	//FIND MEMBER.
 	if (m_db.get_member(m_id, to_find)) { //Replace true with function call to find member.
 		if (!to_find.is_active())
-			cout << "\n\n Member is suspended \n\n";
+			cout << "\n\nMember is suspended\n\n";
 		else {
-			cout << "\n\n VALIDATED \n\n";
+			cout << "\n\nVALIDATED\n\n";
 			return true;
 		}
 	}
 	
-	cout << "\n\n Invalid Member Number \n\n";
+	cout << "\n\nInvalid Member Number\n\n";
 	
 	return false;
 }
