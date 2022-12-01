@@ -72,7 +72,7 @@ void Service::display() {
 
 // ----------------------- Provider Directory Implementation ---------------------------
 Provider_Directory::Provider_Directory() {
-   load();
+   //load();
 }
 
 Provider_Directory::~Provider_Directory() {
