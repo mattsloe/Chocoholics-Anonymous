@@ -775,16 +775,14 @@ int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Datab
 		switch (option) {
 		case 1:
 		{
-			cout << "\n\nThis option is not implemented.\n\n";
-			/*
 			Member to_find;
 			string m_id;
 
 			if (validate_member("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, m_id, m_db)) {
 				//CALL MEMBERDB REPORT FUNCTION HERE
-				
+				cout << "\n\nRunning report for the following member ID: " << m_id << "\n\n";
+				to_find.run_member_report(dir, p_db);
 			}
-			*/
 		}
 		break;
 		case 2:
