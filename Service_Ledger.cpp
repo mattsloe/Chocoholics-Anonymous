@@ -11,12 +11,27 @@ void Service_Ledger::read_from_file() {
     json j;
     ifstream in;
     in.open(file_name);
-    in >> j;
-    //init(j);
+    j = json::parse(file_name);
+    init(j);
     return;
 }
 
-//void Service_Ledger::init
+void Service_Ledger::init(json j) {
+    //for (auto it = j.begin(); it != j.end(); it++) {
+    //this->ledger.at() = j.at("pID");
+    for (auto& elm: j.items()) {
+        json obj = elm.value();
+        /*
+        vector<Service_Record> provider;
+        this->ledger.at(elm.key()) = provider;
+        */
+        for (auto& it : elm.value()) {
+            // access the vector at element key and creates a new SR to append to the end of the vector
+            this->ledger.at(elm.key()).push_back(Service_Record(it));
+        }
+    }             
+    this->ledger = j;
+}
 
 Service_Ledger::~Service_Ledger() {
     write_to_file();
@@ -34,6 +49,7 @@ void Service_Ledger::write_to_file() {
         cerr << "Could not open the file!!" << endl;
         return;
     }
+
 
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
         j_ledger["pID"] = vec_to_string(it->first);
