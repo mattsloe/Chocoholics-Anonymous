@@ -9,28 +9,11 @@ Service_Ledger::Service_Ledger() {
 void Service_Ledger::read_from_file() {
     string file_name = "assets/service_records.json";
     json j;
-    ifstream in;
-    in.open(file_name);
-    j = json::parse(file_name);
-    init(j);
-    return;
-}
+    ifstream in(file_name);
 
-void Service_Ledger::init(json j) {
-    //for (auto it = j.begin(); it != j.end(); it++) {
-    //this->ledger.at() = j.at("pID");
-    for (auto& elm: j.items()) {
-        json obj = elm.value();
-        /*
-        vector<Service_Record> provider;
-        this->ledger.at(elm.key()) = provider;
-        */
-        for (auto& it : elm.value()) {
-            // access the vector at element key and creates a new SR to append to the end of the vector
-            this->ledger.at(elm.key()).push_back(Service_Record(it));
-        }
-    }             
-    this->ledger = j;
+    // parse the file and store the ledger with the json object
+    j = json::parse(file_name);
+    this->ledger = j.get<unordered_map<string, vector<Service_Record>>>();
 }
 
 Service_Ledger::~Service_Ledger() {
