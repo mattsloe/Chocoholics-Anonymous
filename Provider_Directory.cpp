@@ -71,8 +71,12 @@ void Service::display() {
 }
 
 // ----------------------- Provider Directory Implementation ---------------------------
-Provider_Directory::Provider_Directory(string file_name) {
-   read_from_file(file_name);
+Provider_Directory::Provider_Directory() {
+   load();
+}
+
+Provider_Directory::~Provider_Directory() {
+    save();
 }
 
 void Provider_Directory::init(nlohmann::json j) {
@@ -122,7 +126,8 @@ void Provider_Directory::display() {
     }
 }
 
-void Provider_Directory::read_from_file(string file_name) {
+void Provider_Directory::load() {
+    string file_name = "assets/services.json";
     json j;
     ifstream infile(file_name);
 
@@ -136,7 +141,7 @@ void Provider_Directory::read_from_file(string file_name) {
     init(j);
 }
 
-void Provider_Directory::write_to_file() {
+void Provider_Directory::save() {
     string file_name = "assets/services.json";
     fstream out;
     
@@ -146,7 +151,7 @@ void Provider_Directory::write_to_file() {
         return;
         exit(-25);
     }
-    
+
     out << "{";
     for (auto it = services.begin(); it != services.end(); it++) {
         out << it->second.to_string_exp();
@@ -189,8 +194,7 @@ string Provider_Directory::get_fee(string sid) {
 }
 
 double Provider_Directory::get_fee_d(string sid) {
-    auto service = services.find(sid);
-    return service->second.get_fee();
+    return services.at(sid).get_fee();
 }
 // --------------------------------------------------
 
