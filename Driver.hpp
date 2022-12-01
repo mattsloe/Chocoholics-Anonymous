@@ -93,7 +93,7 @@ class Provider_Terminal {
 																											//and then adds Service_Record to the Service_Ledger and Provider.
 		int generate_provider_report(Provider_Database &, Provider_Directory *&);														//Finds a provider in the ProviderDB and then generates a provider report using a function from the provider class 
 																											//(provider report from section 2.2.1 of the design document).
-		int generate_provider_directory(Provider_Directory *&);
+		int generate_provider_directory_report(Provider_Directory *&);												//Generate the provider directory to email to the provider who requested it.
 };
 
 
@@ -128,9 +128,9 @@ class Interactive_Terminal {
 //This is the financial terminal to test various functions that ACME will later utilize in their own terminal/program.
 class Financial_Terminal {
 	public:
-		int generate_EFT(Service_Ledger &);				//Generates a financial report for the past week of transactions from the Service_Ledger. 
+		int generate_EFT(Service_Ledger &, Provider_Directory *&);				//Generates a financial report for the past week of transactions from the Service_Ledger. 
 															//(EFT Data from section 2.2.5 of the design document).
-		int generate_APR(Service_Ledger &);
+		int generate_APR(Service_Ledger &, Provider_Directory *&);
 		int suspend_reinstate_member(MemberDB &);		//Will find a member from the MemberDB and manipulate the suspended data member.
 
 };

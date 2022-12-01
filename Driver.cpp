@@ -270,7 +270,7 @@ void Driver::start_pterm() {
 				pterm->generate_provider_report(provider_db, directory);
 				break;
 			case 4: 
-				pterm->generate_provider_directory(directory);
+				pterm->generate_provider_directory_report(directory);
 				break;
 		}
 	}	
@@ -303,7 +303,8 @@ void Driver::start_iterm() {
 		9)  Add service to provider directory\n\t \
 		10) Generate member reports\n\t \
 		11) Generate provider reports\n\t \
-		12) Exit terminal\n> ");
+		12) Display provider directory\n\t \
+		13) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
@@ -339,6 +340,9 @@ void Driver::start_iterm() {
 			case 11:
 				iterm->generate_provider_reports(provider_db, directory);
 				break;
+			case 12:
+				iterm->display_provider_directory(directory);
+				break;
 		}
 	}	
 	
@@ -365,10 +369,13 @@ void Driver::start_fterm() {
 		
 		switch(option) {
 			case 1:
+				fterm->suspend_reinstate_member(member_db);
 				break;
 			case 2:
+				fterm->generate_EFT(ledger, directory);
 				break;
 			case 3:
+				fterm->generate_APR(ledger, directory);
 				break;
 		}
 	}	
@@ -446,9 +453,26 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 	return 0;
 }
 
+//Call function from providerDB (single report for a specific pID)
+int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provider_Directory *& dir) { 
+	
+	Provider to_find;
+	string p_id;
 
-int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provider_Directory *& dir) { return 0; } //Call function from providerDB (single report for a specific pID or the entire database.
-int Provider_Terminal::generate_provider_directory(Provider_Directory *& dir) { return 0; }
+	if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
+		//CALL MEMBERDB REPORT FUNCTION HERE
+		p_db.generate_single_report(p_id, *dir);
+
+		return 1;
+	}
+
+	return 0;
+} 
+
+
+
+//Generate provider directory (list of services) to email to a provider.
+int Provider_Terminal::generate_provider_directory_report(Provider_Directory *& dir) { return 0; }
 
 
 
@@ -703,8 +727,123 @@ int Interactive_Terminal::add_service_to_provider_directory(Provider_Directory *
 
 
 
-int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Directory *& dir) { return 0; } //Call function from memberDB (single report for a specific mID or the entire database.
-int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Provider_Directory *& dir) { return 0; }
+int Interactive_Terminal::display_provider_directory(Provider_Directory*& dir) {
+	dir->display();
+	return 1;
+}
 
 
 
+
+//Call function from memberDB (single report for a specific mID or the entire database.
+int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Directory *& dir) { 
+	
+	int option = 0;
+
+	while (option <= 2) {
+		option = (int) get_long("Which option would you prefer?\n\t \
+							1) Generate an individual member report\n\t \
+							2) Generate the entire member database\n>");
+		switch (option) {
+		case 1:
+		{
+			Member to_find;
+			string m_id;
+
+			if (validate_member("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, m_id, m_db)) {
+				//CALL MEMBERDB REPORT FUNCTION HERE
+
+			}
+
+		}
+		break;
+		case 2:
+			//CALL MEMBERDB REPORT FUNCTION HERE	
+			break;
+		}
+	}
+
+	return 1; 
+} 
+
+
+int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Provider_Directory *& dir) { 
+	int option = 0;
+
+	while (option <= 2) {
+		option = (int)get_long("Which option would you prefer?\n\t \
+							1) Generate an individual provider report\n\t \
+							2) Generate the entire provider database\n>");
+		switch (option) {
+		case 1:
+		{
+			Provider to_find;
+			string p_id;
+
+			if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
+				//CALL MEMBERDB REPORT FUNCTION HERE
+				p_db.generate_single_report(p_id, *dir);
+			}
+		}
+		break;
+		case 2:
+			//CALL MEMBERDB REPORT FUNCTION HERE
+			p_db.generate_provider_reports(*dir);
+			break;
+		}
+	}
+
+	return 1;
+}
+
+
+
+/////////////////////////////// FINANCIAL_TERMINAL CLASS ///////////////////////////////////
+
+int Financial_Terminal::generate_EFT(Service_Ledger& ledger, Provider_Directory *& dir) {
+
+	cout << "\n\n Generating EFT Data \n\n";
+	ledger.generate_EFT(*dir);
+	return 1;
+}
+
+
+
+int Financial_Terminal::generate_APR(Service_Ledger& ledger, Provider_Directory*& dir) {
+
+	cout << "\n\n Generating APR Data \n\n";
+	ledger.generate_APR(*dir);
+	return 1;
+}
+
+
+
+int Financial_Terminal::suspend_reinstate_member(MemberDB& m_db) {
+	Member to_find;
+	string m_id;
+
+	m_db.display_all();
+
+	char option = 'n';
+
+	while (option != tolower('Y')) {
+		cout << '\n';
+		get_string(m_id, "Please enter the 9-digit member ID of the member you wish to suspend/reinstate: ");
+
+		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
+		option = get_char("Is this the member ID correct? (y/n): ");
+	}
+
+	if (m_db.get_member(m_id, to_find)) {
+		cout << "\nMember Before:\n\n" << to_find << "\n\n";
+
+		to_find.toggle_active();
+		m_db.edit(m_id, to_find);
+		
+		cout << "\nMember after:\n\n" << to_find << "\n\n";
+
+		return 1;
+	}
+
+	return 0;
+}
