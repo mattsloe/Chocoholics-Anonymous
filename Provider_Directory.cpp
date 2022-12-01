@@ -91,7 +91,7 @@ void Provider_Directory::create_new_service() {
 
     while (!valid) {
         cout << "Please enter a new name for the service to be provided: ";
-        cin >> name; 
+        getline(std::cin, name); 
         service.set_name(name);
         valid = true;
     }
@@ -99,7 +99,7 @@ void Provider_Directory::create_new_service() {
 
     while (!valid) {
         cout << "Please enter a new Service ID that has not been used in the past: ";
-        cin >> sID;
+        getline(std::cin, sID);
         service.set_sID(sID);
         valid = true;
     }

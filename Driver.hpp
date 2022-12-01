@@ -99,6 +99,8 @@ class Interactive_Terminal {
 		int edit_provider(Provider_Database &);										//Finds a provider and edits provider data members with user input.
 
 		int add_service_to_provider_directory(Provider_Directory *&);			//Generates a service object that is then added to a provider from the ProviderDB.
+		
+		int display_provider_directory(Provider_Directory*&);
 
 		int generate_member_reports(MemberDB &);								//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
 		int generate_provider_reports(Provider_Database &, Provider_Directory *&);							//Can either generate an individual provider report or the entire ProviderDB directory. Relies on member functions in DB and 
