@@ -13,6 +13,7 @@
 #include "json.hpp"
 #include "Provider_Directory.hpp"
 #include "Service_Record.hpp"
+#include "Provider_Database.hpp"
 
 class Member {
 public:
@@ -35,7 +36,7 @@ public:
 
     //runs the Member report and saves to /docs/member_reports/memberName_currentDate.txt
     //requires a reference to the current Provider_Directory to be passed in to run the report
-    int run_member_report(const Provider_Directory &)const;
+    int run_member_report(Provider_Directory &, Provider_Database&)const;
 
     //@pre
     //@post returns name
