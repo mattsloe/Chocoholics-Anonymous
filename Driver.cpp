@@ -265,7 +265,7 @@ void Driver::start_pterm() {
 				validate_member("Please enter the 9-digit member ID number of the member you wish to validate: ", member_db);
 				break;
 			case 2:
-				pterm->provide_service_to_member(member_db, ledger, directory);
+				pterm->provide_service_to_member(member_db, ledger, directory, provider_db);
 				break;
 			case 3:
 				break;
@@ -318,16 +318,16 @@ void Driver::start_iterm() {
 				iterm->edit_member(member_db);
 				break;
 			case 5:
-				iterm->display_provider_db();
+				iterm->display_provider_db(provider_db);
 				break;
 			case 6:
-				iterm->add_provider();
+				iterm->add_provider(provider_db);
 				break;
 			case 7:
-				iterm->remove_provider();
+				iterm->remove_provider(provider_db);
 				break;
 			case 8:
-				iterm->edit_provider();
+				iterm->edit_provider(provider_db);
 				break;
 			case 9:
 				iterm->add_service_to_provider_directory(directory);
@@ -336,7 +336,7 @@ void Driver::start_iterm() {
 				iterm->generate_member_reports(member_db);
 				break;
 			case 11:
-				iterm->generate_provider_reports();
+				iterm->generate_provider_reports(provider_db, directory);
 				break;
 		}
 	}	
@@ -383,7 +383,7 @@ void Driver::start_fterm() {
 /////////////////////////////// PROVIDER_TERMINAL CLASS ///////////////////////////////////
 
 
-int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger & ledger, Provider_Directory *& dir) {
+int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger & ledger, Provider_Directory *& dir, Provider_Database & p_db) {
 	Member m_to_find;
 	string m_id;
 
@@ -398,34 +398,46 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 	string service_date;
 	string comments;
 
+	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to validate: ", p_to_find, p_id)) {
+		if (validate_member("Please enter the 9-digit member ID of the member you would like to validate: ", m_to_find, m_id, m_db)) { //Member validated
 
-	if (validate_member("Please enter the 9-digit provider ID of the provider you would like to validate: ", m_to_find, m_id, m_db)) { //Member validated
-		
-		get_string(date, "Enter the current date (MM-DD-YYYY): ");
-		get_string(service_date, "Enter the date the service was provided to the member (MM-DD-YYYY): ");
+			get_string(date, "Enter the current date (MM-DD-YYYY): ");
+			get_string(service_date, "Enter the date the service was provided to the member (MM-DD-YYYY): ");
 
-		if (validate_service("Please enter the 6-digit service ID to locate in the provider directory: ", s_to_find, s_id, dir)) { //Service validated
-			//Build Service record
-			get_string(comments, "Enter any comments about the service provided to the member: \n");
+			if (validate_service("Please enter the 6-digit service ID to locate in the provider directory: ", s_to_find, s_id, dir)) { //Service validated
+				//Build Service record
+				get_string(comments, "Enter any comments about the service provided to the member: \n");
 
-			record.set_date(date);
-			record.set_sDate(service_date);
-			record.set_mID(m_id);
-			record.set_pID(p_id);
-			record.set_sID(s_id);
-			record.set_comments(comments);
+				record.set_date(date);
+				record.set_sDate(service_date);
+				record.set_mID(m_id);
+				record.set_pID(p_id);
+				record.set_sID(s_id);
+				record.set_comments(comments);
 
-			cout << "\n\n This is the final service record: \n\n";
+				cout << "\n\n This is the final service record: \n\n";
 
-			record.display();
+				record.display();
 
-			cout << "\n\n";
+				cout << "\n\n";
 
-			//Add Service Record to Member, Provider, and Service Ledger
-			cout << "Adding service record to the global ledger...\n";
-			ledger.new_transaction(record);
+				//Add Service Record to Member, Provider, and Service Ledger
+				cout << "Adding service record to the global ledger...\n";
+				ledger.new_transaction(record);
 
-			return 1;
+
+				cout << "Adding service record to the provider database...\n";
+				p_to_find.add_service(record, *dir);
+				p_db.edit_provider(p_id, p_to_find);
+
+
+				cout << "Adding service record to the member database...\n";
+				m_to_find.add_service(record);
+				m_db.edit(m_id, m_to_find);
+
+
+				return 1;
+			}
 		}
 	}
 
@@ -433,7 +445,7 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 }
 
 
-int Provider_Terminal::generate_provider_report() { return 0; } //Call function from providerDB (single report for a specific pID or the entire database.
+int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provider_Directory *& dir) { return 0; } //Call function from providerDB (single report for a specific pID or the entire database.
 int Provider_Terminal::generate_provider_directory(Provider_Directory *&) { return 0; }
 
 
@@ -442,7 +454,7 @@ int Provider_Terminal::generate_provider_directory(Provider_Directory *&) { retu
 /////////////////////////////// INTERACTIVE_TERMINAL CLASS ///////////////////////////////////
 
 
-int Interactive_Terminal::display_member_db(MemberDB &m_db) { 
+int Interactive_Terminal::display_member_db(MemberDB & m_db) { 
 	int total = m_db.display_all();
 	cout << "\n\n" << "The total number of members is: " << total << "\n\n";
 	return 1; 
@@ -528,11 +540,11 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 
 
 
-int Interactive_Terminal::display_provider_db() { return 1; }
+int Interactive_Terminal::display_provider_db(Provider_Database & p_db) { return 1; }
 
 
 
-int Interactive_Terminal::add_provider() {
+int Interactive_Terminal::add_provider(Provider_Database & p_db) {
 
 	//Create Member object to be added to MemberDB
 	Provider provider_to_add;
@@ -568,7 +580,7 @@ int Interactive_Terminal::add_provider() {
 
 
 
-int Interactive_Terminal::remove_provider() {
+int Interactive_Terminal::remove_provider(Provider_Database & p_db) {
 	Provider to_find;
 	string p_id;
 
@@ -584,7 +596,7 @@ int Interactive_Terminal::remove_provider() {
 
 
 
-int Interactive_Terminal::edit_provider() {
+int Interactive_Terminal::edit_provider(Provider_Database & p_db) {
 	Provider to_find;
 	string p_id;
 
@@ -608,7 +620,7 @@ int Interactive_Terminal::add_service_to_provider_directory(Provider_Directory *
 
 
 int Interactive_Terminal::generate_member_reports(MemberDB& m_db) { return 0; } //Call function from memberDB (single report for a specific mID or the entire database.
-int Interactive_Terminal::generate_provider_reports() { return 0; }
+int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Provider_Directory *& dir) { return 0; }
 
 
 
