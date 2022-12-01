@@ -11,10 +11,10 @@
 class Service_Ledger {
     public:
         Service_Ledger::Service_Ledger();
-        void read_from_file();
-        void init(nlohmann::json);
         Service_Ledger::~Service_Ledger();
-        void write_to_file();
+        void load();
+        void save();
+        void init(nlohmann::json);
         void new_transaction(Service_Record &);
         void generate_APR(Provider_Directory &);
         void generate_EFT(Provider_Directory &); 

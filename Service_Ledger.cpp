@@ -3,10 +3,10 @@ using namespace std;
 using json = nlohmann::json;
 
 Service_Ledger::Service_Ledger() {
-    read_from_file();
+    load();
 }
 
-void Service_Ledger::read_from_file() {
+void Service_Ledger::load() {
     string file_name = "assets/service_records.json";
     json j;
     ifstream in(file_name);
@@ -17,10 +17,10 @@ void Service_Ledger::read_from_file() {
 }
 
 Service_Ledger::~Service_Ledger() {
-    write_to_file();
+    save();
 }
 
-void Service_Ledger::write_to_file() {
+void Service_Ledger::save() {
     string file_name = "assets/service_records.json";
     ofstream o;
     json j_ledger;
