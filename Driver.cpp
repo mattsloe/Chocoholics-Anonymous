@@ -290,7 +290,7 @@ void Driver::start_iterm() {
 
 	cout << "Welcome to the interactive terminal! This is the terminal where you, the valued ChocAn manager, can manage your members, providers, and generate reports individually or in bulk for a given database/directory.\n" << endl;
 
-	while(option <= 11) {
+	while(option <= 12) {
 		option = (int) get_long("Please enter a number for the action you would like to take:\n\t \
 		1)  Display the member database\n\t \
 		2)  Add a member\n\t \
