@@ -33,6 +33,8 @@ int main()
 //    MemberTester::testMemberClass();
 
 	//Creating space between driver and any tests we decide to run above.
+    Provider_Directory * d_ptr = new Provider_Directory("assets/services.json");
+    Provider_Database  pdb(*d_ptr);
 	cout << "\n\n\n\n\n\n";
 
 	Driver term;

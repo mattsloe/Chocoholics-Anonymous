@@ -235,3 +235,35 @@ int Member::add_service(const Service_Record & toAdd) {
     return true;
 }
 
+//Create member report as a .txt file
+//Save to /docs/member_report/memberName_currentDate.txt
+//Format: [Member]
+//        ---------
+//        [Service - Provider - Date] (in order of service date)
+//        ---------
+//        [Service - Provider - Date]
+int Member::run_member_report(const Provider_Directory & providerDirectory) const {
+    //create file name
+    const int MAXLEN = 80;
+    char s[MAXLEN];
+    std::time_t now = std::time(nullptr);
+    strftime(s,MAXLEN,"%d_%m_%Y", localtime(&now)); //string length should be 10
+    std::string date(s);
+    std::string  outputFilename = name + date;
+    //open file
+    using namespace std;
+    ofstream  out(outputFilename);
+    if (!out.is_open()){
+        cout << "Unable to open output file for member report." << endl;
+        return 0;
+    }
+    //Create File
+    out << *this <<endl;
+        //for each service record, output
+
+
+    //close file
+    out.close();
+    return 0;
+}
+

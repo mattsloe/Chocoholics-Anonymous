@@ -9,6 +9,7 @@
 #define CHOCANDEV_MEMBER_H
 #include <string>
 #include <iostream>
+#include <ctime>
 #include "json.hpp"
 #include "Provider_Directory.hpp"
 #include "Service_Record.hpp"
@@ -31,6 +32,10 @@ public:
     ~Member();
 
     /*Interface*/
+
+    //runs the Member report and saves to /docs/member_reports/memberName_currentDate.txt
+    //requires a reference to the current Provider_Directory to be passed in to run the report
+    int run_member_report(const Provider_Directory &)const;
 
     //@pre
     //@post returns name
