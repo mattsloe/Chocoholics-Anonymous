@@ -1,6 +1,28 @@
 // Ashton Sawyer 11/17
 #include "Provider_tester.hpp"
 
+/* Dummy Data */
+std::string street = "1234 n Street st";
+std::string city = "Portland";
+std::string state = "OR";
+std::string zip = "97203";
+std::string name = "John Smith";
+std::string pid = "123456789";
+
+Address a1(street, city, state, zip);
+Provider prov(name, pid, a1);
+Service_Record sr("123", "234", "123456789", "123456789", "012345", "hi world");
+Provider_Directory d("assets/services.json");
+
+nlohmann::json j_obj = {
+	{"name", name},
+	{"pid", pid},
+	{"street", street},
+	{"city", city},
+	{"state", state},
+	{"zip", zip}
+};
+
 // *********
 // Provider Tests
 // *********
@@ -8,6 +30,8 @@
 // The compiler says I need a semi-colon before the void... 
 // I don't know why
 ; void Provider_tester::test_provider_class() {
+	prov.add_service(sr, d);
+
 	cout << endl;
 	cout << "------------------------------------------";
 	cout << "PROVIDER TESTS STARTING..." << endl;
@@ -22,8 +46,7 @@
 	cout << "Test 5: Equal Operator No Match\t\tResult: " << ((Provider_opEqual_noMatch()) ? "pass" : "fail") << endl;
 	cout << "Test 6: Load File\t\t\tResult: " << ((Provider_loadFile_happy()) ? "pass" : "fail") << endl;
 	cout << "Test 7: Run Report\t\t\tResult: " << Provider_runReport_happy() << endl;
-	cout << "Test 8: Run Manager Report\t\tResult: " << Provider_runManagerReport_happy() << endl;
-	cout << "Test 9: Add Service\t\t\tResult: " << (Provider_addService_happy() ? "pass" : "fail") << endl;
+	cout << "Test 8: Add Service\t\t\tResult: " << (Provider_addService_happy() ? "pass" : "fail") << endl;
 	cout << "PROVIDER TESTS COMPLETE" << endl;
 	cout << "------------------------------------" << endl;
 	return;
@@ -116,13 +139,6 @@ bool Provider_tester::Provider_opEqual_noMatch() {
 bool Provider_tester::Provider_runReport_happy() {
 	prov.run_report(d);
 	cout << "\tVerify correctness with output file" << endl;
-	return true;
-}
-
-bool Provider_tester::Provider_runManagerReport_happy() {
-	string expected = "John Smith - 123456789\n\nNumber of Consults: 0\tTotal Fee: 0.00";
-	if (prov.run_manager_report() != expected)
-		return false;
 	return true;
 }
 

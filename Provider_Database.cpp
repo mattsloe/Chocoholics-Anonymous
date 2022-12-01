@@ -59,6 +59,14 @@ int Provider_Database::add_provider() {
 	return 0;
 }
 
+bool Provider_Database::add_provider(Provider& copy) {
+	Provider * p = new Provider(copy);
+	table[p->get_pid()] = p;
+	pids.push_back(p->get_pid());
+
+	return true;
+}
+
 bool Provider_Database::delete_provider(std::string pid) {
 	if (!table.contains(pid))
 		return false;
@@ -71,10 +79,12 @@ bool Provider_Database::delete_provider(std::string pid) {
 		std::cout << "Error: Unable to remove from database" << std::endl;
 		return false;
 	}
-	
+
 	for (auto value = pids.begin(); value != pids.end(); ++value) {
-		if (*value == pid)
+		if (*value == pid) {
 			pids.erase(value);
+			break;
+		}
 	}
 
 	return true;
@@ -118,15 +128,6 @@ void Provider_Database::generate_provider_reports(Provider_Directory & d) {
 
 	for (int i = 0; i < len; ++i) {
 		table[pids[i]]->run_report(d);
-	}
-}
-
-void Provider_Database::generate_manager_report() {
-	std::ofstream file("manager_report.txt");
-	int len = pids.size();
-
-	for (int i = 0; i < len; ++i) {
-		file << table[pids[i]]->run_manager_report();
 	}
 }
 
