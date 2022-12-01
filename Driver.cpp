@@ -268,8 +268,10 @@ void Driver::start_pterm() {
 				pterm->provide_service_to_member(member_db, ledger, directory, provider_db);
 				break;
 			case 3:
+				pterm->generate_provider_report(provider_db, directory);
 				break;
 			case 4: 
+				pterm->generate_provider_directory(directory);
 				break;
 		}
 	}	
@@ -435,6 +437,7 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 				m_to_find.add_service(record);
 				m_db.edit(m_id, m_to_find);
 
+				//Write Service Record to disc here (currently not implemented).
 
 				return 1;
 			}
@@ -540,7 +543,11 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 
 
 
-int Interactive_Terminal::display_provider_db(Provider_Database & p_db) { return 1; }
+int Interactive_Terminal::display_provider_db(Provider_Database & p_db) { 
+	int total = p_db.display_all();
+	cout << "\n\n" << "The total number of providers is: " << total << "\n\n"; 
+	return 1; 
+}
 
 
 
@@ -573,7 +580,10 @@ int Interactive_Terminal::add_provider(Provider_Database & p_db) {
 	}
 
 	//ADD PROVIDER TO DB HERE
-
+	if (p_db.add_provider(provider_to_add))
+		cout << "\n\n Add successful \n\n";
+	else
+		cout << "\n\n Add failed \n\n";
 
 	return 1;
 }
@@ -585,7 +595,11 @@ int Interactive_Terminal::remove_provider(Provider_Database & p_db) {
 	string p_id;
 
 	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to remove: ", to_find, p_id)) { //validate provider here.
-		//REMOVE PROVIDER FROM DB HERE.
+		//REMOVE MEMBER FROM DB HERE.
+		if (p_db.delete_provider(p_id))
+			cout << "\n\n Delete successful \n\n";
+		else
+			cout << "\n\n Delete failed \n\n";
 
 		return 1;
 	}
