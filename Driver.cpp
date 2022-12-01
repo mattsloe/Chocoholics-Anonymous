@@ -423,7 +423,7 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 				record.set_sID(s_id);
 				record.set_comments(comments);
 
-				cout << "\n\n This is the final service record: \n\n";
+				cout << "\n\nThis is the final service record: \n\n";
 
 				record.display();
 
@@ -527,9 +527,9 @@ int Interactive_Terminal::add_member(MemberDB &m_db) {
 	//ADD MEMBER TO DB HERE
 	
 	if (m_db.add_member(member_to_add))
-		cout << "\n\n Add successful \n\n";
+		cout << "\n\nAdd successful\n\n";
 	else
-		cout << "\n\n Add failed \n\n";
+		cout << "\n\nAdd failed\n\n";
 
 	return 1;
 }
@@ -543,9 +543,9 @@ int Interactive_Terminal::remove_member(MemberDB& m_db) {
 	if (validate_member("Please enter the 9-digit member ID of the member you would like to remove: ", to_find, m_id, m_db)) { //validate member here.
 		//REMOVE MEMBER FROM DB HERE.
 		if (m_db.delete_member(m_id))
-			cout << "\n\n Delete successful \n\n";
+			cout << "\n\nDelete successful\n\n";
 		else
-			cout << "\n\n Delete failed \n\n";
+			cout << "\n\nDelete failed\n\n";
 
 		return 1;
 	}
@@ -593,10 +593,10 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 				option = get_char("Is this the member information correct? (y/n): ");
 
 				if (m_db.edit(m_id, member_to_edit)) {
-					cout << "\n\n Edit successful\n\n";
+					cout << "\n\nEdit successful\n\n";
 				}
 				else
-					cout << "\n\n Edit failed\n\n";
+					cout << "\n\nEdit failed\n\n";
 			}
 		}
 
@@ -662,9 +662,9 @@ int Interactive_Terminal::remove_provider(Provider_Database & p_db) {
 	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to remove: ", to_find, p_id, p_db)) { //validate provider here.
 		//REMOVE MEMBER FROM DB HERE.
 		if (p_db.delete_provider(p_id))
-			cout << "\n\n Delete successful \n\n";
+			cout << "\n\nDelete successful\n\n";
 		else
-			cout << "\n\n Delete failed \n\n";
+			cout << "\n\nDelete failed\n\n";
 
 		return 1;
 	}
@@ -813,7 +813,7 @@ int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Pr
 
 int Financial_Terminal::generate_EFT(Service_Ledger& ledger, Provider_Directory *& dir) {
 
-	cout << "\n\n Generating EFT Data \n\n";
+	cout << "\n\nGenerating EFT Data\n\n";
 	ledger.generate_EFT(*dir);
 	return 1;
 }
@@ -822,7 +822,7 @@ int Financial_Terminal::generate_EFT(Service_Ledger& ledger, Provider_Directory 
 
 int Financial_Terminal::generate_APR(Service_Ledger& ledger, Provider_Directory*& dir) {
 
-	cout << "\n\n Generating APR Data \n\n";
+	cout << "\n\nGenerating APR Data\n\n";
 	ledger.generate_APR(*dir);
 	return 1;
 }
