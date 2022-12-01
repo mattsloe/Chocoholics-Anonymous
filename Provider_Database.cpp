@@ -4,6 +4,7 @@
 Provider_Database::Provider_Database() = default;
 
 Provider_Database::Provider_Database(Provider_Directory & d) {
+	this->data_filename = FILENAME;
 	std::ifstream in_file(data_filename);
 	if (!in_file.is_open()) {
 		std::cout << "Error: Unable to open file" << std::endl;
@@ -13,10 +14,6 @@ Provider_Database::Provider_Database(Provider_Directory & d) {
 	nlohmann::json j;
 	in_file >> j;
 	init(j, d);
-}
-
-Provider_Database::Provider_Database(std::string file_name, Provider_Directory& d) {
-	load_file(file_name, d);
 }
 
 Provider_Database::Provider_Database(nlohmann::json j, Provider_Directory & d) {
@@ -100,11 +97,14 @@ bool Provider_Database::edit_provider(std::string pid, const Provider & to_copy)
 }
 
 void Provider_Database::to_file() {
-	std::ofstream out_file("assets/provider_database.json");
+	std::ofstream out_file("filename");
 
+	using json = nlohmann::json;
+	json j = json::array();
 	for (int i = 0; i < pids.size(); ++i) {
-		out_file << table[pids[i]]->to_file();
+		j.push_back(json::parse(table[pids[i]]->to_file()));
 	}
+	out_file << j;
 	out_file.close();
 	return;
 }
@@ -115,7 +115,7 @@ void Provider_Database::load_file(std::string file_name, Provider_Directory & d)
 		std::cout << "Error: Unable to open file" << std::endl;
 		return;
 	}
-
+	//filename = file_name;
 	nlohmann::json j;
 	in_file >> j;
 	in_file.close();

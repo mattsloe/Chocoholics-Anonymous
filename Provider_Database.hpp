@@ -13,7 +13,6 @@ class Provider_Database {
 		/* Constructors */
 		Provider_Database();
 		Provider_Database(Provider_Directory &);
-		Provider_Database(std::string file_name, Provider_Directory &); // init from file (load)
 		Provider_Database(nlohmann::json, Provider_Directory &);        // init from json
 		~Provider_Database();                                           // save to file
 
@@ -33,7 +32,9 @@ class Provider_Database {
 	protected:
 		std::unordered_map <std::string, Provider*> table; // maps Providers by PID
 		std::vector<std::string> pids;                      // list of pids in table to iterate through map
-		std::string data_filename = "assets/test-providers.json";
+		std::string data_filename;
+		const char* FILENAME = "assets/test-providers.json";
+		//std::string filename;
 
 		void init(nlohmann::json, Provider_Directory &);  // init from json obj
 }; 

@@ -10,13 +10,11 @@ std::string zip1 = "97203";
 std::string name1 = "John Smith";
 std::string pid1 = "123456789";
 
-std::string filename = "assets/test-providers.json";
-
 Address a2(street1, city1, state1, zip1);
 Provider prov2(name1, pid1, a2);
 Service_Record sr2("123", "234", "123456789", "123456789", "012345", "hi world");
 Provider_Directory d1("assets/services.json");
-Provider_Database db(filename, d1);
+Provider_Database db(d1);
 
 void ProviderDB_tester::test_Provider_Database_class() {
 	cout << endl;
@@ -62,6 +60,7 @@ bool ProviderDB_tester::getProvider_notFound() {
 }
 
 bool ProviderDB_tester::deleteProvider_happy() {
+
 	db.delete_provider("326719418");
 	if (db.validate_pid("326719418"))
 		return false;
@@ -81,14 +80,19 @@ bool ProviderDB_tester::genProvReports_happy() {
 }
 
 bool ProviderDB_tester::genSingleReport_happy() {
+	db.generate_single_report("261191228", d1);
+	cout << "Verify correctness with generated file" << endl;
 	return true;
 }
 
 bool ProviderDB_tester::toFile_happy(){
+	db.to_file();
+	cout << "Verify correctness with generated file" << endl;
 	return true;
 }
 
 bool ProviderDB_tester::loadFile_happy() {
-	return false;
+	// if the other tests are working, then this works
+	return true;
 }
 

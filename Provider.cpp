@@ -152,15 +152,15 @@ std::string Provider::to_file() {
 	using json = nlohmann::json;
 	std::string out;
 
+	// dont need to save num_services_provided or total_cost
+	// -> those are calculated during loading
 	json j = {
 		{"name", name},
 		{"pid", pid},
 		{"street", address.street},
 		{"city", address.city},
 		{"state", address.state},
-		{"zip", address.zip},
-		{"totalCost", total_cost},
-		{"numProvided", num_services_provided}
+		{"zip", address.zip}
 	};
 
 	auto services = json::array();
@@ -180,8 +180,6 @@ void Provider::load_file(nlohmann::json j, Provider_Directory & d) {
 
 	name = j.value("name", "not found");
 	pid = j.value("pid", "not found");
-	total_cost = j.value("totalCost", 0.0);
-	num_services_provided = j.value("numProvided", 0);
 
 	street = j.value("street", "not found");
 	city = j.value("city", "not found");
@@ -212,10 +210,10 @@ void Provider::run_report(Provider_Directory & d) {
 		std::cout << "Exiting..." << std::endl;
 		return;
 	}
-
 	output_file << to_string();
 	output_file << "\n";
 	output_file << service_to_string(d);
+
 	output_file.close();
 	return;
 }
