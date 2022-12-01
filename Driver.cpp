@@ -335,7 +335,7 @@ void Driver::start_iterm() {
 				iterm->add_service_to_provider_directory(directory);
 				break;
 			case 10:
-				iterm->generate_member_reports(member_db, directory);
+				iterm->generate_member_reports(member_db, provider_db, directory);
 				break;
 			case 11:
 				iterm->generate_provider_reports(provider_db, directory);
@@ -459,8 +459,10 @@ int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provid
 	Provider to_find;
 	string p_id;
 
+	//Technically, any provider can run a report on any other provider... This is a limit of the implementation at this time.
 	if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
 		//CALL MEMBERDB REPORT FUNCTION HERE
+		cout << "Generating report for the following provider ID: " << p_id << "\n\n";
 		p_db.generate_single_report(p_id, *dir);
 
 		return 1;
@@ -472,7 +474,10 @@ int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provid
 
 
 //Generate provider directory (list of services) to email to a provider.
-int Provider_Terminal::generate_provider_directory_report(Provider_Directory *& dir) { return 0; }
+int Provider_Terminal::generate_provider_directory_report(Provider_Directory *& dir) { 
+	cout << "\n\nThis option is not implemented\n\n";
+	return 0; 
+}
 
 
 
@@ -736,7 +741,7 @@ int Interactive_Terminal::display_provider_directory(Provider_Directory*& dir) {
 
 
 //Call function from memberDB (single report for a specific mID or the entire database.
-int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Directory *& dir) { 
+int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Database & p_db, Provider_Directory *& dir) { 
 	
 	int option = 0;
 
@@ -747,18 +752,22 @@ int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Direc
 		switch (option) {
 		case 1:
 		{
+			cout << "\n\nThis option is not implemented.\n\n";
+			/*
 			Member to_find;
 			string m_id;
 
 			if (validate_member("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, m_id, m_db)) {
 				//CALL MEMBERDB REPORT FUNCTION HERE
-
+				
 			}
-
+			*/
 		}
 		break;
 		case 2:
-			//CALL MEMBERDB REPORT FUNCTION HERE	
+			//CALL MEMBERDB REPORT FUNCTION HERE
+			cout << "\n\nRunning member reports on entire database...\n\n";
+			m_db.run_member_reports(*dir, p_db);
 			break;
 		}
 	}
@@ -782,12 +791,14 @@ int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Pr
 
 			if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
 				//CALL MEMBERDB REPORT FUNCTION HERE
+				cout << "\n\nRunning report for the following provider ID: " << p_id << "\n\n";
 				p_db.generate_single_report(p_id, *dir);
 			}
 		}
 		break;
 		case 2:
 			//CALL MEMBERDB REPORT FUNCTION HERE
+			cout << "\n\nRunning provider reports on entire database...\n\n";
 			p_db.generate_provider_reports(*dir);
 			break;
 		}
