@@ -22,10 +22,10 @@ Service_Ledger::~Service_Ledger() {
 
 void Service_Ledger::save() {
     string file_name = "assets/service_records.json";
-    ofstream o;
+    ofstream o(file_name);
     json j_ledger;
 
-    o.open(file_name);
+    //o.open(file_name);
     
     if (!o.is_open()) {
         cerr << "Could not open the file!!" << endl;
