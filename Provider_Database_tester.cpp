@@ -3,30 +3,31 @@
 using namespace std;
 
 /* Dummy Data */
-std::string street = "1234 n Street st";
-std::string city = "Portland";
-std::string state = "OR";
-std::string zip = "97203";
-std::string name = "John Smith";
-std::string pid = "123456789";
+std::string street1 = "1234 n Street st";
+std::string city1 = "Portland";
+std::string state1 = "OR";
+std::string zip1 = "97203";
+std::string name1 = "John Smith";
+std::string pid1 = "123456789";
+
 std::string filename = "assets/test-providers.json";
 
-Address a1(street, city, state, zip);
-Provider prov(name, pid, a1);
-Service_Record sr("123", "234", "123456789", "123456789", "012345", "hi world");
-Provider_Directory d("assets/services.json");
-//Provider_Database db(filename, d);
+Address a2(street1, city1, state1, zip1);
+Provider prov2(name1, pid1, a2);
+Service_Record sr2("123", "234", "123456789", "123456789", "012345", "hi world");
+Provider_Directory d1("assets/services.json");
+Provider_Database db(filename, d1);
 
 void ProviderDB_tester::test_Provider_Database_class() {
 	cout << endl;
 	cout << "------------------------------------------";
 	cout << "PROVIDER DATABASE TESTS STARTING..." << endl;
-	cout << "Test 1: Get Happy\t\t\t\tResult: " << ((getProvider_happy()) ? "pass" : "fail") << endl;
-	cout << "Test 2: Get Empty\t\t\t\tResult: " << ((getProvider_empty()) ? "pass" : "fail") << endl;
-	cout << "Test 3: Get Not Found\t\t\t\tResult: " << ((getProvider_notFound()) ? "pass" : "fail") << endl;
-	cout << "Test 4: Add Prov\t\tResult: " << ((addProvider_happy()) ? "pass" : "fail") << endl;
+	cout << "Test 1: Get Happy\t\t\tResult: " << ((getProvider_happy()) ? "pass" : "fail") << endl;
+	cout << "Test 2: Get Empty\t\t\tResult: " << ((getProvider_empty()) ? "pass" : "fail") << endl;
+	cout << "Test 3: Get Not Found\t\t\tResult: " << ((getProvider_notFound()) ? "pass" : "fail") << endl;
+	cout << "Test 4: Add Prov\t\t\tResult: " << ((addProvider_happy()) ? "pass" : "fail") << endl;
 	cout << "Test 5: Delete Prov Happy\t\tResult: " << ((deleteProvider_happy()) ? "pass" : "fail") << endl;
-	cout << "Test 6: Delete Prov Not Found\t\t\tResult: " << ((deleteProvider_empty()) ? "pass" : "fail") << endl;
+	cout << "Test 6: Delete Prov Not Found\t\tResult: " << ((deleteProvider_empty()) ? "pass" : "fail") << endl;
 	cout << "Test 7: Run Reports\t\t\tResult: " << genProvReports_happy() << endl;
 	cout << "Test 8: Run Manager Report\t\tResult: " << genManagerReports_happy() << endl;
 	cout << "Test 9: Run Single Report\t\tResult: " << genSingleReport_happy() << endl;
@@ -38,6 +39,8 @@ void ProviderDB_tester::test_Provider_Database_class() {
 }
 
 bool ProviderDB_tester::getProvider_happy() {
+	Provider empty;
+	db.get_provider("123456789", empty);
 	return false;
 }
 

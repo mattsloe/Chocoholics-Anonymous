@@ -158,7 +158,9 @@ std::string Provider::to_file() {
 		{"street", address.street},
 		{"city", address.city},
 		{"state", address.state},
-		{"zip", address.zip}
+		{"zip", address.zip},
+		{"totalCost", total_cost},
+		{"numProvided", num_services_provided}
 	};
 
 	auto services = json::array();
@@ -178,6 +180,8 @@ void Provider::load_file(nlohmann::json j, Provider_Directory & d) {
 
 	name = j.value("name", "not found");
 	pid = j.value("pid", "not found");
+	total_cost = j.value("totalCost", 0.0);
+	num_services_provided = j.value("numProvided", 0);
 
 	street = j.value("street", "not found");
 	city = j.value("city", "not found");
