@@ -65,7 +65,7 @@ class Driver {
 
 		Service_Ledger			ledger;
 		MemberDB				member_db;
-		//Provider_Database		provider_db;
+		Provider_Database		provider_db;
 
 		Provider_Directory		*directory;
 
@@ -75,9 +75,9 @@ class Driver {
 //This is the provider terminal for providers within ChocAn to interact with.
 class Provider_Terminal {
 	public:
-		int provide_service_to_member(MemberDB&, Service_Ledger&, Provider_Directory *&/*ProviderDB &*/);	//Locates member with member number in the MemberDB. Locates Service with service ID from provider from ProviderDB. Adds service to member
+		int provide_service_to_member(MemberDB&, Service_Ledger&, Provider_Directory *&, Provider_Database &);	//Locates member with member number in the MemberDB. Locates Service with service ID from provider from ProviderDB. Adds service to member
 																											//and then adds Service_Record to the Service_Ledger and Provider.
-		int generate_provider_report(/*ProviderDB &*/);														//Finds a provider in the ProviderDB and then generates a provider report using a function from the provider class 
+		int generate_provider_report(Provider_Database &, Provider_Directory *&);														//Finds a provider in the ProviderDB and then generates a provider report using a function from the provider class 
 																											//(provider report from section 2.2.1 of the design document).
 		int generate_provider_directory(Provider_Directory *&);
 };
@@ -92,16 +92,16 @@ class Interactive_Terminal {
 		int remove_member(MemberDB &);											//Finds and removes a member from the MemberDB using a member number from the user.
 		int edit_member(MemberDB &);											//Finds a member and edits member data members with user input.
 	
-		int display_provider_db();
+		int display_provider_db(Provider_Database &);
 	
-		int add_provider(/*ProviderDB &*/);											//Generates a provider object with user input and adds it to the MemberDB.
-		int remove_provider(/*ProviderDB &*/);										//Finds and removes a provider from the ProviderDB using a provider number from the user.
-		int edit_provider(/*ProviderDB &*/);										//Finds a provider and edits provider data members with user input.
+		int add_provider(Provider_Database &);											//Generates a provider object with user input and adds it to the MemberDB.
+		int remove_provider(Provider_Database &);										//Finds and removes a provider from the ProviderDB using a provider number from the user.
+		int edit_provider(Provider_Database &);										//Finds a provider and edits provider data members with user input.
 
 		int add_service_to_provider_directory(Provider_Directory *&);			//Generates a service object that is then added to a provider from the ProviderDB.
 
 		int generate_member_reports(MemberDB &);								//Can either generate an individual member report or the entire MemberDB directory. Relies on member functions in DB and the Member class.
-		int generate_provider_reports(/*ProviderDB &*/);							//Can either generate an individual provider report or the entire ProviderDB directory. Relies on member functions in DB and 
+		int generate_provider_reports(Provider_Database &, Provider_Directory *&);							//Can either generate an individual provider report or the entire ProviderDB directory. Relies on member functions in DB and 
 																					//the Provider class. 
 																					//(provider report from section 2.2.1 of the design document).
 
