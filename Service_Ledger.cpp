@@ -3,17 +3,19 @@ using namespace std;
 using json = nlohmann::json;
 
 Service_Ledger::Service_Ledger() {
-    //load();
+    load();
 }
 
 void Service_Ledger::load() {
     string file_name = "assets/service_ledger.json";
     json j;
     ifstream in(file_name);
-
+    if (!in.is_open()) cout << "Error opening file"<<endl;
     // parse the file and store the ledger with the json object
-    j = json::parse(file_name);
+    j = json::parse(in);
     this->ledger = j.get<unordered_map<string, vector<Service_Record>>>();
+
+    in.close();
 }
 
 Service_Ledger::~Service_Ledger() {
