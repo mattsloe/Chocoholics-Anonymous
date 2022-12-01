@@ -2,6 +2,58 @@
 using namespace std;
 using json = nlohmann::json;
 
+Service_Ledger::Service_Ledger() {
+    load();
+}
+
+void Service_Ledger::load() {
+    string file_name = "assets/service_ledger.json";
+    json j;
+    ifstream in(file_name);
+
+    // parse the file and store the ledger with the json object
+    j = json::parse(file_name);
+    this->ledger = j.get<unordered_map<string, vector<Service_Record>>>();
+}
+
+Service_Ledger::~Service_Ledger() {
+    save();
+}
+
+void Service_Ledger::save() {
+    string file_name = "assets/service_ledger.json";
+    ofstream o(file_name);
+    json j_ledger;
+
+    //o.open(file_name);
+    
+    if (!o.is_open()) {
+        cerr << "Could not open the file!!" << endl;
+        return;
+    }
+
+
+    for (auto it = ledger.begin(); it != ledger.end(); it++) {
+        j_ledger["pID"] = it->second;
+    }
+
+    // output json ledger to output
+    j_ledger >> o;
+    o.close();
+
+    return;
+}
+
+std::string Service_Ledger::vec_to_string(const string& pID) {
+    string out;
+    out += "{";
+    for (auto it = this->ledger[pID].begin(); it != this->ledger[pID].end(); it++) {
+        out += it->to_string_exp();
+    }
+    out += "}";
+    return out;
+}
+
 void Service_Ledger::new_transaction(Service_Record &record) {
     auto new_record = Service_Record(record); // copy passed in record
     string id = new_record.get_pID();
@@ -83,7 +135,6 @@ void Service_Ledger::generate_EFT(Provider_Directory &provider_directory) {
 
         // output the data to the file
         out << provider_directory.get_name(sid) << " (" << sid << ")\t" << "Paycheck: " << to_string(pay_check) << endl;
-
     }
     out.close();
 }

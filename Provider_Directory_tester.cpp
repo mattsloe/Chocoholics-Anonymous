@@ -23,8 +23,7 @@ void PD_tester::test_Provider_Directory_class() {
 }
 
 void PD_tester::create_PD(Provider_Directory *&p) {
-    string file_name = "assets/services.json";
-    p = new Provider_Directory(file_name);
+    p = new Provider_Directory();
 }
 
 void PD_tester::delete_PD(Provider_Directory*& p) {

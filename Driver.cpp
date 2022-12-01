@@ -78,9 +78,8 @@ bool validate_member(const string prompt, MemberDB &m_db) {
 			return true;
 		}
 	}
-
-
-	cout << "\n\n Invalid Member Number \n\n";
+	else
+		cout << "\n\n Invalid Member Number \n\n";
 
 	return false;
 }
@@ -116,7 +115,7 @@ bool validate_member(const string prompt, Member & to_find, string &m_id, Member
 
 
 
-bool validate_provider(const string prompt, Provider & to_find, string &p_id) {
+bool validate_provider(const string prompt, Provider & to_find, string &p_id, Provider_Database & p_db) {
 	char option = 'n';
 
 	while (option != tolower('Y')) {
@@ -128,7 +127,7 @@ bool validate_provider(const string prompt, Provider & to_find, string &p_id) {
 	}
 
 	//FIND PROVIDER
-	if (true) { //Replace true with function call to find provider.
+	if (p_db.get_provider(p_id, to_find)) { //Replace true with function call to find provider.
 		cout << "\n\n VALIDATED \n\n";
 		return true;
 	}
@@ -185,7 +184,7 @@ Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr), directory(null
 	iterm = new Interactive_Terminal();
 	fterm = new Financial_Terminal();
 
-	directory = new Provider_Directory("assets/services.json");
+	directory = new Provider_Directory();
 
 	//READ FROM DISC HERE
 }
@@ -265,11 +264,13 @@ void Driver::start_pterm() {
 				validate_member("Please enter the 9-digit member ID number of the member you wish to validate: ", member_db);
 				break;
 			case 2:
-				pterm->provide_service_to_member(member_db, ledger, directory);
+				pterm->provide_service_to_member(member_db, ledger, directory, provider_db);
 				break;
 			case 3:
+				pterm->generate_provider_report(provider_db, directory);
 				break;
 			case 4: 
+				pterm->generate_provider_directory_report(directory);
 				break;
 		}
 	}	
@@ -302,7 +303,8 @@ void Driver::start_iterm() {
 		9)  Add service to provider directory\n\t \
 		10) Generate member reports\n\t \
 		11) Generate provider reports\n\t \
-		12) Exit terminal\n> ");
+		12) Display provider directory\n\t \
+		13) Exit terminal\n> ");
 		
 		switch(option) {
 			case 1:
@@ -318,25 +320,28 @@ void Driver::start_iterm() {
 				iterm->edit_member(member_db);
 				break;
 			case 5:
-				iterm->display_provider_db();
+				iterm->display_provider_db(provider_db);
 				break;
 			case 6:
-				iterm->add_provider();
+				iterm->add_provider(provider_db);
 				break;
 			case 7:
-				iterm->remove_provider();
+				iterm->remove_provider(provider_db);
 				break;
 			case 8:
-				iterm->edit_provider();
+				iterm->edit_provider(provider_db);
 				break;
 			case 9:
 				iterm->add_service_to_provider_directory(directory);
 				break;
 			case 10:
-				iterm->generate_member_reports(member_db);
+				iterm->generate_member_reports(member_db, directory);
 				break;
 			case 11:
-				iterm->generate_provider_reports();
+				iterm->generate_provider_reports(provider_db, directory);
+				break;
+			case 12:
+				iterm->display_provider_directory(directory);
 				break;
 		}
 	}	
@@ -364,10 +369,13 @@ void Driver::start_fterm() {
 		
 		switch(option) {
 			case 1:
+				fterm->suspend_reinstate_member(member_db);
 				break;
 			case 2:
+				fterm->generate_EFT(ledger, directory);
 				break;
 			case 3:
+				fterm->generate_APR(ledger, directory);
 				break;
 		}
 	}	
@@ -383,7 +391,7 @@ void Driver::start_fterm() {
 /////////////////////////////// PROVIDER_TERMINAL CLASS ///////////////////////////////////
 
 
-int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger & ledger, Provider_Directory *& dir) {
+int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger & ledger, Provider_Directory *& dir, Provider_Database & p_db) {
 	Member m_to_find;
 	string m_id;
 
@@ -398,43 +406,73 @@ int Provider_Terminal::provide_service_to_member(MemberDB& m_db, Service_Ledger 
 	string service_date;
 	string comments;
 
+	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to validate: ", p_to_find, p_id, p_db)) {
+		if (validate_member("Please enter the 9-digit member ID of the member you would like to validate: ", m_to_find, m_id, m_db)) { //Member validated
 
-	if (validate_member("Please enter the 9-digit provider ID of the provider you would like to validate: ", m_to_find, m_id, m_db)) { //Member validated
-		
-		get_string(date, "Enter the current date (MM-DD-YYYY): ");
-		get_string(service_date, "Enter the date the service was provided to the member (MM-DD-YYYY): ");
+			get_string(date, "Enter the current date (MM-DD-YYYY): ");
+			get_string(service_date, "Enter the date the service was provided to the member (MM-DD-YYYY): ");
 
-		if (validate_service("Please enter the 6-digit service ID to locate in the provider directory: ", s_to_find, s_id, dir)) { //Service validated
-			//Build Service record
-			get_string(comments, "Enter any comments about the service provied to member: \n");
+			if (validate_service("Please enter the 6-digit service ID to locate in the provider directory: ", s_to_find, s_id, dir)) { //Service validated
+				//Build Service record
+				get_string(comments, "Enter any comments about the service provided to the member: \n");
 
-			record.set_date(date);
-			record.set_sDate(service_date);
-			record.set_mID(m_id);
-			record.set_pID(p_id);
-			record.set_sID(s_id);
-			record.set_comments(comments);
+				record.set_date(date);
+				record.set_sDate(service_date);
+				record.set_mID(m_id);
+				record.set_pID(p_id);
+				record.set_sID(s_id);
+				record.set_comments(comments);
 
-			cout << "\n\n This is the final service record: \n\n";
+				cout << "\n\n This is the final service record: \n\n";
 
-			record.display();
+				record.display();
 
-			cout << "\n\n";
+				cout << "\n\n";
 
-			//Add Service Record to Member, Provider, and Service Ledger
-			cout << "Adding service record to the global ledger...\n";
-			ledger.new_transaction(record);
+				//Add Service Record to Member, Provider, and Service Ledger
+				cout << "Adding service record to the global ledger...\n";
+				ledger.new_transaction(record);
 
-			return 1;
+
+				cout << "Adding service record to the provider database...\n";
+				p_to_find.add_service(record, *dir);
+				p_db.edit_provider(p_id, p_to_find);
+
+
+				cout << "Adding service record to the member database...\n";
+				m_to_find.add_service(record);
+				m_db.edit(m_id, m_to_find);
+
+				//Write Service Record to disc here (currently not implemented).
+
+				return 1;
+			}
 		}
 	}
 
 	return 0;
 }
 
+//Call function from providerDB (single report for a specific pID)
+int Provider_Terminal::generate_provider_report(Provider_Database & p_db, Provider_Directory *& dir) { 
+	
+	Provider to_find;
+	string p_id;
 
-int Provider_Terminal::generate_provider_report() { return 0; } //Call function from providerDB (single report for a specific pID or the entire database.
-int Provider_Terminal::generate_provider_directory(Provider_Directory *&) { return 0; }
+	if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
+		//CALL MEMBERDB REPORT FUNCTION HERE
+		p_db.generate_single_report(p_id, *dir);
+
+		return 1;
+	}
+
+	return 0;
+} 
+
+
+
+//Generate provider directory (list of services) to email to a provider.
+int Provider_Terminal::generate_provider_directory_report(Provider_Directory *& dir) { return 0; }
 
 
 
@@ -442,7 +480,7 @@ int Provider_Terminal::generate_provider_directory(Provider_Directory *&) { retu
 /////////////////////////////// INTERACTIVE_TERMINAL CLASS ///////////////////////////////////
 
 
-int Interactive_Terminal::display_member_db(MemberDB &m_db) { 
+int Interactive_Terminal::display_member_db(MemberDB & m_db) {
 	int total = m_db.display_all();
 	cout << "\n\n" << "The total number of members is: " << total << "\n\n";
 	return 1; 
@@ -514,11 +552,48 @@ int Interactive_Terminal::remove_member(MemberDB& m_db) {
 
 
 int Interactive_Terminal::edit_member(MemberDB& m_db) {
-	Member to_find;
-	string m_id;
+	Member	member_to_edit, to_find;
+	string	m_id;
+	string	name, \
+			street, \
+			city, \
+			state, \
+			zip;
 
-	if (validate_member("Please enter the 9-digit member ID of the member you would like to edit: ", to_find, m_id, m_db)) { //validate member here.
-		//EDIT MEMBER FROM DB HERE.
+	m_db.display_all();
+	if (validate_member("Please enter the 9-digit member ID of the member you would like to edit: ", to_find, m_id, m_db)) { //validate provider here.
+		//EDIT PROVIDER FROM DB HERE.
+		cout << "\n\n" << to_find << "\n\n";
+		char edit = get_char("Would you like to edit the member? (y/n): ");
+
+		if (edit == tolower('Y')) {
+
+			char option = 'n';
+
+			while (option != tolower('Y')) {
+				get_string(name, "Please enter the name of the member: ");
+				get_string(street, "Please enter the street address of the member: ");
+				get_string(city, "Please enter the city in which the member resides: ");
+				get_string(state, "Please enter the state in which the member resides: ");
+				get_string(zip, "Please enter the zipcode of the member: ");
+
+				member_to_edit.set_name(name);
+				member_to_edit.set_address(street);
+				member_to_edit.set_city(city);
+				member_to_edit.set_state(state);
+				member_to_edit.set_zip(zip);
+				member_to_edit.set_MID(m_id);
+
+				cout << "\n\n" << member_to_edit << "\n\n";
+				option = get_char("Is this the member information correct? (y/n): ");
+
+				if (m_db.edit(m_id, member_to_edit)) {
+					cout << "\n\n Edit successful\n\n";
+				}
+				else
+					cout << "\n\n Edit failed\n\n";
+			}
+		}
 
 		return 1;
 	}
@@ -528,11 +603,15 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 
 
 
-int Interactive_Terminal::display_provider_db() { return 1; }
+int Interactive_Terminal::display_provider_db(Provider_Database & p_db) { 
+	int total = p_db.display_all();
+	cout << "\n\n" << "The total number of providers is: " << total << "\n\n"; 
+	return 1; 
+}
 
 
 
-int Interactive_Terminal::add_provider() {
+int Interactive_Terminal::add_provider(Provider_Database & p_db) {
 
 	//Create Member object to be added to MemberDB
 	Provider provider_to_add;
@@ -561,19 +640,26 @@ int Interactive_Terminal::add_provider() {
 	}
 
 	//ADD PROVIDER TO DB HERE
-
+	if (p_db.add_provider(provider_to_add))
+		cout << "\n\n Add successful \n\n";
+	else
+		cout << "\n\n Add failed \n\n";
 
 	return 1;
 }
 
 
 
-int Interactive_Terminal::remove_provider() {
+int Interactive_Terminal::remove_provider(Provider_Database & p_db) {
 	Provider to_find;
 	string p_id;
 
-	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to remove: ", to_find, p_id)) { //validate provider here.
-		//REMOVE PROVIDER FROM DB HERE.
+	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to remove: ", to_find, p_id, p_db)) { //validate provider here.
+		//REMOVE MEMBER FROM DB HERE.
+		if (p_db.delete_provider(p_id))
+			cout << "\n\n Delete successful \n\n";
+		else
+			cout << "\n\n Delete failed \n\n";
 
 		return 1;
 	}
@@ -584,13 +670,47 @@ int Interactive_Terminal::remove_provider() {
 
 
 
-int Interactive_Terminal::edit_provider() {
-	Provider to_find;
+int Interactive_Terminal::edit_provider(Provider_Database & p_db) {
+	Provider provider_to_edit, to_find;
 	string p_id;
+	Address	 address_to_edit;
+	string	name, \
+		street, \
+		city, \
+		state, \
+		zip;
 
-	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to edit: ", to_find, p_id)) { //validate provider here.
+	p_db.display_all();
+	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to edit: ", to_find, p_id, p_db)) { //validate provider here.
 		//EDIT PROVIDER FROM DB HERE.
+		cout << "\n\n" << to_find << "\n\n";
+		char edit = get_char("Would you like to edit the provider? (y/n): ");
+			
+		if (edit == tolower('Y')) {
+				
+			char option = 'n';
+				
+			while (option != tolower('Y')) {
+				get_string(name, "Please enter the name of the provider: ");
+				get_string(street, "Please enter the street address of the provider: ");
+				get_string(city, "Please enter the city in which the provider resides: ");
+				get_string(state, "Please enter the state in which the provider resides: ");
+				get_string(zip, "Please enter the zipcode of the provider: ");
 
+				address_to_edit.init_address(street, city, state, zip);
+				provider_to_edit.edit_provider(name, p_id, address_to_edit);
+
+				cout << "\n\n" << provider_to_edit << "\n\n";
+				option = get_char("Is this the provider information correct? (y/n): ");
+
+				if (p_db.edit_provider(p_id, provider_to_edit)) {
+					cout << "\n\n Edit successful\n\n";
+				}
+				else
+					cout << "\n\n Edit failed\n\n";
+			}
+		}
+		
 		return 1;
 	}
 
@@ -607,8 +727,123 @@ int Interactive_Terminal::add_service_to_provider_directory(Provider_Directory *
 
 
 
-int Interactive_Terminal::generate_member_reports(MemberDB& m_db) { return 0; } //Call function from memberDB (single report for a specific mID or the entire database.
-int Interactive_Terminal::generate_provider_reports() { return 0; }
+int Interactive_Terminal::display_provider_directory(Provider_Directory*& dir) {
+	dir->display();
+	return 1;
+}
 
 
 
+
+//Call function from memberDB (single report for a specific mID or the entire database.
+int Interactive_Terminal::generate_member_reports(MemberDB& m_db, Provider_Directory *& dir) { 
+	
+	int option = 0;
+
+	while (option <= 2) {
+		option = (int) get_long("Which option would you prefer?\n\t \
+							1) Generate an individual member report\n\t \
+							2) Generate the entire member database\n>");
+		switch (option) {
+		case 1:
+		{
+			Member to_find;
+			string m_id;
+
+			if (validate_member("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, m_id, m_db)) {
+				//CALL MEMBERDB REPORT FUNCTION HERE
+
+			}
+
+		}
+		break;
+		case 2:
+			//CALL MEMBERDB REPORT FUNCTION HERE	
+			break;
+		}
+	}
+
+	return 1; 
+} 
+
+
+int Interactive_Terminal::generate_provider_reports(Provider_Database & p_db, Provider_Directory *& dir) { 
+	int option = 0;
+
+	while (option <= 2) {
+		option = (int)get_long("Which option would you prefer?\n\t \
+							1) Generate an individual provider report\n\t \
+							2) Generate the entire provider database\n>");
+		switch (option) {
+		case 1:
+		{
+			Provider to_find;
+			string p_id;
+
+			if (validate_provider("Please enter the 9-digit member ID that you would like to generate a report for: ", to_find, p_id, p_db)) {
+				//CALL MEMBERDB REPORT FUNCTION HERE
+				p_db.generate_single_report(p_id, *dir);
+			}
+		}
+		break;
+		case 2:
+			//CALL MEMBERDB REPORT FUNCTION HERE
+			p_db.generate_provider_reports(*dir);
+			break;
+		}
+	}
+
+	return 1;
+}
+
+
+
+/////////////////////////////// FINANCIAL_TERMINAL CLASS ///////////////////////////////////
+
+int Financial_Terminal::generate_EFT(Service_Ledger& ledger, Provider_Directory *& dir) {
+
+	cout << "\n\n Generating EFT Data \n\n";
+	ledger.generate_EFT(*dir);
+	return 1;
+}
+
+
+
+int Financial_Terminal::generate_APR(Service_Ledger& ledger, Provider_Directory*& dir) {
+
+	cout << "\n\n Generating APR Data \n\n";
+	ledger.generate_APR(*dir);
+	return 1;
+}
+
+
+
+int Financial_Terminal::suspend_reinstate_member(MemberDB& m_db) {
+	Member to_find;
+	string m_id;
+
+	m_db.display_all();
+
+	char option = 'n';
+
+	while (option != tolower('Y')) {
+		cout << '\n';
+		get_string(m_id, "Please enter the 9-digit member ID of the member you wish to suspend/reinstate: ");
+
+		cout << "\n\n" << "Member ID: " << m_id << "\n\n";
+		option = get_char("Is this the member ID correct? (y/n): ");
+	}
+
+	if (m_db.get_member(m_id, to_find)) {
+		cout << "\nMember Before:\n\n" << to_find << "\n\n";
+
+		to_find.toggle_active();
+		m_db.edit(m_id, to_find);
+		
+		cout << "\nMember after:\n\n" << to_find << "\n\n";
+
+		return 1;
+	}
+
+	return 0;
+}

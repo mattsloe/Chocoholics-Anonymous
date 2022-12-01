@@ -8,11 +8,11 @@ void SL_tester::test_Service_Ledger_class() {
     cout << "SERVICE LEDGER TESTS STARTING..." << endl;
     cout << "New Transaction good path test                  ";
     (assert_test(new_transaction_good_test(s)));
-    delete_SL();
+    delete_SL(s);
 
     cout << "New Transaction bad path test                   ";
     (assert_test(new_transaction_bad_test(s)));
-    delete_SL();
+    delete_SL(s);
 
     /*
     cout << "Generate EFT test                               ";

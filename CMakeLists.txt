@@ -27,3 +27,5 @@ add_executable(prov_tester
                 )
 
 file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY assets docs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+

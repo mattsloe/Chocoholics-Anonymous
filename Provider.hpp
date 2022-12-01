@@ -52,6 +52,7 @@ class Provider {
 		std::string get_pid();		              // return pid
 		std::string to_string();                  // returns provider formatted as string
 		std::string to_file();                    // format data for json file
+        std::string get_name();                   // return name
 		void run_report(Provider_Directory&);     // generate provider report
 		void load_file(nlohmann::json j, Provider_Directory&);   // load provider from json file
 		
