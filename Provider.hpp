@@ -53,7 +53,6 @@ class Provider {
 		std::string to_string();                  // returns provider formatted as string
 		std::string to_file();                    // format data for json file
 		void run_report(Provider_Directory&);     // generate provider report
-		std::string run_manager_report();         // generate string for database gen. report
 		void load_file(nlohmann::json j, Provider_Directory&);   // load provider from json file
 		
 

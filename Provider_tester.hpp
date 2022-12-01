@@ -20,7 +20,6 @@ public:
 	static bool Provider_opEqual_match();
 	static bool Provider_opEqual_noMatch();
 	static bool Provider_runReport_happy();         // uses Service_Record fxn
-	static bool Provider_runManagerReport_happy();  // uses Service_Record fxn
 	static bool Provider_addService_happy();
 
 

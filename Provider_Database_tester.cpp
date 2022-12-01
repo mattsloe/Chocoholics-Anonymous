@@ -25,11 +25,9 @@ void ProviderDB_tester::test_Provider_Database_class() {
 	cout << "Test 1: Get Happy\t\t\tResult: " << ((getProvider_happy()) ? "pass" : "fail") << endl;
 	cout << "Test 2: Get Empty\t\t\tResult: " << ((getProvider_empty()) ? "pass" : "fail") << endl;
 	cout << "Test 3: Get Not Found\t\t\tResult: " << ((getProvider_notFound()) ? "pass" : "fail") << endl;
-	cout << "Test 4: Add Prov\t\t\tResult: " << ((addProvider_happy()) ? "pass" : "fail") << endl;
 	cout << "Test 5: Delete Prov Happy\t\tResult: " << ((deleteProvider_happy()) ? "pass" : "fail") << endl;
 	cout << "Test 6: Delete Prov Not Found\t\tResult: " << ((deleteProvider_empty()) ? "pass" : "fail") << endl;
 	cout << "Test 7: Run Reports\t\t\tResult: " << genProvReports_happy() << endl;
-	cout << "Test 8: Run Manager Report\t\tResult: " << genManagerReports_happy() << endl;
 	cout << "Test 9: Run Single Report\t\tResult: " << genSingleReport_happy() << endl;
 	cout << "Test 10: Database to File\t\tResult: " << toFile_happy() << std::endl;
 	cout << "Test 11: Load File\t\t\tResult: " << (loadFile_happy() ? "pass" : "fail") << endl;
@@ -40,35 +38,45 @@ void ProviderDB_tester::test_Provider_Database_class() {
 
 bool ProviderDB_tester::getProvider_happy() {
 	Provider empty;
-	db.get_provider("123456789", empty);
-	return false;
+	bool flag = false;
+	flag = db.get_provider("326719418", empty);
+
+	return flag;
 }
 
 bool ProviderDB_tester::getProvider_empty() {
-	return false;
-}
-
-bool ProviderDB_tester::getProvider_notFound() {
-	return false;
-}
-
-bool ProviderDB_tester::addProvider_happy() {
-	return false;
-}
-
-bool ProviderDB_tester::deleteProvider_happy() {
-	return false;
-}
-
-bool ProviderDB_tester::deleteProvider_empty() {
-	return false;
-}
-
-bool ProviderDB_tester::genProvReports_happy() {
+	Provider empty;
+	Provider_Database empty_db;
+	
+	if (empty_db.get_provider("326719418", empty))
+		return false;
 	return true;
 }
 
-bool ProviderDB_tester::genManagerReports_happy() {
+bool ProviderDB_tester::getProvider_notFound() {
+	Provider empty;
+
+	if (db.get_provider("123456789", empty))
+		return false;
+	return true;
+}
+
+bool ProviderDB_tester::deleteProvider_happy() {
+	db.delete_provider("326719418");
+	if (db.validate_pid("326719418"))
+		return false;
+	return true;
+}
+
+bool ProviderDB_tester::deleteProvider_empty() {
+	if (db.delete_provider("123456789"))
+		return false;
+	return true;
+}
+
+bool ProviderDB_tester::genProvReports_happy() {
+	db.generate_provider_reports(d1);
+	cout << "Validate Correctness with generated files" << endl;
 	return true;
 }
 

@@ -200,9 +200,10 @@ void Provider::load_file(nlohmann::json j, Provider_Directory & d) {
 
 // outputs .txt file of provider info + provided services info
 void Provider::run_report(Provider_Directory & d) {
-	std::string file_name = name;
+	std::string dir_name = "reports/";
+	std::string file_name = dir_name + name;
 	size_t pos = name.find(' ');
-	file_name.replace(pos, 1, 1, '_');
+	file_name.replace(pos + dir_name.length(), 1, 1, '_');
 	file_name += ".txt";
 
 	std::ofstream output_file(file_name);
@@ -217,20 +218,6 @@ void Provider::run_report(Provider_Directory & d) {
 	output_file << service_to_string(d);
 	output_file.close();
 	return;
-}
-
-// returns string for database generated report
-//Format: 
-//<Name> - <PID>
-//Number of Consults: <#>    Total Fee: <$>
-std::string Provider::run_manager_report() {
-	std::string out;
-	
-	out += name + " - " + pid + "\n";
-	out += "Number of Consults: " + std::to_string(num_services_provided) + "\t";
-	out += "Total Fee: $" + std::to_string(total_cost) + "\n";
-
-	return out;
 }
 
 /* **Service List Functions** */

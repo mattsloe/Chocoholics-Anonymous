@@ -46,8 +46,7 @@ nlohmann::json j_obj = {
 	cout << "Test 5: Equal Operator No Match\t\tResult: " << ((Provider_opEqual_noMatch()) ? "pass" : "fail") << endl;
 	cout << "Test 6: Load File\t\t\tResult: " << ((Provider_loadFile_happy()) ? "pass" : "fail") << endl;
 	cout << "Test 7: Run Report\t\t\tResult: " << Provider_runReport_happy() << endl;
-	cout << "Test 8: Run Manager Report\t\tResult: " << Provider_runManagerReport_happy() << endl;
-	cout << "Test 9: Add Service\t\t\tResult: " << (Provider_addService_happy() ? "pass" : "fail") << endl;
+	cout << "Test 8: Add Service\t\t\tResult: " << (Provider_addService_happy() ? "pass" : "fail") << endl;
 	cout << "PROVIDER TESTS COMPLETE" << endl;
 	cout << "------------------------------------" << endl;
 	return;
@@ -140,13 +139,6 @@ bool Provider_tester::Provider_opEqual_noMatch() {
 bool Provider_tester::Provider_runReport_happy() {
 	prov.run_report(d);
 	cout << "\tVerify correctness with output file" << endl;
-	return true;
-}
-
-bool Provider_tester::Provider_runManagerReport_happy() {
-	string expected = "John Smith - 123456789\n\nNumber of Consults: 0\tTotal Fee: 0.00";
-	if (prov.run_manager_report() != expected)
-		return false;
 	return true;
 }
 
