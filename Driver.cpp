@@ -487,7 +487,11 @@ int Provider_Terminal::generate_provider_directory_report(Provider_Directory & d
 
 
 int Interactive_Terminal::display_member_db(MemberDB & m_db) {
-	int total = m_db.display_all();
+	int total = 0;
+
+	cout << "\n\n";
+	total = m_db.display_all();
+
 	cout << "\n\n" << "The total number of members is: " << total << "\n\n";
 	return 1; 
 }
@@ -541,6 +545,9 @@ int Interactive_Terminal::remove_member(MemberDB& m_db) {
 	Member to_find;
 	string m_id;
 
+	cout << "\n\n";
+	m_db.display_all();
+
 	if (validate_member("Please enter the 9-digit member ID of the member you would like to remove: ", to_find, m_id, m_db)) { //validate member here.
 		//REMOVE MEMBER FROM DB HERE.
 		if (m_db.delete_member(m_id))
@@ -566,7 +573,9 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 			state, \
 			zip;
 
+	cout << "\n\n";
 	m_db.display_all();
+
 	if (validate_member("Please enter the 9-digit member ID of the member you would like to edit: ", to_find, m_id, m_db)) { //validate provider here.
 		//EDIT PROVIDER FROM DB HERE.
 		cout << "\n\n" << to_find << "\n\n";
@@ -610,7 +619,11 @@ int Interactive_Terminal::edit_member(MemberDB& m_db) {
 
 
 int Interactive_Terminal::display_provider_db(Provider_Database & p_db) { 
-	int total = p_db.display_all();
+	int total = 0;
+
+	cout << "\n\n";
+	total = p_db.display_all();
+
 	cout << "\n\n" << "The total number of providers is: " << total << "\n\n"; 
 	return 1; 
 }
@@ -660,6 +673,9 @@ int Interactive_Terminal::remove_provider(Provider_Database & p_db) {
 	Provider to_find;
 	string p_id;
 
+	cout << "\n\n";
+	p_db.display_all();
+
 	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to remove: ", to_find, p_id, p_db)) { //validate provider here.
 		//REMOVE MEMBER FROM DB HERE.
 		if (p_db.delete_provider(p_id))
@@ -686,7 +702,9 @@ int Interactive_Terminal::edit_provider(Provider_Database & p_db) {
 		state, \
 		zip;
 
+	cout << "\n\n";
 	p_db.display_all();
+
 	if (validate_provider("Please enter the 9-digit provider ID of the provider you would like to edit: ", to_find, p_id, p_db)) { //validate provider here.
 		//EDIT PROVIDER FROM DB HERE.
 		cout << "\n\n" << to_find << "\n\n";
@@ -736,7 +754,9 @@ int Interactive_Terminal::add_service_to_provider_directory(Provider_Directory &
 
 
 int Interactive_Terminal::display_provider_directory(Provider_Directory & dir) {
+	cout << "\n\n";
 	dir.display();
+	cout << "\n\n";
 	return 1;
 }
 
@@ -836,6 +856,7 @@ int Financial_Terminal::suspend_reinstate_member(MemberDB& m_db) {
 	Member to_find;
 	string m_id;
 
+	cout << "\n\n";
 	m_db.display_all();
 
 	char option = 'n';
