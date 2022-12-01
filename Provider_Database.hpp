@@ -22,9 +22,9 @@ class Provider_Database {
 		bool validate_pid(std::string pid);
 		bool edit_provider(std::string pid, const Provider & to_copy);   // takes to_copy and copies it into provider w/ matching pid
 		int add_provider();
+		bool add_provider(Provider&);
 		bool delete_provider(std::string pid);
 		void generate_provider_reports(Provider_Directory &);
-		void generate_manager_report();
 		void generate_single_report(std::string pid, Provider_Directory &);
 		void to_file();
 		void load_file(std::string file_name, Provider_Directory &);
