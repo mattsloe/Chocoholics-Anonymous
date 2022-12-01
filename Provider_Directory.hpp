@@ -32,7 +32,8 @@ class Service {
 
 class Provider_Directory {
     public:
-        Provider_Directory(std::string); // file name reading in constructor
+        Provider_Directory(); // file name reading in constructor
+        ~Provider_Directory(); // file name reading in constructor
         void init(nlohmann::json); // create DS with json object
         void create_new_service(); // allows the provider to create a new service that they wish to offer
         void display(); // displays all available services to the terminal

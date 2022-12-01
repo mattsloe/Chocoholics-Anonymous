@@ -71,8 +71,12 @@ void Service::display() {
 }
 
 // ----------------------- Provider Directory Implementation ---------------------------
-Provider_Directory::Provider_Directory(string file_name) {
-   read_from_file(file_name);
+Provider_Directory::Provider_Directory() {
+   read_from_file();
+}
+
+Provider_Directory::~Provider_Directory() {
+    write_to_file();
 }
 
 void Provider_Directory::init(nlohmann::json j) {
