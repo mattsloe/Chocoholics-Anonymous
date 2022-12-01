@@ -3,7 +3,7 @@ using namespace std;
 using json = nlohmann::json;
 
 Service_Ledger::Service_Ledger() {
-    load();
+    //load();
 }
 
 void Service_Ledger::load() {
@@ -75,7 +75,7 @@ void Service_Ledger::new_transaction(Service_Record &record) {
 
 void Service_Ledger::generate_APR(Provider_Directory &provider_directory) {
     map<string, int> providers;
-    string sid = "", file_name = "AccountsPayableReport";
+    string sid = "", file_name = "docs/AccountsPayableReport";
     int total_providers = 0, total_services = 0, num_consultations = 0;
     double total_fee = 0.0;
     ofstream out;
@@ -111,7 +111,7 @@ void Service_Ledger::generate_APR(Provider_Directory &provider_directory) {
 
 void Service_Ledger::generate_EFT(Provider_Directory &provider_directory) {
     map<string, int> providers;
-    string file_name = "EFTdata", sid;
+    string file_name = "docs/EFTdata", sid;
     double pay_check = 0;
     ofstream out;
 
