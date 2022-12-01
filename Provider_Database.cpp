@@ -4,6 +4,7 @@
 Provider_Database::Provider_Database() = default;
 
 Provider_Database::Provider_Database(Provider_Directory & d) {
+    this->data_filename = FILENAME;
 	std::ifstream in_file(data_filename);
 	if (!in_file.is_open()) {
 		std::cout << "Error: Unable to open file" << std::endl;

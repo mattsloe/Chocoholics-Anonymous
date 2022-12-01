@@ -33,7 +33,8 @@ class Provider_Database {
 	protected:
 		std::unordered_map <std::string, Provider*> table; // maps Providers by PID
 		std::vector<std::string> pids;                      // list of pids in table to iterate through map
-		std::string data_filename = "assets/test-providers.json";
+		std::string data_filename;
+        const char* FILENAME = "assets/test-providers.json";
 
 		void init(nlohmann::json, Provider_Directory &);  // init from json obj
 }; 
