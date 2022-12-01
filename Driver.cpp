@@ -184,7 +184,7 @@ Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr), directory(null
 	iterm = new Interactive_Terminal();
 	fterm = new Financial_Terminal();
 
-	directory = new Provider_Directory(SERVICES);
+	directory = new Provider_Directory();
 
 	//READ FROM DISC HERE
 }
