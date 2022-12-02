@@ -12,7 +12,7 @@ std::string pid = "123456789";
 Address a1(street, city, state, zip);
 Provider prov(name, pid, a1);
 Service_Record sr("123", "234", "123456789", "123456789", "275627", "hi world");
-Provider_Directory d = Provider_Directory();
+Provider_Directory d;
 
 nlohmann::json j_obj = {
 	{"name", name},

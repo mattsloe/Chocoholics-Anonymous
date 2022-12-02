@@ -204,7 +204,8 @@ void Provider::run_report(Provider_Directory & d) {
 	file_name.replace(pos + dir_name.length(), 1, 1, '_');
 	file_name += ".txt";
 
-	std::ofstream output_file(file_name);
+	std::ofstream output_file;
+	output_file.open(file_name, std::ios::trunc);
 	if (!output_file.is_open()) {
 		std::cout << "Error: could not open file" << std::endl;
 		std::cout << "Exiting..." << std::endl;
