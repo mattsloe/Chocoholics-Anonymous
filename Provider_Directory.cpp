@@ -72,7 +72,7 @@ void Service::display() {
 
 // ----------------------- Provider Directory Implementation ---------------------------
 Provider_Directory::Provider_Directory() {
-   load();
+   //load();
 }
 
 Provider_Directory::~Provider_Directory() {
@@ -118,10 +118,12 @@ void Provider_Directory::create_new_service() {
     valid = false;
 
     services.emplace(sID, service);
+
+    return;
 }
 
 void Provider_Directory::display() {
-    for (auto it = services.begin(); it != services.begin(); it++) {
+    for (auto it = services.begin(); it != services.end(); it++) {
         it->second.display();
     }
 }

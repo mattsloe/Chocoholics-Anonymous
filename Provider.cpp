@@ -198,7 +198,7 @@ void Provider::load_file(nlohmann::json j, Provider_Directory & d) {
 
 // outputs .txt file of provider info + provided services info
 void Provider::run_report(Provider_Directory & d) {
-	std::string dir_name = "docs/";
+	std::string dir_name = "docs/provider_reports/";
 	std::string file_name = dir_name + name;
 	size_t pos = name.find(' ');
 	file_name.replace(pos + dir_name.length(), 1, 1, '_');
