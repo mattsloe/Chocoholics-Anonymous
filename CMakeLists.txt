@@ -17,15 +17,5 @@ add_executable(ChocAn
                 Provider_Database.hpp Provider_Database.cpp
                 )
 
-add_executable(prov_tester
-                json.hpp run_prov_tests.cpp
-                Provider_Directory.hpp Provider_Directory.cpp 
-                Service_Record.hpp Service_Record.cpp
-                Provider.hpp Provider.cpp Provider_tester.hpp Provider_tester.cpp
-                Provider_Database.hpp Provider_Database.cpp
-                Provider_Database_tester.hpp Provider_Database_tester.cpp
-                )
-
-file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY assets docs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
