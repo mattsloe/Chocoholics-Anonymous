@@ -11,8 +11,8 @@
 class Provider_Database {
 	public:
 		/* Constructors */
-		Provider_Database();
-		Provider_Database(Provider_Directory &);
+		Provider_Database();                                            // default
+		Provider_Database(Provider_Directory &);                        // load with hardcoded file
 		Provider_Database(nlohmann::json, Provider_Directory &);        // init from json
 		~Provider_Database();                                           // save to file
 
