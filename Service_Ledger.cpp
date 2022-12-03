@@ -1,12 +1,12 @@
 #include "Service_Ledger.hpp"
 using namespace std;
-using json = nlohmann::json;
 
 Service_Ledger::Service_Ledger() {
     //load();
 }
 
 void Service_Ledger::load() {
+    using json = nlohmann::json;
     string file_name = "assets/service_ledger.json";
     json j;
     ifstream in(file_name);
@@ -23,6 +23,7 @@ Service_Ledger::~Service_Ledger() {
 }
 
 void Service_Ledger::save() {
+using json = nlohmann::json;
     string file_name = "assets/service_ledger.json";
     ofstream o(file_name);
     json j_ledger;
@@ -36,7 +37,8 @@ void Service_Ledger::save() {
 
 
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
-        j_ledger["pID"] = it->second;
+        //json j_vec = it->second;
+        j_ledger[it->first] = it->second;
     }
 
     // output json ledger to output
@@ -75,18 +77,16 @@ void Service_Ledger::new_transaction(Service_Record &record) {
 
 void Service_Ledger::generate_APR(Provider_Directory &provider_directory) {
     map<string, int> providers;
-    string sid = "", file_name = "docs/AccountsPayableReport";
+    string sid;
+    string file_name = "docs/AccountsPayableReport.txt";
     int total_providers = 0, total_services = 0, num_consultations = 0;
     double total_fee = 0.0;
-    ofstream out;
+    ofstream out(file_name);
 
-    file_name += current_date_time();
-    file_name += ".txt";
-    out.open(file_name);
-
-    if (!out.is_open()) {
+    if (!out.good()) {
         cerr << "Unable to open file!!" << endl;
-        exit(-17);
+        out.close();
+        return;
     }
 
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
@@ -111,17 +111,15 @@ void Service_Ledger::generate_APR(Provider_Directory &provider_directory) {
 
 void Service_Ledger::generate_EFT(Provider_Directory &provider_directory) {
     map<string, int> providers;
-    string file_name = "docs/EFTdata", sid;
+    string file_name = "docs/EFTdata.txt";
+    string sid;
     double pay_check = 0;
-    ofstream out;
-
-    file_name += current_date_time();
-    file_name += ".txt";
-    out.open(file_name);
+    ofstream out(file_name);
     
-    if (!out.is_open()) {
+    if (!out.good()) {
         cerr << "Unable to open file!!" << endl;
-        exit(-17);
+        out.close();
+        return;
     }
 
     for (auto it = ledger.begin(); it != ledger.end(); it++) {
