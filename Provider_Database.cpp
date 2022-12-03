@@ -97,7 +97,12 @@ bool Provider_Database::edit_provider(std::string pid, const Provider & to_copy)
 }
 
 void Provider_Database::to_file() {
-	std::ofstream out_file("filename");
+	this->data_filename = FILENAME;
+	std::ofstream out_file(data_filename);
+	if (!out_file.is_open()) {
+		std::cout << "Error: unable to open file" << std::endl;
+		return;
+	}
 
 	using json = nlohmann::json;
 	json j = json::array();
