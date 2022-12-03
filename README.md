@@ -10,7 +10,7 @@ First, you will need to upload the provided .tar.gz file to the school server wh
 Some commands to help you transfer the file to the school server are as follows:
 ```
 sftp [username]@linux.cs.pdx.edu
-sftp> put Chocoholics-Anonymous-Software-group8.tar.gz .
+sftp> put Choc/ab-Group8.zip .
 ```
 
 Once you are logged into the school environment, you will need to create a directory and unzip the compressed file there (to avoid pollutting your current directory):
