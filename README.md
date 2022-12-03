@@ -15,7 +15,7 @@ sftp> put Chocoholics-Anonymous-Software-group8.tar.gz .
 
 Once you are logged into the school environment, you will need to create a directory and untar the compressed file there (to avoid pollutting your current directory):
 ```
-mkdir ChocAn-Software && tar xf Chocoholics-Anonymous-Software-group8.tar.gz -C ChocAn-Software
+unzip ChocAn-group8.zip -d [directory_name]/
 ```
 
 The build for this codebase is managed by CMake. To create the makefile and compile this project, simply go into the project directory and run the following commands (This must be done in the school or any linux environment with a cmake version 3.21 or newer):
