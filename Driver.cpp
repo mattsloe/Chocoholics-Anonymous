@@ -184,6 +184,9 @@ Driver::Driver(): pterm(nullptr), iterm(nullptr), fterm(nullptr) //, directory(n
 	iterm = new Interactive_Terminal();
 	fterm = new Financial_Terminal();
 
+	std::string filename = "assets/test-providers.json";
+	provider_db.load_file(filename, directory);
+
 	//directory = new Provider_Directory();
 
 	//READ FROM DISC HERE
