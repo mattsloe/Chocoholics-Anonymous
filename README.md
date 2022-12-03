@@ -13,7 +13,7 @@ sftp [username]@linux.cs.pdx.edu
 sftp> put Chocoholics-Anonymous-Software-group8.tar.gz .
 ```
 
-Once you are logged into the school environment, you will need to create a directory and untar the compressed file there (to avoid polutting your current directory):
+Once you are logged into the school environment, you will need to create a directory and untar the compressed file there (to avoid pollutting your current directory):
 ```
 mkdir ChocAn-Software && tar xf Chocoholics-Anonymous-Software-group8.tar.gz -C ChocAn-Software
 ```
